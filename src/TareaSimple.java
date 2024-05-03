@@ -12,6 +12,10 @@ public class TareaSimple implements Tarea {
     private String fechaVencimiento;
     private boolean completada;
 
+    /**
+     * Constructor de la clase TareaSimple, con los atributos que una tarea simple debería tener,
+     * es decir, todos menos una fecha de vencimiento.
+     */
     public TareaSimple(String tipo, String titulo, String descripcion, String fechaCreacion,
             boolean completada) {
         this.tipo = tipo;
@@ -21,6 +25,10 @@ public class TareaSimple implements Tarea {
         this.completada = completada;
     }
 
+    /**
+     * Método que se encarga de construir una tarea simple, pidiendo al usuario los detalles
+     * de la misma, ademas que la guarda en un archivo de texto.
+     */
     @Override
     public void construyeTarea() {
         Scanner scanner = new Scanner(System.in);
@@ -60,6 +68,9 @@ public class TareaSimple implements Tarea {
         }
     }
 
+    /*
+     * Getters de los atributos de la clase TareaSimple.
+     */
     @Override
     public String getTitulo() {
         return titulo;

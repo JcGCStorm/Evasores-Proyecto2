@@ -5,7 +5,8 @@ public class MAIN {
 
         System.out.println("Bienvenido a tu lista de tareas");
         TareasAlmacen.getTareas();
-        // TareasAlmacen.muestraTareas(); // este metodo posiblemente lo borre, ya
+        // TareasAlmacen.muestraTareas(); 
+        // este metodo posiblemente lo borre, ya
         // veremos xd
 
         Scanner scanner = new Scanner(System.in);
