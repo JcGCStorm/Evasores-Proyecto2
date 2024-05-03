@@ -12,8 +12,8 @@ public class TareaSimple implements Tarea {
     private String fechaVencimiento;
     private boolean completada;
 
-    public TareaSimple(String tipo,String titulo, String descripcion, String fechaCreacion, 
-                       boolean completada) {
+    public TareaSimple(String tipo, String titulo, String descripcion, String fechaCreacion,
+            boolean completada) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -23,7 +23,7 @@ public class TareaSimple implements Tarea {
 
     @Override
     public void construyeTarea() {
-      Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
         System.out.print("Título: ");
         String titulo = scanner.nextLine();
@@ -36,19 +36,19 @@ public class TareaSimple implements Tarea {
         boolean completadaB = false;
         if (completada.equals("si")) {
             System.out.println("Tarea completada");
-             completadaB = true;
-        } else if (completada.equals("no")){
+            completadaB = true;
+        } else if (completada.equals("no")) {
             System.out.println("Tarea no completada");
-             completadaB = false;
+            completadaB = false;
         }
-        
+
         System.out.println("\nTarea creada:");
-        String tarea = "Título: " + titulo + "\nDescripción: " + descripcion + 
-        "\nFecha de creación: " + fechaCreacion + "\nCompletada: " + completadaB + "\n";
+        String tarea = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion +
+                "\nFecha de creación: " + fechaCreacion + "\nCompletada: " + completadaB + "\n";
         System.out.println(tarea);
-        TareaSimple tareaS = new TareaSimple("simple",titulo, descripcion, fechaCreacion, completadaB);
+        TareaSimple tareaS = new TareaSimple("simple", titulo, descripcion, fechaCreacion, completadaB);
         TareasAlmacen.guardaTarea(tareaS);
-        
+
         try {
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
@@ -82,7 +82,7 @@ public class TareaSimple implements Tarea {
 
     @Override
     public boolean isCompletada() {
-       return completada;
+        return completada;
     }
-    
+
 }

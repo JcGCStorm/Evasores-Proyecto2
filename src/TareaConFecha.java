@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class TareaConFecha implements Tarea{
+public class TareaConFecha implements Tarea {
     String nombreArchivo = "tareas.txt";
     private String tipo = "con fecha";
     private String titulo;
@@ -12,8 +12,8 @@ public class TareaConFecha implements Tarea{
     private String fechaVencimiento;
     private boolean completada;
 
-    public TareaConFecha(String tipo,String titulo, String descripcion, String fechaCreacion, 
-    String fechaVencimiento, boolean completada) {
+    public TareaConFecha(String tipo, String titulo, String descripcion, String fechaCreacion,
+            String fechaVencimiento, boolean completada) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -39,19 +39,21 @@ public class TareaConFecha implements Tarea{
         boolean completadaB = false;
         if (completada.equals("si")) {
             System.out.println("Tarea completada");
-             completadaB = true;
-        } else if (completada.equals("no")){
+            completadaB = true;
+        } else if (completada.equals("no")) {
             System.out.println("Tarea no completada");
-             completadaB = false;
+            completadaB = false;
         }
-        
+
         System.out.println("\nTarea creada:");
-        String tarea = "Título: " + titulo + "\nDescripción: " + descripcion + 
-        "\nFecha de creación: " + fechaCreacion + "\nFecha de Vencimiento: " + fechaVencimiento + "\nCompletada: " + completadaB + "\n";
+        String tarea = "Tipo: " + "con fecha" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion +
+                "\nFecha de creación: " + fechaCreacion + "\nFecha de Vencimiento: " + fechaVencimiento
+                + "\nCompletada: " + completadaB + "\n";
         System.out.println(tarea);
-        TareaConFecha tareaS = new TareaConFecha("con fecha",titulo, descripcion, fechaCreacion, fechaVencimiento, completadaB);
+        TareaConFecha tareaS = new TareaConFecha("con fecha", titulo, descripcion, fechaCreacion, fechaVencimiento,
+                completadaB);
         TareasAlmacen.guardaTarea(tareaS);
-        
+
         try {
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
@@ -85,7 +87,7 @@ public class TareaConFecha implements Tarea{
 
     @Override
     public boolean isCompletada() {
-       return completada;
+        return completada;
     }
-    
+
 }

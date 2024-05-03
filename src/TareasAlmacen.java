@@ -53,30 +53,50 @@ public class TareasAlmacen {
             String linea;
             List<String> valores = new ArrayList<>();
 
+            int contadorSimple = 0;
+            int contadorFecha = 0;
             while ((linea = br.readLine()) != null) {
                 // Dividir la línea en partes utilizando el delimitador ": "
                 String[] partes = linea.split(": ", 2);
-
                 // Verificar si hay al menos dos partes (nombre del campo y valor)
                 if (partes.length == 2) {
                     String valor = partes[1];
                     valores.add(valor);
-                    if (valores.get(0).equals("simple")) {
-                        TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2), valores.get(3),
-                                Boolean.parseBoolean(valores.get(4)));
+                    System.out.println("Comienzo");
+                    System.out.println(valores.get(0));
+                    System.out.println(contadorSimple);
+                    System.out.println(contadorFecha);
+                    if (valores.get(0).equals("simple") && contadorSimple == 4) {
+                        TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2),
+                                valores.get(3), Boolean.parseBoolean(valores.get(4)));
                         tareas.add(tarea);
-                    } else if (valores.get(0).equals("con fecha")) {
+                        System.out.println(tarea.getDescripcion());
+                        System.out.println(tareas);
+                        contadorSimple = 0;
+                        System.out.println(valores);
+                        valores.clear();
+                    } else if (valores.get(0).equals("simple")) {
+                        contadorSimple++;
+                    } else if (valores.get(0).equals("con fecha") && contadorFecha == 5) {
                         TareaConFecha tarea = new TareaConFecha("con fecha", valores.get(1), valores.get(2),
                                 valores.get(3), valores.get(4), Boolean.parseBoolean(valores.get(5)));
                         tareas.add(tarea);
-                        // Imprimir el campo y su valor
-                        System.out.println(valor);
+                        System.out.println(tarea.getDescripcion());
+                        System.out.println(tarea);
+                        contadorFecha = 0;
+                        System.out.println(valores);
+                        valores.clear();
+                    } else if (valores.get(0).equals("con fecha")) {
+                        System.out.println(valores.get(0));
+                        contadorFecha++;
+                        System.out.println(valores);
+                        System.out.println(contadorFecha + "fecha");
                     }
+                    System.out.println(tareas);
                 }
-                br.close();
             }
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo: " + e.getMessage());
+            System.err.println("Aún no tienes tareas.");
         }
     }
 

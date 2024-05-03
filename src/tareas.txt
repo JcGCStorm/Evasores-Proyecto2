@@ -1,11 +1,20 @@
-Título: Lol
-Descripción: adaffa
+Tipo: simple
+Título: Darle de comer a Quancha
+Descripción: Ir por alimento a la tienda
 Fecha de creación: 3
 Completada: true
 
-Título: afaaf
-Descripción: adada
-Fecha de creación: 4
+Tipo: con fecha
+Título: Completar Half Life
+Descripción: Me da miedo
+Fecha de creación: 3
 Fecha de Vencimiento: 5
-Completada: true
+Completada: false
+
+Tipo: con fecha
+Título: Cocinar
+Descripción: Huevo con jamon
+Fecha de creación: 54
+Fecha de Vencimiento: 6
+Completada: false
 
