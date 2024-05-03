@@ -1,20 +1,19 @@
 Tipo: simple
-Título: Darle de comer a Quancha
-Descripción: Ir por alimento a la tienda
+Título: Alimentar al perro
+Descripción: Comprar comida de perro
 Fecha de creación: 3
+Completada: false
+
+Tipo: con fecha
+Título: Ir a misa
+Descripción: Levantarme a las 8 de la mañana
+Fecha de creación: 3
+Fecha de Vencimiento: 3
 Completada: true
 
-Tipo: con fecha
-Título: Completar Half Life
-Descripción: Me da miedo
-Fecha de creación: 3
-Fecha de Vencimiento: 5
-Completada: false
-
-Tipo: con fecha
-Título: Cocinar
-Descripción: Huevo con jamon
-Fecha de creación: 54
-Fecha de Vencimiento: 6
-Completada: false
+Tipo: simple
+Título: Hacer el desayuno
+Descripción: Pararme temprano para hacer el desayuno
+Fecha de creación: 5	
+Completada: true
 

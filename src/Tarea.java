@@ -10,6 +10,7 @@ public interface Tarea {
     String getFechaVencimiento();
 
     boolean isCompletada();
-    
 
+    // String getPrioridad();
+    // String getEtiquetas();
 }
