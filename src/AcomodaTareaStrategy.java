@@ -3,3 +3,4 @@ public interface AcomodaTareaStrategy extends Tarea{
     //bien
     public void acomodaTarea(Tarea tarea);
 }
+//kik
