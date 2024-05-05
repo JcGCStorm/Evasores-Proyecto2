@@ -12,6 +12,10 @@ public class TareaConFecha implements Tarea {
     private String fechaVencimiento;
     private boolean completada;
 
+    /**
+     * Constructor de la clase TareaConFecha, con los atributos que una tarea con fecha debería tener,
+     * es decir, todos los atributos posibles A MENOS QUE LO CAMBIEMOS EN UN FUTURO.
+     */
     public TareaConFecha(String tipo, String titulo, String descripcion, String fechaCreacion,
             String fechaVencimiento, boolean completada) {
         this.tipo = tipo;
@@ -22,6 +26,10 @@ public class TareaConFecha implements Tarea {
         this.completada = completada;
     }
 
+    /**
+     * Método que se encarga de construir una tarea con fecha, pidiendo al usuario los detalles
+     * de la misma, ademas que la guarda en un archivo de texto.
+     */
     @Override
     public void construyeTarea() {
         Scanner scanner = new Scanner(System.in);
@@ -65,6 +73,7 @@ public class TareaConFecha implements Tarea {
         }
     }
 
+    // Getters de los atributos de las tareas con fecha.
     @Override
     public String getTitulo() {
         return titulo;

@@ -1,7 +1,15 @@
 import java.util.Scanner;
 public class TareasControlador {
     
-
+    /**
+     * Este metodo es el que se encarga de crear las tareas, primero pregunta si
+     * se desea agregar una tarea, si la respuesta es no, se sale del ciclo, si
+     * la respuesta es si, pregunta que tipo de tarea se desea agregar, si la
+     * respuesta es simple, se crea una tarea simple mandando a llamar a la fabrica
+     * de tareas simples, si la respuesta es con fecha se crea una tarea con fecha
+     * mandando a llamar a la fabrica de tareas con fecha, si la respuesta no es 
+     * ninguna de las anteriores imprime un mensaje diciendo que la opción no es válida.
+     */
     public static void crearTarea(){
         Scanner scanner = new Scanner(System.in);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
