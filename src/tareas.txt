@@ -40,3 +40,10 @@ Etiquetas:  Estudio, Estudio, Estudio,
 Fecha de creación: ad
 Completada: true
 
+Tipo: simple
+Título: AAAAAAAAAAAAAA
+Descripción: AAAAAAAAAAAAAA
+Etiquetas:  Estudio, Estudio,
+Fecha de creación: 1
+Completada: true
+
