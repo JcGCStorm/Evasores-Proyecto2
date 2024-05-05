@@ -60,10 +60,12 @@ public class TareasAlmacen {
                 if (partes.length == 2) {
                     String valor = partes[1];
                     valores.add(valor);
-                    if (valores.get(0).equals("simple") && contadorSimple == 4) {
-                        TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2),
-                                valores.get(3), Boolean.parseBoolean(valores.get(4)));
+                    if (valores.get(0).equals("simple") && contadorSimple == 5) {
+                        TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2), 
+                                        valores.get(3), valores.get(4), Boolean.parseBoolean(valores.get(5)));
                         tareas.add(tarea);
+                        System.out.println(contadorSimple);
+                        System.out.println(valores);
                         contadorSimple = 0;
                         valores.clear();
                     } else if (valores.get(0).equals("simple")) {

@@ -8,15 +8,17 @@ public class TareaSimple implements Tarea {
     private String tipo = "simple";
     private String titulo;
     private String descripcion;
+    private String etiquetas;
     private String fechaCreacion;
     private String fechaVencimiento;
     private boolean completada;
 
-    public TareaSimple(String tipo, String titulo, String descripcion, String fechaCreacion,
-            boolean completada) {
+    public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas ,
+    String fechaCreacion, boolean completada) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.etiquetas = etiquetas;
         this.fechaCreacion = fechaCreacion;
         this.completada = completada;
     }
@@ -29,25 +31,33 @@ public class TareaSimple implements Tarea {
         String titulo = scanner.nextLine();
         System.out.print("Descripción: ");
         String descripcion = scanner.nextLine();
+        System.out.print("Etiquetas: ");
+        Etiqueta agregaEtiqueta = new Etiqueta();
+        Tarea tareaTemp;
+        tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+        etiquetas = tareaTemp.getEtiquetas();
         System.out.print("Fecha de creación (dd/MM/yyyy): ");
         String fechaCreacion = scanner.next();
+        tareaTemp.setFechaCreacion(fechaCreacion);
         System.out.print("¿Completada? (si/no): ");
         String completada = scanner.next();
+        
         boolean completadaB = false;
         if (completada.equals("si")) {
             System.out.println("Tarea completada");
             completadaB = true;
+            tareaTemp.setCompletada(completadaB);
         } else if (completada.equals("no")) {
             System.out.println("Tarea no completada");
             completadaB = false;
+            tareaTemp.setCompletada(completadaB);
         }
 
         System.out.println("\nTarea creada:");
-        String tarea = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion +
-                "\nFecha de creación: " + fechaCreacion + "\nCompletada: " + completadaB + "\n";
+        String tarea = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion 
+        + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacion + "\nCompletada: " + completadaB + "\n";
         System.out.println(tarea);
-        TareaSimple tareaS = new TareaSimple("simple", titulo, descripcion, fechaCreacion, completadaB);
-        TareasAlmacen.guardaTarea(tareaS);
+        TareasAlmacen.guardaTarea(tareaTemp);
 
         try {
             FileWriter salida = new FileWriter(nombreArchivo, true);
@@ -83,6 +93,26 @@ public class TareaSimple implements Tarea {
     @Override
     public boolean isCompletada() {
         return completada;
+    }
+
+    @Override
+    public String getEtiquetas() {
+        return etiquetas;
+    }
+
+    @Override
+    public String getTipo() {
+        return tipo;
+    }
+
+    @Override
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    @Override
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
     }
 
 }

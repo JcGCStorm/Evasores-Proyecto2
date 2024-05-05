@@ -90,4 +90,28 @@ public class TareaConFecha implements Tarea {
         return completada;
     }
 
+    @Override
+    public String getEtiquetas() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getEtiquetas'");
+    }
+
+    @Override
+    public String getTipo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTipo'");
+    }
+
+    @Override
+    public void setFechaCreacion(String fechaCreacion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setFechaCreacion'");
+    }
+
+    @Override
+    public void setCompletada(boolean completada) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setCompletada'");
+    }
+
 }
