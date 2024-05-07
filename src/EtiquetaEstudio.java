@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * Clase que representa el ingrediente Cebolla para "decorar" (agregarle a) una
  * baguette
@@ -45,13 +48,12 @@ public class EtiquetaEstudio extends TareasDecorator {
     }
 
     @Override
-    public String getFechaCreacion() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFechaCreacion'");
+    public LocalDate getFechaCreacion() {
+        return LocalDate.now();
     }
 
     @Override
-    public String getFechaVencimiento() {
+    public LocalDateTime getFechaVencimiento() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getFechaVencimiento'");
     }
@@ -69,12 +71,17 @@ public class EtiquetaEstudio extends TareasDecorator {
     }
 
     @Override
-    public void setFechaCreacion(String fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.tarea.setFechaCreacion(fechaCreacion);
     }
 
     @Override
     public void setCompletada(boolean completada) {
         this.tarea.setCompletada(completada);
+    }
+
+    @Override
+    public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
+        this.tarea.setFechaVencimiento(fechaVencimiento);
     }
 }

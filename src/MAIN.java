@@ -5,7 +5,7 @@ public class MAIN {
 
         System.out.println("Bienvenido a tu lista de tareas");
         TareasAlmacen.getTareas();
-        // TareasAlmacen.muestraTareas(); 
+        // TareasAlmacen.muestraTareas();
         // este metodo posiblemente lo borre, ya
         // veremos xd
 
@@ -17,7 +17,7 @@ public class MAIN {
             String opciones = scanner.nextLine().trim();
             switch (opciones) {
                 case "1":
-                    TareasAlmacen.verTareas();
+                    VistaTareas.verTareas();
                     break;
                 case "2":
                     TareasControlador.crearTarea();

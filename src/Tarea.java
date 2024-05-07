@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public interface Tarea {
     void construyeTarea();
 
@@ -7,16 +10,18 @@ public interface Tarea {
 
     String getDescripcion();
 
-    String getFechaCreacion();
+    LocalDate getFechaCreacion();
 
-    void setFechaCreacion(String fechaCreacion);
+    void setFechaCreacion(LocalDate fechaCreacion);
 
-    String getFechaVencimiento();
+    LocalDateTime getFechaVencimiento();
+
+    void setFechaVencimiento(LocalDateTime fechaVencimiento);
 
     boolean isCompletada();
 
     void setCompletada(boolean completada);
 
     // String getPrioridad();
-     String getEtiquetas();
+    String getEtiquetas();
 }

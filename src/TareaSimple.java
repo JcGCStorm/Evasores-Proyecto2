@@ -2,6 +2,9 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TareaSimple implements Tarea {
     String nombreArchivo = "tareas.txt";
@@ -9,26 +12,28 @@ public class TareaSimple implements Tarea {
     private String titulo;
     private String descripcion;
     private String etiquetas;
-    private String fechaCreacion;
-    private String fechaVencimiento;
+    private LocalDate fechaCreacion;
+    private LocalDateTime fechaVencimiento;
     private boolean completada;
 
     /**
-     * Constructor de la clase TareaSimple, con los atributos que una tarea simple debería tener,
+     * Constructor de la clase TareaSimple, con los atributos que una tarea simple
+     * debería tener,
      * es decir, todos menos una fecha de vencimiento.
      */
-    public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas ,
-    String fechaCreacion, boolean completada) {
+    public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
+            LocalDate fechaCreacion, boolean completada) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaCreacion = LocalDate.now();
         this.completada = completada;
     }
 
     /**
-     * Método que se encarga de construir una tarea simple, pidiendo al usuario los detalles
+     * Método que se encarga de construir una tarea simple, pidiendo al usuario los
+     * detalles
      * de la misma, ademas que la guarda en un archivo de texto.
      */
     @Override
@@ -44,12 +49,13 @@ public class TareaSimple implements Tarea {
         Tarea tareaTemp;
         tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
         etiquetas = tareaTemp.getEtiquetas();
-        System.out.print("Fecha de creación (dd/MM/yyyy): ");
-        String fechaCreacion = scanner.next();
+        LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
         tareaTemp.setFechaCreacion(fechaCreacion);
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaString = fechaCreacion.format(formateador);
         System.out.print("¿Completada? (si/no): ");
         String completada = scanner.next();
-        
+
         boolean completadaB = false;
         if (completada.equals("si")) {
             System.out.println("Tarea completada");
@@ -62,10 +68,10 @@ public class TareaSimple implements Tarea {
         }
 
         System.out.println("\nTarea creada:");
-        String tarea = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion 
-        + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacion + "\nCompletada: " + completadaB + "\n";
+        String tarea = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion
+                + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: " + completadaB
+                + "\n";
         System.out.println(tarea);
-        TareasAlmacen.guardaTarea(tareaTemp);
 
         try {
             FileWriter salida = new FileWriter(nombreArchivo, true);
@@ -92,12 +98,12 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public String getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
     @Override
-    public String getFechaVencimiento() {
+    public LocalDateTime getFechaVencimiento() {
         return fechaVencimiento;
     }
 
@@ -117,13 +123,19 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public void setFechaCreacion(String fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
     @Override
     public void setCompletada(boolean completada) {
         this.completada = completada;
+    }
+
+    @Override
+    public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setFechaVencimiento'");
     }
 
 }

@@ -1,49 +1,23 @@
 Tipo: simple
-Título: Aaaaa
-Descripción: aaaaaa
-Etiquetas: null
-Fecha de creación: a
+Título: Lavar el Terreneitor
+Descripción: Tengo que lavar el terreneitor
+Etiquetas:  Estudio,
+Fecha de creación: 07-05-2024
 Completada: true
 
-Tipo: simple
-Título: ada
-Descripción: adad
-Etiquetas: null
-Fecha de creación: 3
+Tipo: con fecha
+Título: Bañar a quancha
+Descripción: Debo bañar a quancha
+Etiquetas: 
+Fecha de creación: 07-05-2035
+Fecha de Vencimiento: 06-04-2025 Hora: 12:03
+Completada: true
+
+Tipo: con fecha
+Título: Comer mi desayuno
+Descripción: Debo de comer mi desayuno
+Etiquetas:  Estudio,
+Fecha de creación: 07-05-2024
+Fecha de Vencimiento: 01-03-2034 Hora: 12:04
 Completada: false
-
-Tipo: simple
-Título: Pra de comer
-Descripción: adadad
-Etiquetas: null
-Fecha de creación: 3
-Completada: true
-
-Tipo: simple
-Título: Hola hijos de Dios
-Descripción: Quancha
-Etiquetas: null
-Fecha de creación: 1
-Completada: true
-
-Tipo: simple
-Título: Alimentar a mis perros
-Descripción: Debo de pretender que todo está bien
-Etiquetas: , Estudio, Estudio, Estudio, Estudio, Estudio, Estudio, Estudio, Estudio, Estudio
-Fecha de creación: s
-Completada: true
-
-Tipo: simple
-Título: C quancha
-Descripción: adada
-Etiquetas:  Estudio, Estudio, Estudio,
-Fecha de creación: ad
-Completada: true
-
-Tipo: simple
-Título: AAAAAAAAAAAAAA
-Descripción: AAAAAAAAAAAAAA
-Etiquetas:  Estudio, Estudio,
-Fecha de creación: 1
-Completada: true
 
