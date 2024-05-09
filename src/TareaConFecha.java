@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TareaConFecha implements Tarea {
+
+    private TareaEstado estado; // Estado actual de la tarea
     String nombreArchivo = "tareas.txt";
     private String tipo = "con fecha";
     private String titulo;
@@ -30,7 +32,38 @@ public class TareaConFecha implements Tarea {
         this.fechaCreacion = LocalDate.now();
         this.fechaVencimiento = LocalDateTime.now();
         this.completada = completada;
+        this.estado = new TareaPendiente();
+        
     }
+
+
+    @Override
+    public void iniciar() {
+        estado.iniciar(this);
+    }
+
+    @Override
+    public void completar() {
+        estado.completar(this);
+    }
+
+    @Override
+    public void volverPendiente() {
+        estado.volverPendiente(this);
+    }
+
+    @Override
+    public void setEstado(TareaEstado estado) {
+        this.estado = estado;
+    }
+
+    @Override
+    public TareaEstado getEstado() {
+        return estado;
+    }
+
+
+    
 
     /**
      * Método que se encarga de construir una tarea con fecha, pidiendo al usuario
@@ -140,13 +173,28 @@ public class TareaConFecha implements Tarea {
     }
 
     @Override
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    @Override
     public String getDescripcion() {
         return descripcion;
     }
 
     @Override
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @Override
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
+    }
+
+    @Override
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     @Override
@@ -160,6 +208,11 @@ public class TareaConFecha implements Tarea {
     }
 
     @Override
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
+    }
+
+    @Override
     public String getEtiquetas() {
         return etiquetas;
     }
@@ -170,18 +223,14 @@ public class TareaConFecha implements Tarea {
     }
 
     @Override
-    public void setFechaCreacion(LocalDate fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
-    }
-
-    @Override
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 
+    @Override
+    public void setEtiquetas(String etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+ 
 }

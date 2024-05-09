@@ -32,7 +32,7 @@ public class EtiquetaEstudio extends TareasDecorator {
      * @return El precio de la baguette con cebolla
      */
     public String getEtiquetas() {
-        return tarea.getEtiquetas() + " Estudio,";
+        return tarea.getEtiquetas() + "Estudio, ";
     }
 
     @Override
@@ -43,8 +43,7 @@ public class EtiquetaEstudio extends TareasDecorator {
 
     @Override
     public String getTitulo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTitulo'");
+        return tarea.getTitulo();
     }
 
     @Override
@@ -60,14 +59,12 @@ public class EtiquetaEstudio extends TareasDecorator {
 
     @Override
     public boolean isCompletada() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isCompletada'");
+        return tarea.isCompletada();
     }
 
     @Override
     public String getTipo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTipo'");
+        return tarea.getTipo();
     }
 
     @Override
@@ -83,5 +80,52 @@ public class EtiquetaEstudio extends TareasDecorator {
     @Override
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
         this.tarea.setFechaVencimiento(fechaVencimiento);
+    }
+
+    @Override
+    public void setTitulo(String titulo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setTitulo'");
+    }
+
+    @Override
+    public void setDescripcion(String descripcion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDescripcion'");
+    }
+
+    @Override
+    public void setEtiquetas(String etiquetas) {
+       tarea.setEtiquetas(etiquetas);
+    }
+
+    @Override
+    public void setEstado(TareaEstado estado) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setEstado'");
+    }
+
+    @Override
+    public TareaEstado getEstado() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getEstado'");
+    }
+
+    @Override
+    public void iniciar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'iniciar'");
+    }
+
+    @Override
+    public void completar() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'completar'");
+    }
+
+    @Override
+    public void volverPendiente() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'volverPendiente'");
     }
 }

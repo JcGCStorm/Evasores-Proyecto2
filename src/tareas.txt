@@ -1,22 +1,22 @@
 Tipo: simple
-Título: Lavar el Terreneitor
+Titulo: Jesus Cristo
 Descripción: Tengo que lavar el terreneitor
-Etiquetas:  Estudio,
+Etiquetas: Quancha
 Fecha de creación: 07-05-2024
 Completada: true
 
 Tipo: con fecha
-Título: Bañar a quancha
+Titulo: Bañar a Quancha
 Descripción: Debo bañar a quancha
-Etiquetas: 
+Etiquetas: Estudio
 Fecha de creación: 07-05-2035
 Fecha de Vencimiento: 06-04-2025 Hora: 12:03
 Completada: true
 
 Tipo: con fecha
-Título: Comer mi desayuno
+Titulo: Comer mi desayuno
 Descripción: Debo de comer mi desayuno
-Etiquetas:  Estudio,
+Etiquetas: Estudio, Estudio, Estudio, 
 Fecha de creación: 07-05-2024
 Fecha de Vencimiento: 01-03-2034 Hora: 12:04
 Completada: false

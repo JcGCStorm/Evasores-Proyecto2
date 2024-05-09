@@ -91,4 +91,8 @@ public class Etiqueta {
                 return tarea;
         }
     }
+
+    public String etiquetasString(Tarea tarea) {
+        return tarea.getEtiquetas();
+    }
 }

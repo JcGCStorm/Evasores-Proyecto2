@@ -33,11 +33,16 @@ public class VistaTareas {
     public static void muestraTareas() {
         List<Tarea> tareas = TareasAlmacen.obtenArreglo();
         for (Tarea tarea : tareas) {
-            System.out.println(tarea.getTitulo());
-            System.out.println(tarea.getDescripcion());
-            System.out.println(tarea.getFechaCreacion());
-            System.out.println(tarea.getFechaVencimiento());
-            System.out.println(tarea.isCompletada());
+            System.out.println(tareas.indexOf(tarea));
+            System.out.println("Titulo: " + tarea.getTitulo());
+            System.out.println("Descripcion: " + tarea.getDescripcion());
+            System.out.println("Etiquetas: " + tarea.getEtiquetas());
+            System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
+            if (tarea instanceof TareaConFecha) {
+                System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
+            }
+            System.out.println("Completada: " + tarea.isCompletada());
+            System.out.println("\n");
         }
     }
 

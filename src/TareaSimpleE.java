@@ -1,6 +1,4 @@
-
 /// CLASE DE PRUEBA DE TAREA SIMPLE CON ESTADOSSSSS
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -8,9 +6,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class TareaSimple implements Tarea {
+public class TareaSimpleE implements TareaE {
 
-    private TareaEstado estado; // Estado actual de la tarea
+
+   private TareaEstado estado; // Estado actual de la tarea
     private String tipo = "simple";
     private String titulo;
     private String descripcion;
@@ -19,8 +18,8 @@ public class TareaSimple implements Tarea {
     private LocalDateTime fechaVencimiento;
     private boolean completada;
 
-    public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, boolean completada) {
+    public TareaSimpleE(String tipo, String titulo, String descripcion, String etiquetas,
+                       LocalDate fechaCreacion, boolean completada) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -30,29 +29,30 @@ public class TareaSimple implements Tarea {
         this.estado = new TareaPendiente(); // inicialmente pendiente
     }
 
+
     @Override
     public void iniciar() {
-        estado.iniciar(this);
+       // estado.iniciar(this); 
     }
 
     @Override
     public void completar() {
-        estado.completar(this);
+      //  estado.completar(this); 
     }
 
     @Override
     public void volverPendiente() {
-        estado.volverPendiente(this);
+      //  estado.volverPendiente(this); 
     }
 
     @Override
     public void setEstado(TareaEstado estado) {
-        this.estado = estado;
+        this.estado = estado; 
     }
 
     @Override
     public TareaEstado getEstado() {
-        return estado;
+        return estado; 
     }
 
     @Override
@@ -63,15 +63,7 @@ public class TareaSimple implements Tarea {
         this.titulo = scanner.nextLine();
         System.out.print("Descripción: ");
         this.descripcion = scanner.nextLine();
-        System.out.print("Etiquetas: ");
-        Etiqueta agregaEtiqueta = new Etiqueta();
-        Tarea tareaTemp;
-        tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
-        etiquetas = tareaTemp.getEtiquetas();
-        LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
-        tareaTemp.setFechaCreacion(fechaCreacion);
-        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String fechaString = fechaCreacion.format(formateador);
+
         System.out.print("¿Completada? (si/no): ");
         String completadaInput = scanner.nextLine().trim().toLowerCase();
         this.completada = completadaInput.equals("si");
@@ -85,9 +77,9 @@ public class TareaSimple implements Tarea {
             FileWriter salida = new FileWriter("tareas.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
 
-            String tareaString = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion
-            + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: " 
-            + "\n";
+            String tareaString = "Tipo: " + tipo + "\nTítulo: " + titulo + "\nDescripción: " + descripcion +
+                                 "\nFecha de creación: " + fechaCreacion +
+                                 "\nCompletada: " + completada + "\n";
 
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
@@ -96,7 +88,6 @@ public class TareaSimple implements Tarea {
             System.out.println("Error al guardar la tarea: " + e.getMessage());
         }
     }
-
     /*
      * Getters de los atributos de la clase TareaSimple.
      */
@@ -130,11 +121,6 @@ public class TareaSimple implements Tarea {
         return etiquetas;
     }
 
-    @Override // el string no va oooo
-    public void setEtiquetas(String etiquetas) {
-        this.etiquetas = null;
-    }
-
     @Override
     public String getTipo() {
         return tipo;
@@ -154,14 +140,6 @@ public class TareaSimple implements Tarea {
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
-
-    @Override
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    @Override
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 }
+
+

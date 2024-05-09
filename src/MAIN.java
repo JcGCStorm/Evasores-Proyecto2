@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MAIN {
     public static void main(String[] args) {
 
         System.out.println("Bienvenido a tu lista de tareas");
-        TareasAlmacen.getTareas();
+        
         // TareasAlmacen.muestraTareas();
         // este metodo posiblemente lo borre, ya
         // veremos xd
@@ -13,7 +14,7 @@ public class MAIN {
         boolean opcionesBool = true;
         while (opcionesBool == true) {
             System.out.println("\n¿Qué desea hacer? \n 1. Ver Tareas. \n 2. Crear tareas." +
-                    "\n 0. Salir.");
+                   "\n 3. Modificar tareas"  + "\n 0. Salir.");
             String opciones = scanner.nextLine().trim();
             switch (opciones) {
                 case "1":
@@ -21,6 +22,10 @@ public class MAIN {
                     break;
                 case "2":
                     TareasControlador.crearTarea();
+                    break;
+                case "3":
+                    TareasControlador modificaTarea = new TareasControlador();
+                    modificaTarea.modifica();
                     break;
                 case "0":
                     opcionesBool = false;
