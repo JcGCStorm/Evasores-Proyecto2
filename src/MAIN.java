@@ -1,11 +1,17 @@
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MAIN {
     public static void main(String[] args) {
 
         System.out.println("Bienvenido a tu lista de tareas");
+        TareasAlmacen.getTareas();
+       // List<Tarea> lol = TareasAlmacen.obtenArreglo();
+       // lol.get(0).; // q es esto     Experimentos xd
+        System.out.println("rosa victoria villa padilla la mejor maestra de fciencias sakenos 10");
+
         
+        System.out.println();
         // TareasAlmacen.muestraTareas();
         // este metodo posiblemente lo borre, ya
         // veremos xd
