@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class TareasControlador {
     Scanner scanner = new Scanner(System.in);
+
     /**
      * Este metodo es el que se encarga de crear las tareas, primero pregunta si
      * se desea agregar una tarea, si la respuesta es no, se sale del ciclo, si
@@ -19,7 +20,44 @@ public class TareasControlador {
      * ninguna de las anteriores imprime un mensaje diciendo que la opción no es
      * válida.
      */
+
     public static void crearTarea() {
+    Scanner scanner = new Scanner(System.in);
+    FabricaTareas tareaSimple = new FabricaTareaSimple();
+    FabricaTareas tareaConFecha = new FabricaTareasConFecha();
+    boolean agregarTareas = true;
+
+    while (agregarTareas) {
+        System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
+        String decision = scanner.nextLine().trim();
+
+        if (decision.equalsIgnoreCase("no")) {
+            agregarTareas = false;
+        } else if (decision.equalsIgnoreCase("si")) {
+            System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
+            String tipoTarea = scanner.nextLine().trim();
+
+            Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
+
+            if (tipoTarea.equalsIgnoreCase("con fecha")) {
+                nuevaTarea = tareaConFecha.crear(); // Crear tarea con fecha
+            } else if (tipoTarea.equalsIgnoreCase("simple")) {
+                nuevaTarea = tareaSimple.crear(); // Crear tarea simple
+            } else {
+                System.out.println("Opción no válida");
+            }
+
+            if (nuevaTarea != null) {
+                TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
+            }
+
+        } else {
+            System.out.println("Opción no válida");
+        }
+    }
+}
+
+    public static void crearTarea2() {
         Scanner scanner = new Scanner(System.in);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
         FabricaTareas tareaConFecha = new FabricaTareasConFecha();
@@ -99,7 +137,7 @@ public class TareasControlador {
             paramTarea = "Descripcion: " + tarea.getDescripcion();
             System.out.println(mensaje);
             System.out.println(paramTarea);
-             parametroNuevo = scanner.nextLine().trim();
+            parametroNuevo = scanner.nextLine().trim();
             tarea.setDescripcion(parametroNuevo);
         } else if (parametro.equals("3")) {
             parametroViejo = "Etiquetas: ";
@@ -108,9 +146,9 @@ public class TareasControlador {
             paramTarea = "Etiquetas: " + etiquetasTemp;
             System.out.println(paramTarea);
             System.out.println(mensaje);
-             Etiqueta etiqueta = new Etiqueta();
-             Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
-             parametroNuevo = etiquetasTemp + tareaTemp.getEtiquetas();
+            Etiqueta etiqueta = new Etiqueta();
+            Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
+            parametroNuevo = etiquetasTemp + tareaTemp.getEtiquetas();
             tarea.setEtiquetas(parametroNuevo);
         } else if (parametro.equals("4")) {
             parametroViejo = "Estado: ";
@@ -120,9 +158,9 @@ public class TareasControlador {
             System.out.println(paramTarea);
             parametroNuevo = scanner.nextLine().trim();
             tarea.setEstado(null);
-            //MODIFICA ESTADO
-           modificarEstado(tarea);
-        } else if (tarea.getTipo().equals("con fecha") && parametro.equals("5")) {  
+            // MODIFICA ESTADO
+            modificarEstado(tarea);
+        } else if (tarea.getTipo().equals("con fecha") && parametro.equals("5")) {
             parametroViejo = "Fecha de Vencimiento: ";
             mensaje = "Ingrese el nuevo valor para la " + parametroViejo;
             paramTarea = "Fecha de Vencimiento: " + tarea.isCompletada();
@@ -161,18 +199,23 @@ public class TareasControlador {
         } catch (IOException e) {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
+       TareasAlmacen.getTareas();
     }
 
     public void modificarEstado(Tarea tarea) {
+        if (tarea.getEstado() == null) {
+            tarea.setEstado(new TareaPendiente()); 
+        }
+        
         System.out.println("Seleccione el nuevo estado:");
         System.out.println("1. En Progreso");
         System.out.println("2. Completada");
         System.out.println("3. Pendiente");
-         Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         int nuevaOpcion = sc.nextInt();
         switch (nuevaOpcion) {
             case 1:
-                tarea.iniciar(); 
+                tarea.iniciar();
                 break;
             case 2:
                 tarea.completar();

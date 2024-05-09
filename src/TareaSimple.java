@@ -1,6 +1,7 @@
 
 /// CLASE DE PRUEBA DE TAREA SIMPLE CON ESTADOSSSSS
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -20,7 +21,7 @@ public class TareaSimple implements Tarea {
     private boolean completada;
 
     public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, boolean completada) {
+            LocalDate fechaCreacion, boolean completada, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -59,12 +60,15 @@ public class TareaSimple implements Tarea {
     public void construyeTarea() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese detalles de la tarea simple:");
-        System.out.print("Título: ");
+        System.out.print("Titulo: ");
         this.titulo = scanner.nextLine();
-        System.out.print("Descripción: ");
+        System.out.print("Descripcion: ");
         this.descripcion = scanner.nextLine();
         System.out.print("Etiquetas: ");
         Etiqueta agregaEtiqueta = new Etiqueta();
+
+        this.estado = new TareaPendiente();
+
         Tarea tareaTemp;
         tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
         etiquetas = tareaTemp.getEtiquetas();
@@ -79,22 +83,33 @@ public class TareaSimple implements Tarea {
         if (this.completada) {
             this.estado = new TareaCompletada();
         }
+        boolean completadaB = false;
+        if (completadaInput.equals("si")) {
+            System.out.println("Tarea completada");
+            completadaB = true;
+            tareaTemp.setCompletada(completadaB);
+        } else if (completadaInput.equals("no")) {
+            System.out.println("Tarea no completada");
+            completadaB = false;
+            tareaTemp.setCompletada(completadaB);
+        }
 
         // Guardar la tarea en un archivo de texto
         try {
             FileWriter salida = new FileWriter("tareas.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
 
-            String tareaString = "Tipo: " + "simple" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion
-            + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: " 
-            + "\n";
-
+            String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
+                + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: " 
+                + completadaB + "\nEstado: " + estado.getClass().getSimpleName() + "\n";
+                //(this.completada ? "Sí" : "No")
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
         } catch (IOException e) {
             System.out.println("Error al guardar la tarea: " + e.getMessage());
         }
+        List<Tarea> tareas = TareasAlmacen.getTareas();
     }
 
     /*

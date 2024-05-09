@@ -1,23 +1,90 @@
 Tipo: simple
 Titulo: Jesus Cristo
-Descripción: Tengo que lavar el terreneitor
+Descripcion: Tengo que lavar el terreneitor
 Etiquetas: Quancha
-Fecha de creación: 07-05-2024
+Fecha de creacion: 07-05-2024
 Completada: true
+Estado: TareaPendiente
 
 Tipo: con fecha
-Titulo: Bañar a Quancha
-Descripción: Debo bañar a quancha
+Titulo: bañar a los de ciencias
+Descripcion: Debo bañar a quancha
 Etiquetas: Estudio
-Fecha de creación: 07-05-2035
+Fecha de creacion: 07-05-2035
 Fecha de Vencimiento: 06-04-2025 Hora: 12:03
 Completada: true
+Estado: TareaPendiente
 
 Tipo: con fecha
 Titulo: Comer mi desayuno
-Descripción: Debo de comer mi desayuno
+Descripcion: Debo de comer mi desayuno
 Etiquetas: Estudio, Estudio, Estudio, 
-Fecha de creación: 07-05-2024
+Fecha de creacion: 07-05-2024
 Fecha de Vencimiento: 01-03-2034 Hora: 12:04
 Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: comprar a famsa
+Descripcion: Convertir a Famsa al cristianismo
+Etiquetas: 
+Fecha de creacion: 08-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: rip
+Descripcion: si
+Etiquetas: Estudio, 
+Fecha de creacion: 08-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: bombardear guatemala
+Descripcion: asi como escuchaste
+Etiquetas: Estudio, 
+Fecha de creacion: 08-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: comer pizza
+Descripcion: yumi
+Etiquetas: 
+Fecha de creacion: 08-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: dejame ver la ultima tarea
+Descripcion: porfavor
+Etiquetas: 
+Fecha de creacion: 08-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: por favor q funcione
+Descripcion: ei
+Etiquetas: 
+Fecha de creacion: 09-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: jose
+Descripcion: jose
+Etiquetas: Estudio, 
+Fecha de creacion: 09-05-2024
+Completada: false
+Estado: TareaPendiente
+
+Tipo: simple
+Titulo: proyecto 2
+Descripcion: Vamos a sacar 10
+Etiquetas: Estudio, 
+Fecha de creación: 09-05-2024
+Completada: false
+Estado: TareaPendiente
 

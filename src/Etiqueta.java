@@ -19,7 +19,7 @@ public class Etiqueta {
         Tarea tarea;
         switch (tipo) {
             case "simple":
-                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), false);
+                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), false, new TareaPendiente());
                 break;
             case "con fecha":
 

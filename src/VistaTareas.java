@@ -13,16 +13,15 @@ public class VistaTareas {
     public static void verTareas() {
         String nombreArchivo = "tareas.txt";
 
-        try {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
-
-            BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
             while ((linea = br.readLine()) != null) {
                 System.out.println(linea);
             }
-            br.close();
+        } catch (java.io.FileNotFoundException e) {
+            System.err.println("El archivo '" + nombreArchivo + "' no existe");
         } catch (IOException e) {
-            System.err.println("Aún no tienes tareas.");
+            System.err.println("Error de E/S al leer el archivo: " + e.getMessage());
         }
     }
 
@@ -30,20 +29,35 @@ public class VistaTareas {
      * Del arrayList de tareas, simplemente lo recorre y va mostrando
      * los atributos de cada tarea.
      */
-    public static void muestraTareas() {
-        List<Tarea> tareas = TareasAlmacen.obtenArreglo();
-        for (Tarea tarea : tareas) {
-            System.out.println(tareas.indexOf(tarea));
-            System.out.println("Titulo: " + tarea.getTitulo());
-            System.out.println("Descripcion: " + tarea.getDescripcion());
-            System.out.println("Etiquetas: " + tarea.getEtiquetas());
-            System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
-            if (tarea instanceof TareaConFecha) {
-                System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
-            }
-            System.out.println("Completada: " + tarea.isCompletada());
-            System.out.println("\n");
-        }
+   public static void muestraTareas() {
+    List<Tarea> tareas = TareasAlmacen.getTareas();
+
+    if (tareas == null || tareas.isEmpty()) {
+        System.out.println("No hay tareas para mostrar");
+        return;
     }
+
+    // Usar un índice explícito
+    for (int i = 0; i < tareas.size(); i++) {
+        Tarea tarea = tareas.get(i);
+
+        System.out.println("Índice: " + i); // Imprimir el índice del elemento actual
+        System.out.println("Titulo: " + tarea.getTitulo());
+        System.out.println("Descripcion: " + tarea.getDescripcion());
+        System.out.println("Etiquetas: " + tarea.getEtiquetas());
+        System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
+
+        if (tarea instanceof TareaConFecha) {
+            System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
+        }
+
+        System.out.println("Completada: " + (tarea.isCompletada() ? "Sí" : "No"));
+        
+        // Imprimir el nombre del estado actual
+        System.out.println("Estado: " + tarea.getEstado().getClass().getSimpleName()); 
+
+        System.out.println("\n");
+    }
+}
 
 }

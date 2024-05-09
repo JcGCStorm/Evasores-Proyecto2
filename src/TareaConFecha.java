@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -74,9 +75,9 @@ public class TareaConFecha implements Tarea {
     public void construyeTarea() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
-        System.out.print("Título: ");
+        System.out.print("Titulo: ");
         String titulo = scanner.nextLine();
-        System.out.print("Descripción: ");
+        System.out.print("Descripcion: ");
         String descripcion = scanner.nextLine();
         System.out.print("Etiquetas: ");
         Etiqueta agregaEtiqueta = new Etiqueta();
@@ -150,7 +151,7 @@ public class TareaConFecha implements Tarea {
         }
 
         System.out.println("\nTarea creada:");
-        String tarea = "Tipo: " + "con fecha" + "\nTítulo: " + titulo + "\nDescripción: " + descripcion +
+        String tarea = "Tipo: " + "con fecha" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion +
                 "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacionString +
                 "\nFecha de Vencimiento: " + fechaString + "\nCompletada: " + completadaB + "\n";
         System.out.println(tarea);
@@ -164,6 +165,7 @@ public class TareaConFecha implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo");
         }
+        List<Tarea> tareas = TareasAlmacen.getTareas();
     }
 
     // Getters de los atributos de las tareas con fecha.

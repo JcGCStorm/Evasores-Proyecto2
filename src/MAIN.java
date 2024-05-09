@@ -6,7 +6,7 @@ public class MAIN {
 
         System.out.println("Bienvenido a tu lista de tareas");
         TareasAlmacen.getTareas();
-       // List<Tarea> lol = TareasAlmacen.obtenArreglo();
+        List<Tarea> lol = TareasAlmacen.obtenArreglo();
        // lol.get(0).; // q es esto     Experimentos xd
         System.out.println("rosa victoria villa padilla la mejor maestra de fciencias sakenos 10");
 

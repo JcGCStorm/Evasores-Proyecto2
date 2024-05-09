@@ -28,6 +28,7 @@ public class TareasAlmacen {
         return tareas;
     }
 
+
     /**
      * Este metodo es el más perrillo y es el que se encarga de leer el archivo
      * Del txt va recorriendo linea por linea y separa los valores por el ": "
@@ -35,9 +36,10 @@ public class TareasAlmacen {
      * vamos a tener que modificar ligeramente este metodo, solamente en la
      * parte de la creación de la tarea, pero solo eso.
      */
-    public static void getTareas() {
+    public static List<Tarea> getTareas() {
         // el nombre del archivo que vamos a leer
         String nombreArchivo = "tareas.txt";
+        tareas.clear();
         try {
             // Creamos la instancia de BufferedReader para leer el archivo
             BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
@@ -76,13 +78,15 @@ public class TareasAlmacen {
                     // el contador es importante pues nos dice cuantos atributos de la tarea simple
                     // ya hemos leido, si ya leimos los 4, creamos la tarea y la metemos en el
                     // arreglo
-                    if (valores.get(0).equals("simple") && contadorSimple == 5) {
+                    if (valores.get(0).equals("simple") && contadorSimple == 6) {
+                        TareaPendiente estado = new TareaPendiente();
+                        TareaEstado tareaEstado = estado.getEstado(valores.get(6));
                         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         LocalDate fechaHora = LocalDate.parse(valores.get(4), formateador);
                         // creamos la tarea simple
                         TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2),
                                 valores.get(3), fechaHora,
-                                Boolean.parseBoolean(valores.get(5)));
+                                Boolean.parseBoolean(valores.get(5)), tareaEstado);
                         // la metemos en el arreglo de tareas
                         tareas.add(tarea);
                         // reiniciamos el contador de tareas simples, pues posiblemente exista más de
@@ -100,7 +104,7 @@ public class TareasAlmacen {
                         // si es así, creamos la tarea y la metemos en el arreglo de tareas., lo mismo
                         // que en
                         // el anterior
-                    } else if (valores.get(0).equals("con fecha") && contadorFecha == 6) {
+                    } else if (valores.get(0).equals("con fecha") && contadorFecha == 7) {
                         DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         LocalDate fecha = LocalDate.parse(valores.get(4), formateadorCreacion);
                         DateTimeFormatter formateadorVencimiento = DateTimeFormatter
@@ -125,5 +129,6 @@ public class TareasAlmacen {
         // arreglo
         // con las tareas, pero no las visualiza en la consola, es decir, no las imprime
         System.out.println(tareas);
+        return tareas;
     }
 }
