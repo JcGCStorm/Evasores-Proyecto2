@@ -147,10 +147,10 @@ Completada: false
 Estado: Completada
 
 Tipo: con fecha
-Titulo: YA SIRVE ESTA  WEA
+Titulo: ASSSA
 Descripcion: FINALMENTE
 Etiquetas: Estudio, Estudio, 
 Fecha de creación: 10-05-2024
 Fecha de Vencimiento: 12-12-2025 Hora: 12:32
 Completada: true
-Estado: Tarea En Progreso
+Estado: Completada

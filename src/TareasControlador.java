@@ -182,19 +182,25 @@ public class TareasControlador {
 
             // Buscar y modificar la línea deseada
             for (int i = 0; i < lineas.size(); i++) {
-                if (tarea instanceof TareaConFecha && lineas.get(i).equals(paramTarea)
-                        && lineas.get(i - 5).equals("Descripcion: " + tarea.getDescripcion())) {
-                    System.out.println(tarea.getDescripcion());
-                    lineas.set(i, parametroViejo + parametroNuevo);
-                    break; // Terminamos de buscar una vez que encontramos la tarea
-                } else if (tarea instanceof TareaSimple && lineas.get(i).equals(paramTarea)
-                        && lineas.get(i - 4).equals("Descripcion: " + tarea.getDescripcion())) {
-                    System.out.println(tarea.getDescripcion());
-                    lineas.set(i, parametroViejo + parametroNuevo);
-                    break;
+                if (parametroViejo == "Estado: ") {
+                    if (tarea instanceof TareaConFecha && lineas.get(i).equals(paramTarea)
+                            && lineas.get(i - 5).equals("Descripcion: " + tarea.getDescripcion())) {
+                        System.out.println(tarea.getDescripcion());
+                        lineas.set(i, parametroViejo + parametroNuevo);
+                        break; // Terminamos de buscar una vez que encontramos la tarea
+                    } else if (tarea instanceof TareaSimple && lineas.get(i).equals(paramTarea)
+                            && lineas.get(i - 4).equals("Descripcion: " + tarea.getDescripcion())) {
+                        System.out.println(tarea.getDescripcion());
+                        lineas.set(i, parametroViejo + parametroNuevo);
+                        break;
+                    }
+                } else {
+                    if (lineas.get(i).equals(paramTarea)) {
+                        lineas.set(i, parametroViejo + parametroNuevo);
+                        break;
+                    }
                 }
             }
-
             // Escribir el contenido modificado de vuelta al archivo
             BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
             for (String line : lineas) {
