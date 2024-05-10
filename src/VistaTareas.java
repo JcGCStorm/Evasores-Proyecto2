@@ -29,35 +29,35 @@ public class VistaTareas {
      * Del arrayList de tareas, simplemente lo recorre y va mostrando
      * los atributos de cada tarea.
      */
-   public static void muestraTareas() {
-    List<Tarea> tareas = TareasAlmacen.getTareas();
-
-    if (tareas == null || tareas.isEmpty()) {
-        System.out.println("No hay tareas para mostrar");
-        return;
-    }
-
-    // Usar un índice explícito
-    for (int i = 0; i < tareas.size(); i++) {
-        Tarea tarea = tareas.get(i);
-
-        System.out.println("Índice: " + i); // Imprimir el índice del elemento actual
-        System.out.println("Titulo: " + tarea.getTitulo());
-        System.out.println("Descripcion: " + tarea.getDescripcion());
-        System.out.println("Etiquetas: " + tarea.getEtiquetas());
-        System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
-
-        if (tarea instanceof TareaConFecha) {
-            System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
+    public static void muestraTareas() {
+        List<Tarea> tareas = TareasAlmacen.getTareas();
+        if (tareas == null || tareas.isEmpty()) {
+            System.out.println("No hay tareas para mostrar");
+            return;
         }
 
-        System.out.println("Completada: " + (tarea.isCompletada() ? "Sí" : "No"));
-        
-        // Imprimir el nombre del estado actual
-        System.out.println("Estado: " + tarea.getEstado().getClass().getSimpleName()); 
+        // Usar un índice explícito
+        for (int i = 0; i < tareas.size(); i++) {
+            Tarea tarea = tareas.get(i);
 
-        System.out.println("\n");
+            System.out.println("Índice: " + i); // Imprimir el índice del elemento actual
+            System.out.println("Titulo: " + tarea.getTitulo());
+            System.out.println("Descripcion: " + tarea.getDescripcion());
+            System.out.println("Etiquetas: " + tarea.getEtiquetas());
+            System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
+
+            if (tarea instanceof TareaConFecha) {
+                System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
+            }
+
+            System.out.println("Completada: " + (tarea.isCompletada() ? "Sí" : "No"));
+
+            // Imprimir el nombre del estado actual
+            TareaEstado estado = tarea.getEstado();
+            System.out.println("Estado: " + tarea.estadoToString(estado));
+
+            System.out.println("\n");
+        }
     }
-}
 
 }

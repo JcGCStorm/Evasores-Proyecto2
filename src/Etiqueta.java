@@ -19,12 +19,13 @@ public class Etiqueta {
         Tarea tarea;
         switch (tipo) {
             case "simple":
-                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), false, new TareaPendiente());
+                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), false,
+                        new TareaPendiente());
                 break;
             case "con fecha":
 
                 tarea = new TareaConFecha("con fecha", titulo, descripcion, "", LocalDate.now(), LocalDateTime.now(),
-                        false);
+                        false, new TareaPendiente());
                 break;
             default:
                 System.out.println("No has seleccionado una opción válida, vuélvelo a intentar :D");

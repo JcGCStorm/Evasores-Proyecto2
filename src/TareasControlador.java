@@ -22,40 +22,40 @@ public class TareasControlador {
      */
 
     public static void crearTarea() {
-    Scanner scanner = new Scanner(System.in);
-    FabricaTareas tareaSimple = new FabricaTareaSimple();
-    FabricaTareas tareaConFecha = new FabricaTareasConFecha();
-    boolean agregarTareas = true;
+        Scanner scanner = new Scanner(System.in);
+        FabricaTareas tareaSimple = new FabricaTareaSimple();
+        FabricaTareas tareaConFecha = new FabricaTareasConFecha();
+        boolean agregarTareas = true;
 
-    while (agregarTareas) {
-        System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
-        String decision = scanner.nextLine().trim();
+        while (agregarTareas) {
+            System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
+            String decision = scanner.nextLine().trim();
 
-        if (decision.equalsIgnoreCase("no")) {
-            agregarTareas = false;
-        } else if (decision.equalsIgnoreCase("si")) {
-            System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
-            String tipoTarea = scanner.nextLine().trim();
+            if (decision.equalsIgnoreCase("no")) {
+                agregarTareas = false;
+            } else if (decision.equalsIgnoreCase("si")) {
+                System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
+                String tipoTarea = scanner.nextLine().trim();
 
-            Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
+                Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
 
-            if (tipoTarea.equalsIgnoreCase("con fecha")) {
-                nuevaTarea = tareaConFecha.crear(); // Crear tarea con fecha
-            } else if (tipoTarea.equalsIgnoreCase("simple")) {
-                nuevaTarea = tareaSimple.crear(); // Crear tarea simple
+                if (tipoTarea.equalsIgnoreCase("con fecha")) {
+                    nuevaTarea = tareaConFecha.crear(); // Crear tarea con fecha
+                } else if (tipoTarea.equalsIgnoreCase("simple")) {
+                    nuevaTarea = tareaSimple.crear(); // Crear tarea simple
+                } else {
+                    System.out.println("Opción no válida");
+                }
+
+                if (nuevaTarea != null) {
+                    TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
+                }
+
             } else {
                 System.out.println("Opción no válida");
             }
-
-            if (nuevaTarea != null) {
-                TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
-            }
-
-        } else {
-            System.out.println("Opción no válida");
         }
     }
-}
 
     public static void crearTarea2() {
         Scanner scanner = new Scanner(System.in);
@@ -153,20 +153,21 @@ public class TareasControlador {
         } else if (parametro.equals("4")) {
             parametroViejo = "Estado: ";
             mensaje = "Ingrese el nuevo valor para el " + parametroViejo;
-            paramTarea = "Estado: " + tarea.isCompletada();
-            System.out.println(mensaje);
+            TareaEstado estado = tarea.getEstado();
+            String estadoString = tarea.estadoToString(estado);
+            paramTarea = "Estado: " + estadoString;
             System.out.println(paramTarea);
-            parametroNuevo = scanner.nextLine().trim();
-            tarea.setEstado(null);
-            // MODIFICA ESTADO
-            modificarEstado(tarea);
+            parametroNuevo = modificarEstado(tarea);
+            System.out.println(parametroNuevo);
+
         } else if (tarea.getTipo().equals("con fecha") && parametro.equals("5")) {
             parametroViejo = "Fecha de Vencimiento: ";
             mensaje = "Ingrese el nuevo valor para la " + parametroViejo;
             paramTarea = "Fecha de Vencimiento: " + tarea.isCompletada();
             tarea.setCompletada(Boolean.parseBoolean(scanner.nextLine().trim()));
         } else {
-            System.out.println("Quancha");
+            System.out.println("No has modificado nada.");
+            return;
         }
 
         try {
@@ -181,9 +182,16 @@ public class TareasControlador {
 
             // Buscar y modificar la línea deseada
             for (int i = 0; i < lineas.size(); i++) {
-                if (lineas.get(i).equals(paramTarea)) {
+                if (tarea instanceof TareaConFecha && lineas.get(i).equals(paramTarea)
+                        && lineas.get(i - 5).equals("Descripcion: " + tarea.getDescripcion())) {
+                    System.out.println(tarea.getDescripcion());
                     lineas.set(i, parametroViejo + parametroNuevo);
                     break; // Terminamos de buscar una vez que encontramos la tarea
+                } else if (tarea instanceof TareaSimple && lineas.get(i).equals(paramTarea)
+                        && lineas.get(i - 4).equals("Descripcion: " + tarea.getDescripcion())) {
+                    System.out.println(tarea.getDescripcion());
+                    lineas.set(i, parametroViejo + parametroNuevo);
+                    break;
                 }
             }
 
@@ -199,14 +207,16 @@ public class TareasControlador {
         } catch (IOException e) {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
-       TareasAlmacen.getTareas();
+        TareasAlmacen.getTareas();
     }
 
-    public void modificarEstado(Tarea tarea) {
+    public String modificarEstado(Tarea tarea) {
         if (tarea.getEstado() == null) {
-            tarea.setEstado(new TareaPendiente()); 
+            tarea.setEstado(new TareaPendiente());
         }
-        
+
+        TareaEstado estado = tarea.getEstado();
+        String estadoString = tarea.estadoToString(estado);
         System.out.println("Seleccione el nuevo estado:");
         System.out.println("1. En Progreso");
         System.out.println("2. Completada");
@@ -216,16 +226,28 @@ public class TareasControlador {
         switch (nuevaOpcion) {
             case 1:
                 tarea.iniciar();
+                estadoString = "Tarea En Progreso";
+                tarea.setEstado(new TareaEnProgreso());
                 break;
             case 2:
                 tarea.completar();
+                if (tarea.getEstado() instanceof TareaCompletada) {
+                    estadoString = "Completada";
+                    tarea.setEstado(new TareaCompletada());
+                } else {
+                    estadoString = "Tarea En Progreso";
+                    tarea.setEstado(new TareaEnProgreso());
+                }
                 break;
             case 3:
                 tarea.volverPendiente();
+                estadoString = "Tarea Pendiente";
+                tarea.setEstado(new TareaPendiente());
                 break;
             default:
                 System.out.println("Opción no válida.");
                 break;
         }
+        return estadoString;
     }
 }

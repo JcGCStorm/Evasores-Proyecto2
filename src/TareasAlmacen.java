@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TareasAlmacen {
     /*
@@ -27,7 +27,6 @@ public class TareasAlmacen {
     public static List<Tarea> obtenArreglo() {
         return tareas;
     }
-
 
     /**
      * Este metodo es el más perrillo y es el que se encarga de leer el archivo
@@ -79,16 +78,16 @@ public class TareasAlmacen {
                     // ya hemos leido, si ya leimos los 4, creamos la tarea y la metemos en el
                     // arreglo
                     if (valores.get(0).equals("simple") && contadorSimple == 6) {
-                        TareaPendiente estado = new TareaPendiente();
-                        TareaEstado tareaEstado = estado.getEstado(valores.get(6));
+                        TareaEstado estado = getTareaEstado(valores.get(6));
                         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         LocalDate fechaHora = LocalDate.parse(valores.get(4), formateador);
                         // creamos la tarea simple
                         TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2),
                                 valores.get(3), fechaHora,
-                                Boolean.parseBoolean(valores.get(5)), tareaEstado);
+                                Boolean.parseBoolean(valores.get(5)), estado);
                         // la metemos en el arreglo de tareas
                         tareas.add(tarea);
+                        tarea.setEstado(estado);
                         // reiniciamos el contador de tareas simples, pues posiblemente exista más de
                         // una tarea simple en el archivo
                         contadorSimple = 0;
@@ -105,14 +104,15 @@ public class TareasAlmacen {
                         // que en
                         // el anterior
                     } else if (valores.get(0).equals("con fecha") && contadorFecha == 7) {
+                        TareaEstado estado = getTareaEstado(valores.get(7));
                         DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         LocalDate fecha = LocalDate.parse(valores.get(4), formateadorCreacion);
                         DateTimeFormatter formateadorVencimiento = DateTimeFormatter
                                 .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
                         LocalDateTime fechaHora = LocalDateTime.parse(valores.get(5), formateadorVencimiento);
                         TareaConFecha tarea = new TareaConFecha("con fecha", valores.get(1), valores.get(2),
-                                valores.get(3), fecha, fechaHora,
-                                Boolean.parseBoolean(valores.get(6)));
+                                valores.get(3), fecha, fechaHora, Boolean.parseBoolean(valores.get(6)), estado);
+                        tarea.setEstado(estado);
                         tareas.add(tarea);
                         contadorFecha = 0;
                         valores.clear();
@@ -130,5 +130,17 @@ public class TareasAlmacen {
         // con las tareas, pero no las visualiza en la consola, es decir, no las imprime
         System.out.println(tareas);
         return tareas;
+    }
+
+    public static TareaEstado getTareaEstado(String estado) {
+        TareaEstado tareaEstado = null;
+        if (estado.equals("Tarea Pendiente")) {
+            tareaEstado = new TareaPendiente();
+        } else if (estado.equals("Completada")) {
+            tareaEstado = new TareaCompletada();
+        } else if (estado.equals("Tarea En Progreso")) {
+            tareaEstado = new TareaEnProgreso();
+        }
+        return tareaEstado;
     }
 }

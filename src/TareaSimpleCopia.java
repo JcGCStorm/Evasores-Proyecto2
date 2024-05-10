@@ -1,10 +1,10 @@
-import java.util.Scanner;
-import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class TareaSimpleCopia implements Tarea {
     String nombreArchivo = "tareas.txt";
@@ -15,7 +15,6 @@ public class TareaSimpleCopia implements Tarea {
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
     private boolean completada;
-    
 
     /**
      * Constructor de la clase TareaSimple, con los atributos que una tarea simple
@@ -30,7 +29,7 @@ public class TareaSimpleCopia implements Tarea {
         this.etiquetas = etiquetas;
         this.fechaCreacion = LocalDate.now();
         this.completada = completada;
-    
+
     }
 
     /**
@@ -84,7 +83,7 @@ public class TareaSimpleCopia implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo");
         }
-        
+
     }
 
     /*
@@ -185,4 +184,9 @@ public class TareaSimpleCopia implements Tarea {
         throw new UnsupportedOperationException("Unimplemented method 'volverPendiente'");
     }
 
+    @Override
+    public String estadoToString(TareaEstado estado) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'estadoToString'");
+    }
 }

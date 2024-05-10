@@ -1,13 +1,12 @@
 
-/// CLASE DE PRUEBA DE TAREA SIMPLE CON ESTADOSSSSS
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Scanner;
-import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
 
 public class TareaSimple implements Tarea {
 
@@ -57,6 +56,11 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
+    public String estadoToString(TareaEstado estado) {
+        return estado.estadoToString(estado);
+    }
+
+    @Override
     public void construyeTarea() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese detalles de la tarea simple:");
@@ -100,9 +104,8 @@ public class TareaSimple implements Tarea {
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
 
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
-                + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: " 
-                + completadaB + "\nEstado: " + estado.getClass().getSimpleName() + "\n";
-                //(this.completada ? "Sí" : "No")
+                    + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: "
+                    + completadaB + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
@@ -145,7 +148,7 @@ public class TareaSimple implements Tarea {
         return etiquetas;
     }
 
-    @Override // el string no va oooo
+    @Override
     public void setEtiquetas(String etiquetas) {
         this.etiquetas = null;
     }

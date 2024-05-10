@@ -96,7 +96,7 @@ public class EtiquetaEstudio extends TareasDecorator {
 
     @Override
     public void setEtiquetas(String etiquetas) {
-       tarea.setEtiquetas(etiquetas);
+        tarea.setEtiquetas(etiquetas);
     }
 
     @Override
@@ -107,8 +107,7 @@ public class EtiquetaEstudio extends TareasDecorator {
 
     @Override
     public TareaEstado getEstado() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEstado'");
+        return tarea.getEstado();
     }
 
     @Override
@@ -127,5 +126,11 @@ public class EtiquetaEstudio extends TareasDecorator {
     public void volverPendiente() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'volverPendiente'");
+    }
+
+    @Override
+    public String estadoToString(TareaEstado estado) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'estadoToString'");
     }
 }

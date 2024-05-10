@@ -1,11 +1,11 @@
-import java.util.List;
-import java.util.Scanner;
-import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
 
 public class TareaConFecha implements Tarea {
 
@@ -25,7 +25,7 @@ public class TareaConFecha implements Tarea {
      * es decir, todos los atributos posibles A MENOS QUE LO CAMBIEMOS EN UN FUTURO.
      */
     public TareaConFecha(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, boolean completada) {
+            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, boolean completada, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -34,9 +34,8 @@ public class TareaConFecha implements Tarea {
         this.fechaVencimiento = LocalDateTime.now();
         this.completada = completada;
         this.estado = new TareaPendiente();
-        
-    }
 
+    }
 
     @Override
     public void iniciar() {
@@ -62,9 +61,6 @@ public class TareaConFecha implements Tarea {
     public TareaEstado getEstado() {
         return estado;
     }
-
-
-    
 
     /**
      * Método que se encarga de construir una tarea con fecha, pidiendo al usuario
@@ -153,7 +149,8 @@ public class TareaConFecha implements Tarea {
         System.out.println("\nTarea creada:");
         String tarea = "Tipo: " + "con fecha" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion +
                 "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacionString +
-                "\nFecha de Vencimiento: " + fechaString + "\nCompletada: " + completadaB + "\n";
+                "\nFecha de Vencimiento: " + fechaString + "\nCompletada: " + completadaB + "\n" +
+                "Estado: " + "Tarea Pendiente";
         System.out.println(tarea);
 
         try {
@@ -234,5 +231,9 @@ public class TareaConFecha implements Tarea {
         this.etiquetas = etiquetas;
     }
 
- 
+    @Override
+    public String estadoToString(TareaEstado estado) {
+        return estado.estadoToString(estado);
+    }
+
 }

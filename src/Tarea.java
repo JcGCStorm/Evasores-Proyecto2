@@ -7,9 +7,11 @@ public interface Tarea {
     String getTipo();
 
     String getTitulo();
+
     void setTitulo(String titulo);
 
     String getDescripcion();
+
     void setDescripcion(String descripcion);
 
     LocalDate getFechaCreacion();
@@ -29,11 +31,16 @@ public interface Tarea {
 
     void setEtiquetas(String etiquetas);
 
-    void setEstado(TareaEstado estado); 
-    TareaEstado getEstado(); 
-    void iniciar(); 
-    void completar(); 
-    void volverPendiente(); 
+    void setEstado(TareaEstado estado);
 
+    TareaEstado getEstado();
+
+    void iniciar();
+
+    void completar();
+
+    void volverPendiente();
+
+    String estadoToString(TareaEstado estado);
 
 }

@@ -4,7 +4,7 @@ Descripcion: Tengo que lavar el terreneitor
 Etiquetas: Quancha
 Fecha de creacion: 07-05-2024
 Completada: true
-Estado: TareaPendiente
+Estado: Completada
 
 Tipo: con fecha
 Titulo: bañar a los de ciencias
@@ -13,7 +13,7 @@ Etiquetas: Estudio
 Fecha de creacion: 07-05-2035
 Fecha de Vencimiento: 06-04-2025 Hora: 12:03
 Completada: true
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: con fecha
 Titulo: Comer mi desayuno
@@ -22,7 +22,7 @@ Etiquetas: Estudio, Estudio, Estudio,
 Fecha de creacion: 07-05-2024
 Fecha de Vencimiento: 01-03-2034 Hora: 12:04
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: comprar a famsa
@@ -30,7 +30,7 @@ Descripcion: Convertir a Famsa al cristianismo
 Etiquetas: 
 Fecha de creacion: 08-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: rip
@@ -38,7 +38,7 @@ Descripcion: si
 Etiquetas: Estudio, 
 Fecha de creacion: 08-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: bombardear guatemala
@@ -46,7 +46,7 @@ Descripcion: asi como escuchaste
 Etiquetas: Estudio, 
 Fecha de creacion: 08-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: comer pizza
@@ -54,7 +54,7 @@ Descripcion: yumi
 Etiquetas: 
 Fecha de creacion: 08-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: dejame ver la ultima tarea
@@ -62,7 +62,7 @@ Descripcion: porfavor
 Etiquetas: 
 Fecha de creacion: 08-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: por favor q funcione
@@ -70,7 +70,7 @@ Descripcion: ei
 Etiquetas: 
 Fecha de creacion: 09-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: jose
@@ -78,7 +78,7 @@ Descripcion: jose
 Etiquetas: Estudio, 
 Fecha de creacion: 09-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: proyecto 2
@@ -86,5 +86,71 @@ Descripcion: Vamos a sacar 10
 Etiquetas: Estudio, 
 Fecha de creación: 09-05-2024
 Completada: false
-Estado: TareaPendiente
+Estado: Tarea En Progreso
 
+Tipo: con fecha
+Titulo: Terminar el proyecto
+Descripcion: Tenemos que hacer el strategy, el manejo de excepciones y algunas cosas mas
+Etiquetas: Estudio, Estudio, 
+Fecha de creación: 10-05-2024
+Fecha de Vencimiento: 12-05-2024 Hora: 12:43
+Completada: false
+Estado: Tarea En Progreso
+
+Tipo: con fecha
+Titulo: Consumir un kilo de gomitas
+Descripcion: Debo de consumir gomitas
+Etiquetas: Estudio, 
+Fecha de creación: 10-05-2024
+Fecha de Vencimiento: 23-01-2300 Hora: 21:12
+Completada: true
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: hola joses
+Descripcion: adios
+Etiquetas: 
+Fecha de creación: 10-05-2024
+Completada: false
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: AAAAAAAAAAAAa
+Descripcion: NO SIRVEEEEEEEE
+Etiquetas: 
+Fecha de creación: 10-05-2024
+Completada: false
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: AAAAAadadada
+Descripcion: sirve¿
+Etiquetas: 
+Fecha de creación: 10-05-2024
+Completada: false
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: adfrsg
+Descripcion: safda
+Etiquetas: 
+Fecha de creación: 10-05-2024
+Completada: false
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: ade
+Descripcion: AAAAAAAAA
+Etiquetas: 
+Fecha de creación: 10-05-2024
+Completada: false
+Estado: Completada
+
+Tipo: con fecha
+Titulo: YA SIRVE ESTA  WEA
+Descripcion: FINALMENTE
+Etiquetas: Estudio, Estudio, 
+Fecha de creación: 10-05-2024
+Fecha de Vencimiento: 12-12-2025 Hora: 12:32
+Completada: true
+Estado: Tarea En Progreso
