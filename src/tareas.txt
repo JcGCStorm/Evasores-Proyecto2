@@ -91,7 +91,7 @@ Estado: Tarea En Progreso
 Tipo: con fecha
 Titulo: Terminar el proyecto
 Descripcion: Tenemos que hacer el strategy, el manejo de excepciones y algunas cosas mas
-Etiquetas: Estudio, Estudio, 
+Etiquetas: Estudio, Estudio, Estudio, Estudio, Estudio, Estudio, 
 Fecha de creación: 10-05-2024
 Fecha de Vencimiento: 12-05-2024 Hora: 12:43
 Completada: false
@@ -148,8 +148,8 @@ Estado: Completada
 
 Tipo: con fecha
 Titulo: ASSSA
-Descripcion: FINALMENTE
-Etiquetas: Estudio, Estudio, 
+Descripcion: wfae
+Etiquetas: Estudio, Estudio, Estudio, Estudio, Estudio, 
 Fecha de creación: 10-05-2024
 Fecha de Vencimiento: 12-12-2025 Hora: 12:32
 Completada: true
