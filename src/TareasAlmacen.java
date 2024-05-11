@@ -86,6 +86,11 @@ public class TareasAlmacen {
                                 valores.get(3), fechaHora,
                                 Boolean.parseBoolean(valores.get(5)), estado);
                         // la metemos en el arreglo de tareas
+                        tarea.setTitulo(valores.get(1));
+                        tarea.setDescripcion(valores.get(2));
+                        tarea.setEtiquetas(valores.get(3));
+                        tarea.setFechaCreacion(fechaHora);
+                        tarea.setEstado(estado);
                         tareas.add(tarea);
                         tarea.setEstado(estado);
                         // reiniciamos el contador de tareas simples, pues posiblemente exista más de
@@ -112,6 +117,11 @@ public class TareasAlmacen {
                         LocalDateTime fechaHora = LocalDateTime.parse(valores.get(5), formateadorVencimiento);
                         TareaConFecha tarea = new TareaConFecha("con fecha", valores.get(1), valores.get(2),
                                 valores.get(3), fecha, fechaHora, Boolean.parseBoolean(valores.get(6)), estado);
+                        tarea.setTitulo(valores.get(1));
+                        tarea.setDescripcion(valores.get(2));
+                        tarea.setEtiquetas(valores.get(3));
+                        tarea.setFechaCreacion(fecha);
+                        tarea.setFechaVencimiento(fechaHora);
                         tarea.setEstado(estado);
                         tareas.add(tarea);
                         contadorFecha = 0;

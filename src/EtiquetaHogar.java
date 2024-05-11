@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
  * baguette
  * Extiende de IngredientesDecorator
  */
-public class EtiquetaEstudio extends TareasDecorator {
+public class EtiquetaHogar extends TareasDecorator {
 
     /**
      * Constructor de la clase Cebolla
      * 
      * @param pan La baguette a decorar con cebolla
      */
-    public EtiquetaEstudio(Tarea tarea) {
+    public EtiquetaHogar(Tarea tarea) {
         super(tarea);
     }
 
@@ -34,7 +34,7 @@ public class EtiquetaEstudio extends TareasDecorator {
      */
     @Override
     public String getEtiquetas() {
-        return tarea.getEtiquetas() + "#Estudio- ";
+        return tarea.getEtiquetas() + "#Hogar- ";
     }
 
     @Override

@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class VistaTareas {
@@ -19,7 +22,7 @@ public class VistaTareas {
                 System.out.println(linea);
             }
         } catch (java.io.FileNotFoundException e) {
-            System.err.println("El archivo '" + nombreArchivo + "' no existe");
+            System.err.println("Aún no tienes tareas.");
         } catch (IOException e) {
             System.err.println("Error de E/S al leer el archivo: " + e.getMessage());
         }
@@ -44,15 +47,21 @@ public class VistaTareas {
             System.out.println("Titulo: " + tarea.getTitulo());
             System.out.println("Descripcion: " + tarea.getDescripcion());
             System.out.println("Etiquetas: " + tarea.getEtiquetas());
-            System.out.println("Fecha de Creacion: " + tarea.getFechaCreacion());
+            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
+            System.out.println("Fecha de Creacion: " + fechaCreacion);
 
             if (tarea instanceof TareaConFecha) {
-                System.out.println("Fecha de Vencimiento: " + ((TareaConFecha) tarea).getFechaVencimiento());
+                DateTimeFormatter formateadorVencimiento = DateTimeFormatter
+                        .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
+                LocalDateTime fechaHora = tarea.getFechaVencimiento();
+                String fechaHoraString = fechaHora.format(formateadorVencimiento);
+                System.out.println("Fecha de Vencimiento: " + fechaHoraString);
             }
 
             System.out.println("Completada: " + (tarea.isCompletada() ? "Sí" : "No"));
 
-            // Imprimir el nombre del estado actual
+            // Imprimir el nombre del estado3 actual
             TareaEstado estado = tarea.getEstado();
             System.out.println("Estado: " + tarea.estadoToString(estado));
 

@@ -3,6 +3,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -141,14 +144,14 @@ public class TareasControlador {
             tarea.setDescripcion(parametroNuevo);
         } else if (parametro.equals("3")) {
             parametroViejo = "Etiquetas: ";
-            mensaje = "Ingrese el nuevo valor para las " + parametroViejo;
+            mensaje = "Se reiniciarán las etiquetas antiguas.";
             String etiquetasTemp = tarea.getEtiquetas();
             paramTarea = "Etiquetas: " + etiquetasTemp;
             System.out.println(paramTarea);
             System.out.println(mensaje);
             Etiqueta etiqueta = new Etiqueta();
             Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
-            parametroNuevo = etiquetasTemp + tareaTemp.getEtiquetas();
+            parametroNuevo = tareaTemp.getEtiquetas();
             tarea.setEtiquetas(parametroNuevo);
         } else if (parametro.equals("4")) {
             parametroViejo = "Estado: ";
@@ -163,8 +166,14 @@ public class TareasControlador {
         } else if (tarea.getTipo().equals("con fecha") && parametro.equals("5")) {
             parametroViejo = "Fecha de Vencimiento: ";
             mensaje = "Ingrese el nuevo valor para la " + parametroViejo;
-            paramTarea = "Fecha de Vencimiento: " + tarea.isCompletada();
-            tarea.setCompletada(Boolean.parseBoolean(scanner.nextLine().trim()));
+            DateTimeFormatter formateadorVencimiento = DateTimeFormatter
+                    .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
+            LocalDateTime fechaHora = tarea.getFechaVencimiento();
+            String fechaHoraString = fechaHora.format(formateadorVencimiento);
+            paramTarea = "Fecha de Vencimiento: " + fechaHoraString;
+            parametroNuevo = modificaFecha(tarea);
+            System.out.println(parametroNuevo);
+
         } else {
             System.out.println("No has modificado nada.");
             return;
@@ -255,5 +264,60 @@ public class TareasControlador {
                 break;
         }
         return estadoString;
+    }
+
+    public String modificaFecha(Tarea tareaTemp) {
+        LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
+        tareaTemp.setFechaCreacion(fechaCreacion);
+        System.out.println("Ingrese la fecha de vencimiento. ");
+
+        System.out.println("Escoge el día (con numeros): ");
+        int dia = scanner.nextInt();
+        if (dia < 1 || dia > 31) {
+            System.out.println("Rango de dias no válidos.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+        System.out.println("Escoge el mes (con numeros): ");
+        int mes = scanner.nextInt();
+        if (mes < 1 || mes > 12) {
+            System.out.println("Rango de meses no válidos.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+        System.out.println("\nEscoge el año (con numeros): ");
+        int año = scanner.nextInt();
+        if (año < 0) {
+            System.out.println("Rango de años no válidos.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+        System.out.println("Escoge la hora (con numeros): ");
+        int hora = scanner.nextInt();
+        if (hora < 0 || hora > 23) {
+            System.out.println("Rango de horas no válidas.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+        System.out.println("Escoge los minutos (con numeros): ");
+        int minutos = scanner.nextInt();
+        if (minutos < 0 || minutos > 59) {
+            System.out.println("Rango de minutos no válidos.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+
+        if (fechaCreacion.isAfter(LocalDate.of(año, mes, dia))) {
+            System.out.println("La fecha de vencimiento no puede ser antes de la fecha de creación.");
+            System.out.println("Intentalo de nuevo.");
+            return "";
+        }
+
+        String mesFormateado = String.format("%02d", mes);
+        String diaFormateado = String.format("%02d", dia);
+        String horaFormateada = String.format("%02d", hora);
+        String minutosFormateados = String.format("%02d", minutos);
+        return diaFormateado + "-" + mesFormateado + "-" + año + " Hora: " + horaFormateada + ":"
+                + minutosFormateados;
     }
 }
