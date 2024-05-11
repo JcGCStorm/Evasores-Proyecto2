@@ -59,7 +59,7 @@ public class VistaTareas {
                 System.out.println("Fecha de Vencimiento: " + fechaHoraString);
             }
 
-            System.out.println("Completada: " + (tarea.isCompletada() ? "Sí" : "No"));
+            System.out.println("Prioridad: " + tarea.getPrioridad());
 
             // Imprimir el nombre del estado3 actual
             TareaEstado estado = tarea.getEstado();

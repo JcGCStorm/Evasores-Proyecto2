@@ -34,7 +34,7 @@ public class EtiquetaComida extends TareasDecorator {
      */
     @Override
     public String getEtiquetas() {
-        return tarea.getEtiquetas() + "#Estudio- ";
+        return tarea.getEtiquetas() + "#Comida- ";
     }
 
     @Override
@@ -59,8 +59,8 @@ public class EtiquetaComida extends TareasDecorator {
     }
 
     @Override
-    public boolean isCompletada() {
-        return tarea.isCompletada();
+    public int getPrioridad() {
+        return tarea.getPrioridad();
     }
 
     @Override
@@ -74,8 +74,8 @@ public class EtiquetaComida extends TareasDecorator {
     }
 
     @Override
-    public void setCompletada(boolean completada) {
-        this.tarea.setCompletada(completada);
+    public void setPrioridad(int prioridad) {
+        this.tarea.setPrioridad(prioridad);
     }
 
     @Override

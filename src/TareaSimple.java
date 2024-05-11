@@ -17,16 +17,16 @@ public class TareaSimple implements Tarea {
     private String etiquetas;
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
-    private boolean completada;
+    private int prioridad;
 
     public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, boolean completada, TareaEstado estado) {
+            LocalDate fechaCreacion, int prioridad, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
         this.fechaCreacion = fechaCreacion;
-        this.completada = completada;
+        this.prioridad = prioridad;
         this.estado = new TareaPendiente(); // inicialmente pendiente
     }
 
@@ -80,23 +80,13 @@ public class TareaSimple implements Tarea {
         tareaTemp.setFechaCreacion(fechaCreacion);
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fechaString = fechaCreacion.format(formateador);
-        System.out.print("¿Completada? (si/no): ");
-        String completadaInput = scanner.nextLine().trim().toLowerCase();
-        this.completada = completadaInput.equals("si");
-
-        if (this.completada) {
-            this.estado = new TareaCompletada();
+        System.out.print("Ingresa el nivel de prioridad (0-10): ");
+        int prioridadImput = scanner.nextInt();
+        if (prioridadImput < 0 || prioridadImput > 10) {
+            System.out.println("Prioridad invalida, se asignara prioridad 0");
+            prioridadImput = 0;
         }
-        boolean completadaB = false;
-        if (completadaInput.equals("si")) {
-            System.out.println("Tarea completada");
-            completadaB = true;
-            tareaTemp.setCompletada(completadaB);
-        } else if (completadaInput.equals("no")) {
-            System.out.println("Tarea no completada");
-            completadaB = false;
-            tareaTemp.setCompletada(completadaB);
-        }
+        this.prioridad = prioridadImput;
 
         // Guardar la tarea en un archivo de texto
         try {
@@ -104,8 +94,8 @@ public class TareaSimple implements Tarea {
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
 
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
-                    + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: "
-                    + completadaB + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
+                    + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nPrioridad: "
+                    + prioridadImput + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
@@ -139,8 +129,8 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public boolean isCompletada() {
-        return completada;
+    public int getPrioridad() {
+        return prioridad;
     }
 
     @Override
@@ -164,8 +154,8 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
     }
 
     @Override

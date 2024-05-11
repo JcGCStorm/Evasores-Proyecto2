@@ -61,11 +61,10 @@ public class TareaSimpleCopia implements Tarea {
         if (completada.equals("si")) {
             System.out.println("Tarea completada");
             completadaB = true;
-            tareaTemp.setCompletada(completadaB);
+
         } else if (completada.equals("no")) {
             System.out.println("Tarea no completada");
             completadaB = false;
-            tareaTemp.setCompletada(completadaB);
         }
 
         System.out.println("\nTarea creada:");
@@ -117,16 +116,6 @@ public class TareaSimpleCopia implements Tarea {
     @Override
     public LocalDateTime getFechaVencimiento() {
         return fechaVencimiento;
-    }
-
-    @Override
-    public boolean isCompletada() {
-        return completada;
-    }
-
-    @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
     }
 
     @Override
@@ -188,5 +177,17 @@ public class TareaSimpleCopia implements Tarea {
     public String estadoToString(TareaEstado estado) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'estadoToString'");
+    }
+
+    @Override
+    public int getPrioridad() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPrioridad'");
+    }
+
+    @Override
+    public void setPrioridad(int prioridad) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPrioridad'");
     }
 }

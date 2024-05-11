@@ -17,7 +17,7 @@ public class TareaConFecha implements Tarea {
     private String etiquetas;
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
-    private boolean completada;
+    private int prioridad;
 
     /**
      * Constructor de la clase TareaConFecha, con los atributos que una tarea con
@@ -25,14 +25,14 @@ public class TareaConFecha implements Tarea {
      * es decir, todos los atributos posibles A MENOS QUE LO CAMBIEMOS EN UN FUTURO.
      */
     public TareaConFecha(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, boolean completada, TareaEstado estado) {
+            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, int prioridad, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
         this.fechaCreacion = LocalDate.now();
         this.fechaVencimiento = LocalDateTime.now();
-        this.completada = completada;
+        this.prioridad = prioridad;
         this.estado = new TareaPendiente();
 
     }
@@ -135,21 +135,18 @@ public class TareaConFecha implements Tarea {
 
         String fechaString = diaFormateado + "-" + mesFormateado + "-" + año +
                 " Hora: " + horaFormateada + ":" + minutosFormateados;
-        System.out.print("¿Completada? (si/no): ");
-        String completada = scanner.next();
-        boolean completadaB = false;
-        if (completada.equals("si")) {
-            System.out.println("Tarea completada");
-            completadaB = true;
-        } else if (completada.equals("no")) {
-            System.out.println("Tarea no completada");
-            completadaB = false;
+        System.out.print("Ingresa el nivel de prioridad (0-10): ");
+        int prioridadImput = scanner.nextInt();
+        if (prioridadImput < 0 || prioridadImput > 10) {
+            System.out.println("Prioridad invalida, se asignara prioridad 0");
+            prioridadImput = 0;
         }
+        this.prioridad = prioridadImput;
 
         System.out.println("\nTarea creada:");
         String tarea = "Tipo: " + "con fecha" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion +
                 "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacionString +
-                "\nFecha de Vencimiento: " + fechaString + "\nCompletada: " + completadaB + "\n" +
+                "\nFecha de Vencimiento: " + fechaString + "\nPrioridad: " + prioridadImput + "\n" +
                 "Estado: " + "Tarea Pendiente";
         System.out.println(tarea);
 
@@ -202,13 +199,13 @@ public class TareaConFecha implements Tarea {
     }
 
     @Override
-    public boolean isCompletada() {
-        return completada;
+    public int getPrioridad() {
+        return prioridad;
     }
 
     @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
     }
 
     @Override

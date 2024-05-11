@@ -22,9 +22,9 @@ public interface Tarea {
 
     void setFechaVencimiento(LocalDateTime fechaVencimiento);
 
-    boolean isCompletada();
+    int getPrioridad();
 
-    void setCompletada(boolean completada);
+    void setPrioridad(int prioridad);
 
     // String getPrioridad();
     String getEtiquetas();
