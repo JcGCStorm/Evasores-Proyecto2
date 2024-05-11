@@ -1,12 +1,13 @@
-public class AcomodaTareaPorPrioridad implements AcomodaTareaStrategy{
+public class AcomodaTareaPorPrioridad implements AcomodaTareaStrategy {
 
-    //Metodo para ordenar tareas por prioridad
+    // Metodo para ordenar tareas por prioridad
 
-   @Override
-    public void acomodaTarea(Tarea tarea){
+    @Override
+    public void acomodaTarea(Tarea tarea) {
 
-        //List<Tarea> tarea = TareasAlmacen.obtenArreglo();
+        // List<Tarea> tarea = TareasAlmacen.getTareas();
 
-       //tareas.sort((t1, t2) -> Integer.compare(t2.getPrioridad(), t1.getPrioridad()));
-    }    
+        // tareas.sort((t1, t2) -> Integer.compare(t2.getPrioridad(),
+        // t1.getPrioridad()));
+    }
 }
