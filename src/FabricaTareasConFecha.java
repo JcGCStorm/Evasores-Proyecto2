@@ -6,7 +6,11 @@ public class FabricaTareasConFecha extends FabricaTareas {
      * lo hace la clase TareaConFecha.
      */
     @Override
-    public Tarea construyeTarea() {
-        return new TareaConFecha("con fecha", null, null, null, null, null, false, new TareaPendiente());
+    protected Tarea construyeTarea(Usuario usuario) {
+        TareaConFecha tareaConFecha = new TareaConFecha("con fecha", null, null, null, null, null, 0, new TareaPendiente());
+        tareaConFecha.construyeTarea(usuario);
+        return tareaConFecha;
     }
+
+
 }

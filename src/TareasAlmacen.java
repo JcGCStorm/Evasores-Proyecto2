@@ -14,6 +14,7 @@ public class TareasAlmacen {
     static List<Tarea> tareas = new ArrayList<>();
 
     public TareasAlmacen(Tarea tarea) {
+        
         tareas.add(tarea);
     }
 
@@ -28,6 +29,11 @@ public class TareasAlmacen {
         return tareas;
     }
 
+    private static String obtenerArchivoTareasUsuario(Usuario usuario) {
+        return usuario.getUsername() + "_tareas.txt";
+    }
+    
+
     /**
      * Este metodo es el más perrillo y es el que se encarga de leer el archivo
      * Del txt va recorriendo linea por linea y separa los valores por el ": "
@@ -35,9 +41,10 @@ public class TareasAlmacen {
      * vamos a tener que modificar ligeramente este metodo, solamente en la
      * parte de la creación de la tarea, pero solo eso.
      */
-    public static List<Tarea> getTareas() {
+    public static List<Tarea> getTareas(Usuario usuario) {
         // el nombre del archivo que vamos a leer
-        String nombreArchivo = "tareas.txt";
+        String nombreArchivo = obtenerArchivoTareasUsuario(usuario);
+  
         tareas.clear();
         try {
             // Creamos la instancia de BufferedReader para leer el archivo
@@ -83,11 +90,16 @@ public class TareasAlmacen {
                         LocalDate fechaHora = LocalDate.parse(valores.get(4), formateador);
                         // creamos la tarea simple
                         TareaSimple tarea = new TareaSimple("simple", valores.get(1), valores.get(2),
-                                valores.get(3), fechaHora,
-                                Boolean.parseBoolean(valores.get(5)), estado);
+                        valores.get(3), fechaHora,
+                        Integer.parseInt(valores.get(5)), estado);
                         // la metemos en el arreglo de tareas
+                        tarea.setTitulo(valores.get(1));
+                        tarea.setDescripcion(valores.get(2));
+                        tarea.setEtiquetas(valores.get(3));
+                        tarea.setFechaCreacion(fechaHora);
                         tareas.add(tarea);
                         tarea.setEstado(estado);
+                        tarea.setPrioridad(Integer.parseInt(valores.get(5)));
                         // reiniciamos el contador de tareas simples, pues posiblemente exista más de
                         // una tarea simple en el archivo
                         contadorSimple = 0;
@@ -111,8 +123,14 @@ public class TareasAlmacen {
                                 .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
                         LocalDateTime fechaHora = LocalDateTime.parse(valores.get(5), formateadorVencimiento);
                         TareaConFecha tarea = new TareaConFecha("con fecha", valores.get(1), valores.get(2),
-                                valores.get(3), fecha, fechaHora, Boolean.parseBoolean(valores.get(6)), estado);
-                        tarea.setEstado(estado);
+                        valores.get(3), fecha, fechaHora, Integer.parseInt(valores.get(6)), estado);
+                                tarea.setTitulo(valores.get(1));
+                                tarea.setDescripcion(valores.get(2));
+                                tarea.setEtiquetas(valores.get(3));
+                                tarea.setFechaCreacion(fecha);
+                                tarea.setFechaVencimiento(fechaHora);
+                                tarea.setPrioridad(Integer.parseInt(valores.get(6)));
+                                tarea.setEstado(estado);
                         tareas.add(tarea);
                         contadorFecha = 0;
                         valores.clear();

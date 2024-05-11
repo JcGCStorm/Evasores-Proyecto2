@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface Tarea {
-    void construyeTarea();
+    void construyeTarea(Usuario usuario);
 
     String getTipo();
 
@@ -22,9 +22,9 @@ public interface Tarea {
 
     void setFechaVencimiento(LocalDateTime fechaVencimiento);
 
-    boolean isCompletada();
+    int getPrioridad();
 
-    void setCompletada(boolean completada);
+    void setPrioridad(int prioridad);
 
     // String getPrioridad();
     String getEtiquetas();

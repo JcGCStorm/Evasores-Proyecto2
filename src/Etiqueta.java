@@ -19,13 +19,13 @@ public class Etiqueta {
         Tarea tarea;
         switch (tipo) {
             case "simple":
-                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), false,
+                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), 0,
                         new TareaPendiente());
                 break;
             case "con fecha":
 
                 tarea = new TareaConFecha("con fecha", titulo, descripcion, "", LocalDate.now(), LocalDateTime.now(),
-                        false, new TareaPendiente());
+                        0, new TareaPendiente());
                 break;
             default:
                 System.out.println("No has seleccionado una opción válida, vuélvelo a intentar :D");
@@ -42,6 +42,17 @@ public class Etiqueta {
                         System.out.println("¿Qué etiqueta deseas agregar a tu tarea?");
                         System.out.println("1. Estudio");
                         System.out.println("2. Trabajo");
+                        System.out.println("3. Personal.");
+                        System.out.println("4. Deportes.");
+                        System.out.println("5. Comida.");
+                        System.out.println("6. Salud.");
+                        System.out.println("7. Entretenimiento.");
+                        System.out.println("8. Hogar.");
+                        System.out.println("9. Viaje.");
+                        System.err.println("10. Compras.");
+                        System.out.println("11. Social");
+                        System.out.println("12. Asambleas");
+                        System.out.println("13. Otro.");
                         System.out.println("0. No agregar más etiquetas");
                         int productoEleccion = scanner.nextInt();
                         if (productoEleccion == 0) {
@@ -56,6 +67,52 @@ public class Etiqueta {
                                     tarea = agregarEtiquetas(productoEleccion, tarea);
                                     System.out.println("Se ha agregado la etiqueta estudio a tu tarea.");
                                     break;
+                                case 3:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Personal a tu tarea.");
+                                    break;
+                                case 4:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Deportes a tu tarea.");
+                                    break;
+                                case 5:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Comida a tu tarea.");
+                                    break;
+                                case 6:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Salud a tu tarea.");
+                                    break;
+                                case 7:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Entretenimiento a tu tarea.");
+                                    break;
+                                case 8:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Hogar a tu tarea.");
+                                    break;
+                                case 9:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Viaje a tu tarea.");
+                                    break;
+                                case 10:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Compras a tu tarea.");
+                                    break;
+                                case 11:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Social a tu tarea.");
+                                    break;
+                                case 12:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Asambleas a tu tarea.");
+                                    break;
+                                    case 13:
+                                    tarea = agregarEtiquetas(productoEleccion, tarea);
+                                    System.out.println("Se ha agregado la etiqueta Otro a tu tarea.");
+                                    break;
+                                
+
                                 case 0:
                                     ponmeMas = false;
                                 default:
@@ -88,6 +145,28 @@ public class Etiqueta {
                 return new EtiquetaEstudio(tarea);
             case 2:
                 return new EtiquetaEstudio(tarea);
+                case 3:
+                return new EtiquetaPersonal(tarea);
+            case 4:
+                return new EtiquetaDeportes(tarea);
+            case 5:
+                return new EtiquetaComida(tarea);
+            case 6:
+                return new EtiquetaSalud(tarea);
+            case 7:
+                return new EtiquetaEntretenimiento(tarea);
+            case 8:
+                return new EtiquetaHogar(tarea);
+            case 9:
+                return new EtiquetaViaje(tarea);
+            case 10:
+                return new EtiquetaCompras(tarea);
+            case 11:
+                return new EtiquetaSocial(tarea);
+            case 12:
+                return new EtiquetaAsambleas(tarea);
+            case 13:
+                return new EtiquetaOtro(tarea);
             default:
                 return tarea;
         }

@@ -10,14 +10,14 @@ import java.util.Scanner;
 public class TareaConFecha implements Tarea {
 
     private TareaEstado estado; // Estado actual de la tarea
-    String nombreArchivo = "tareas.txt";
+
     private String tipo = "con fecha";
     private String titulo;
     private String descripcion;
     private String etiquetas;
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
-    private boolean completada;
+    private int prioridad;
 
     /**
      * Constructor de la clase TareaConFecha, con los atributos que una tarea con
@@ -25,14 +25,14 @@ public class TareaConFecha implements Tarea {
      * es decir, todos los atributos posibles A MENOS QUE LO CAMBIEMOS EN UN FUTURO.
      */
     public TareaConFecha(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, boolean completada, TareaEstado estado) {
+            LocalDate fechaCreacion, LocalDateTime fechaVencimiento, int prioridad, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
         this.fechaCreacion = LocalDate.now();
         this.fechaVencimiento = LocalDateTime.now();
-        this.completada = completada;
+        this.prioridad = prioridad;
         this.estado = new TareaPendiente();
 
     }
@@ -68,7 +68,7 @@ public class TareaConFecha implements Tarea {
      * de la misma, ademas que la guarda en un archivo de texto.
      */
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
         System.out.print("Titulo: ");
@@ -154,6 +154,7 @@ public class TareaConFecha implements Tarea {
         System.out.println(tarea);
 
         try {
+            String nombreArchivo = usuario.getUsername() + "_tareas.txt";
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
             bufferedWriter.write(tarea);
@@ -162,7 +163,7 @@ public class TareaConFecha implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo");
         }
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
     // Getters de los atributos de las tareas con fecha.
@@ -202,16 +203,6 @@ public class TareaConFecha implements Tarea {
     }
 
     @Override
-    public boolean isCompletada() {
-        return completada;
-    }
-
-    @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
-    }
-
-    @Override
     public String getEtiquetas() {
         return etiquetas;
     }
@@ -229,6 +220,16 @@ public class TareaConFecha implements Tarea {
     @Override
     public void setEtiquetas(String etiquetas) {
         this.etiquetas = etiquetas;
+    }
+
+    @Override
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    @Override
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
     }
 
     @Override

@@ -17,16 +17,17 @@ public class TareaSimple implements Tarea {
     private String etiquetas;
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
-    private boolean completada;
+    private int prioridad;
+  
 
     public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
-            LocalDate fechaCreacion, boolean completada, TareaEstado estado) {
+            LocalDate fechaCreacion, int prioridad, TareaEstado estado) {
         this.tipo = tipo;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
         this.fechaCreacion = fechaCreacion;
-        this.completada = completada;
+        this.prioridad = prioridad;
         this.estado = new TareaPendiente(); // inicialmente pendiente
     }
 
@@ -61,7 +62,7 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese detalles de la tarea simple:");
         System.out.print("Titulo: ");
@@ -80,39 +81,29 @@ public class TareaSimple implements Tarea {
         tareaTemp.setFechaCreacion(fechaCreacion);
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fechaString = fechaCreacion.format(formateador);
-        System.out.print("¿Completada? (si/no): ");
-        String completadaInput = scanner.nextLine().trim().toLowerCase();
-        this.completada = completadaInput.equals("si");
-
-        if (this.completada) {
-            this.estado = new TareaCompletada();
+        System.out.print("Ingresa el nivel de prioridad (0-10): ");
+        int prioridadImput = scanner.nextInt();
+        if (prioridadImput < 0 || prioridadImput > 10) {
+            System.out.println("Prioridad invalida, se asignara prioridad 0");
+            prioridadImput = 0;
         }
-        boolean completadaB = false;
-        if (completadaInput.equals("si")) {
-            System.out.println("Tarea completada");
-            completadaB = true;
-            tareaTemp.setCompletada(completadaB);
-        } else if (completadaInput.equals("no")) {
-            System.out.println("Tarea no completada");
-            completadaB = false;
-            tareaTemp.setCompletada(completadaB);
-        }
+        this.prioridad = prioridadImput;
 
         // Guardar la tarea en un archivo de texto
         try {
-            FileWriter salida = new FileWriter("tareas.txt", true);
+            String nombreArchivo = usuario.getUsername() + "_tareas.txt";
+            FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
-
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
-                    + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nCompletada: "
-                    + completadaB + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
+            + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nPrioridad: "
+            + prioridadImput + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
         } catch (IOException e) {
             System.out.println("Error al guardar la tarea: " + e.getMessage());
         }
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
     /*
@@ -129,6 +120,12 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+
+
+    @Override
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
@@ -138,10 +135,7 @@ public class TareaSimple implements Tarea {
         return fechaVencimiento;
     }
 
-    @Override
-    public boolean isCompletada() {
-        return completada;
-    }
+
 
     @Override
     public String getEtiquetas() {
@@ -154,6 +148,10 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
+    public int getPrioridad() {
+        return prioridad;
+    }
+    @Override
     public String getTipo() {
         return tipo;
     }
@@ -163,10 +161,7 @@ public class TareaSimple implements Tarea {
         this.fechaCreacion = fechaCreacion;
     }
 
-    @Override
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
-    }
+
 
     @Override
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
