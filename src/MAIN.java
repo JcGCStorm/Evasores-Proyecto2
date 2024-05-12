@@ -18,7 +18,7 @@ public class MAIN {
         boolean opcionesBool = true;
         while (opcionesBool == true) {
             System.out.println("\n¿Qué desea hacer? \n 1. Ver Tareas. \n 2. Crear tareas." +
-                    "\n 3. Modificar tareas" + "\n 0. Salir.");
+                    "\n 3. Modificar tareas" + "\n 4. Eliminar tarea." + "\n 0. Salir.");
             String opciones = scanner.nextLine().trim();
             switch (opciones) {
                 case "1":
@@ -30,6 +30,10 @@ public class MAIN {
                 case "3":
                     TareasControlador modificaTarea = new TareasControlador();
                     modificaTarea.modifica();
+                    break;
+                case "4":
+                    TareasControlador eliminaTarea = new TareasControlador();
+                    eliminaTarea.eliminaTarea();
                     break;
                 case "0":
                     opcionesBool = false;

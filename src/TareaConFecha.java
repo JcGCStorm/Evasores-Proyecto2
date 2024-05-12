@@ -147,7 +147,7 @@ public class TareaConFecha implements Tarea {
         String tarea = "Tipo: " + "con fecha" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion +
                 "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacionString +
                 "\nFecha de Vencimiento: " + fechaString + "\nPrioridad: " + prioridadImput + "\n" +
-                "Estado: " + "Tarea Pendiente";
+                "Estado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
         System.out.println(tarea);
 
         try {

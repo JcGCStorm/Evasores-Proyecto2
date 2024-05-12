@@ -1,24 +1,25 @@
 Tipo: simple
-Titulo: Bañar a Chambas
-Descripcion: Tengo que bañar a chambas
-Etiquetas: #Estudio- #Trabajo-#Personal- #Estudio- #Estudio- #Estudio- #Entretenimiento- #Hogar- #Viaje- #Compras- #Social- #Estudio- #Otro- 
-Fecha de creación: 10-05-2024
-Prioridad: 0
+Titulo: Ian Gallager
+Descripcion: Mandy
+Etiquetas: #Estudio- #Trabajo-#Personal- #Deportes- #Comida- 
+Fecha de creación: 11-05-2024
+Prioridad: 7
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: sa
+Descripcion: gt
+Etiquetas: 
+Fecha de creación: 11-05-2024
+Prioridad: 5
 Estado: Tarea Pendiente
 
 Tipo: con fecha
-Titulo: Bañar a Quancha
-Descripcion: Debo de bañar a Quancha
+Titulo: uj
+Descripcion: es
 Etiquetas: #Estudio- 
-Fecha de creación: 10-05-2024
-Fecha de Vencimiento: 12-06-2045 Hora: 03:56
-Completada: 0
+Fecha de creación: 11-05-2024
+Fecha de Vencimiento: 12-12-2030 Hora: 12:12
+Prioridad: 3
 Estado: Tarea Pendiente
-Tipo: con fecha
-Titulo: TTTTTTTTTTtt
-Descripcion: ola
-Etiquetas: 
-Fecha de creación: 10-05-2024
-Fecha de Vencimiento: 12-03-5000 Hora: 12:04
-Prioridad: 7
-Estado: Tarea Pendiente
+

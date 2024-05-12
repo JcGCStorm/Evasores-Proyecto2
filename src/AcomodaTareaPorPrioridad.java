@@ -5,9 +5,8 @@ public class AcomodaTareaPorPrioridad implements AcomodaTareaStrategy {
     @Override
     public void acomodaTarea(Tarea tarea) {
 
-        // List<Tarea> tarea = TareasAlmacen.getTareas();
+        // List<Tarea> tare = TareasAlmacen.getTareas();
 
-        // tareas.sort((t1, t2) -> Integer.compare(t2.getPrioridad(),
-        // t1.getPrioridad()));
+        // tare.sort((t1, t2) -> Integer.compare(t2.getPrioridad(),t1.getPrioridad()));
     }
 }
