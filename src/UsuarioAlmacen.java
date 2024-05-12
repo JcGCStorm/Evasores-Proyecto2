@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class UsuarioAlmacen {
     private static final String archivoUsuarios = "usuarios.txt";
@@ -27,6 +26,7 @@ public class UsuarioAlmacen {
         return usuario != null && usuario.getPassword().equals(password);
     }
 
+    @SuppressWarnings("unchecked")
     private static List<Usuario> obtenerUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(archivoUsuarios))) {
@@ -44,6 +44,5 @@ public class UsuarioAlmacen {
             System.err.println("Error al guardar usuarios: " + e.getMessage());
         }
     }
-
 
 }

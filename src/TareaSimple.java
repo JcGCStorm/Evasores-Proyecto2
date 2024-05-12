@@ -18,7 +18,6 @@ public class TareaSimple implements Tarea {
     private LocalDate fechaCreacion;
     private LocalDateTime fechaVencimiento;
     private int prioridad;
-  
 
     public TareaSimple(String tipo, String titulo, String descripcion, String etiquetas,
             LocalDate fechaCreacion, int prioridad, TareaEstado estado) {
@@ -26,7 +25,7 @@ public class TareaSimple implements Tarea {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.etiquetas = etiquetas;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaCreacion = LocalDate.now();
         this.prioridad = prioridad;
         this.estado = new TareaPendiente(); // inicialmente pendiente
     }
@@ -95,8 +94,8 @@ public class TareaSimple implements Tarea {
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
-            + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nPrioridad: "
-            + prioridadImput + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
+                    + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nPrioridad: "
+                    + prioridadImput + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
@@ -124,7 +123,6 @@ public class TareaSimple implements Tarea {
         this.prioridad = prioridad;
     }
 
-
     @Override
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
@@ -134,8 +132,6 @@ public class TareaSimple implements Tarea {
     public LocalDateTime getFechaVencimiento() {
         return fechaVencimiento;
     }
-
-
 
     @Override
     public String getEtiquetas() {
@@ -151,6 +147,7 @@ public class TareaSimple implements Tarea {
     public int getPrioridad() {
         return prioridad;
     }
+
     @Override
     public String getTipo() {
         return tipo;
@@ -160,8 +157,6 @@ public class TareaSimple implements Tarea {
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-
-
 
     @Override
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
@@ -177,17 +172,18 @@ public class TareaSimple implements Tarea {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fechaCreacionString = fechaCreacion.format(formatter);
         String estadoString = estado.estadoToString(estado);
         return "Tipo: " + tipo + "\n" +
-               "Titulo: " + titulo + "\n" +
-               "Descripcion: " + descripcion + "\n" +
-               "Etiquetas: " + etiquetas + "\n" +
-               "Fecha de creación: " + fechaCreacionString + "\n" +
-               "Prioridad: " + prioridad + "\n" +
-               "Estado: " + estadoString + "\n";
+                "Titulo: " + titulo + "\n" +
+                "Descripcion: " + descripcion + "\n" +
+                "Etiquetas: " + etiquetas + "\n" +
+                "Fecha de creación: " + fechaCreacionString + "\n" +
+                "Prioridad: " + prioridad + "\n" +
+                "Estado: " + estadoString + "\n";
     }
 }
