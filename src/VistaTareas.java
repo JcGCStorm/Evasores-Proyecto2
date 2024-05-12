@@ -1,20 +1,23 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class VistaTareas {
 
+    private static String obtenerArchivoTareasUsuario(Usuario usuario) {
+        return usuario.getUsername() + "_tareas.txt";
+    }
+
     /**
      * Este metodo imprime las tareas del archivo txt, primero lee el archivo
      * linea por linea y las va imprimiendo, si no hay tareas, imprime un mensaje
      * diciendo que no hay tareas.
      */
-    public static void verTareas() {
-        String nombreArchivo = "tareas.txt";
+    public static void verTareas(Usuario usuario) {
+        String nombreArchivo = obtenerArchivoTareasUsuario(usuario);
 
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
@@ -32,8 +35,8 @@ public class VistaTareas {
      * Del arrayList de tareas, simplemente lo recorre y va mostrando
      * los atributos de cada tarea.
      */
-    public static void muestraTareas() {
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+    public static void muestraTareas(Usuario usuario) {
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         if (tareas == null || tareas.isEmpty()) {
             System.out.println("No hay tareas para mostrar");
             return;
@@ -69,6 +72,3 @@ public class VistaTareas {
         }
     }
 }
- 
-
-    

@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface Tarea {
-    void construyeTarea();
+    void construyeTarea(Usuario usuario);
 
     String getTipo();
 

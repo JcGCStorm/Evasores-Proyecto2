@@ -14,6 +14,7 @@ public class TareasAlmacen {
     static List<Tarea> tareas = new ArrayList<>();
 
     public TareasAlmacen(Tarea tarea) {
+
         tareas.add(tarea);
     }
 
@@ -28,6 +29,10 @@ public class TareasAlmacen {
         return tareas;
     }
 
+    private static String obtenerArchivoTareasUsuario(Usuario usuario) {
+        return usuario.getUsername() + "_tareas.txt";
+    }
+
     /**
      * Este metodo es el más perrillo y es el que se encarga de leer el archivo
      * Del txt va recorriendo linea por linea y separa los valores por el ": "
@@ -35,9 +40,10 @@ public class TareasAlmacen {
      * vamos a tener que modificar ligeramente este metodo, solamente en la
      * parte de la creación de la tarea, pero solo eso.
      */
-    public static List<Tarea> getTareas() {
+    public static List<Tarea> getTareas(Usuario usuario) {
         // el nombre del archivo que vamos a leer
-        String nombreArchivo = "tareas.txt";
+        String nombreArchivo = obtenerArchivoTareasUsuario(usuario);
+
         tareas.clear();
         try {
             // Creamos la instancia de BufferedReader para leer el archivo

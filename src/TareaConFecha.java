@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class TareaConFecha implements Tarea {
 
     private TareaEstado estado; // Estado actual de la tarea
-    String nombreArchivo = "tareas.txt";
     private String tipo = "con fecha";
     private String titulo;
     private String descripcion;
@@ -68,7 +67,7 @@ public class TareaConFecha implements Tarea {
      * de la misma, ademas que la guarda en un archivo de texto.
      */
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
         System.out.print("Titulo: ");
@@ -151,6 +150,7 @@ public class TareaConFecha implements Tarea {
         System.out.println(tarea);
 
         try {
+            String nombreArchivo = usuario.getUsername() + "_tareas.txt";
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
             bufferedWriter.write(tarea);
@@ -159,7 +159,7 @@ public class TareaConFecha implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo");
         }
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
     // Getters de los atributos de las tareas con fecha.

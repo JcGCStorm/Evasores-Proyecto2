@@ -13,6 +13,10 @@ import java.util.Scanner;
 public class TareasControlador {
     Scanner scanner = new Scanner(System.in);
 
+    private static String obtenerArchivoTareasUsuario(Usuario usuario) {
+        return usuario.getUsername() + "_tareas.txt";
+    }
+
     /**
      * Este metodo es el que se encarga de crear las tareas, primero pregunta si
      * se desea agregar una tarea, si la respuesta es no, se sale del ciclo, si
@@ -24,39 +28,44 @@ public class TareasControlador {
      * válida.
      */
 
-    public static void crearTarea() {
+    public static void crearTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
+        String archivoTareasUsuario = obtenerArchivoTareasUsuario(usuario);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
         FabricaTareas tareaConFecha = new FabricaTareasConFecha();
+
         boolean agregarTareas = true;
 
-        while (agregarTareas) {
-            System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
-            String decision = scanner.nextLine().trim();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTareasUsuario, true))) {
+            while (agregarTareas) {
+                System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
+                String decision = scanner.nextLine().trim();
 
-            if (decision.equalsIgnoreCase("no")) {
-                agregarTareas = false;
-            } else if (decision.equalsIgnoreCase("si")) {
-                System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
-                String tipoTarea = scanner.nextLine().trim();
+                if (decision.equalsIgnoreCase("no")) {
+                    agregarTareas = false;
+                } else if (decision.equalsIgnoreCase("si")) {
+                    System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
+                    String tipoTarea = scanner.nextLine().trim();
 
-                Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
+                    Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
 
-                if (tipoTarea.equalsIgnoreCase("con fecha")) {
-                    nuevaTarea = tareaConFecha.crear(); // Crear tarea con fecha
-                } else if (tipoTarea.equalsIgnoreCase("simple")) {
-                    nuevaTarea = tareaSimple.crear(); // Crear tarea simple
+                    if (tipoTarea.equalsIgnoreCase("con fecha")) {
+                        nuevaTarea = tareaConFecha.crear(usuario); // Crear tarea con fecha
+                    } else if (tipoTarea.equalsIgnoreCase("simple")) {
+                        nuevaTarea = tareaSimple.crear(usuario); // Crear tarea simple
+                    } else {
+                        System.out.println("Opción no válida");
+                    }
+
+                    if (nuevaTarea != null) {
+                        TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
+                    }
                 } else {
                     System.out.println("Opción no válida");
                 }
-
-                if (nuevaTarea != null) {
-                    TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
-                }
-
-            } else {
-                System.out.println("Opción no válida");
             }
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo de tareas: " + e.getMessage());
         }
     }
 
@@ -74,9 +83,9 @@ public class TareasControlador {
                 System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
                 String tipoTarea = scanner.nextLine().trim();
                 if (tipoTarea.equalsIgnoreCase("con fecha")) {
-                    tareaConFecha.crear();
+                    // tareaConFecha.crear();
                 } else if (tipoTarea.equalsIgnoreCase("simple")) {
-                    tareaSimple.crear();
+                    // tareaSimple.crear();
                 } else {
                     System.out.println("Opción no válida");
                 }
@@ -89,8 +98,8 @@ public class TareasControlador {
         }
     }
 
-    public void modifica() {
-        VistaTareas.muestraTareas();
+    public void modifica(Usuario usuario) {
+        VistaTareas.muestraTareas(usuario);
         System.out.println("¿Qué tarea desea modificar?");
         List<Tarea> tareas = TareasAlmacen.obtenArreglo();
         Scanner sc = new Scanner(System.in);
@@ -100,32 +109,32 @@ public class TareasControlador {
             System.out.println("Tarea no válida");
         } else {
             if (tarea.getTipo().equals("simple")) {
-                modificaTareaSimple(tarea);
+                modificaTareaSimple(tarea, usuario);
             } else if (tarea.getTipo().equals("con fecha")) {
-                modificaTareaConFecha(tarea);
+                modificaTareaConFecha(tarea, usuario);
             }
         }
     }
 
-    public void modificaTareaConFecha(Tarea tarea) {
+    public void modificaTareaConFecha(Tarea tarea, Usuario usuario) {
         System.out.println("\n¿Qué desea modificar? \n 1. Titulo. \n 2. Descripcion." +
                 "\n 3. Etiquetas.\n 4. Estado. \n 5. Fecha de Vencimiento" + "\n 0. Salir.");
-        modifica(tarea);
+        modifica(tarea, usuario);
     }
 
-    public void modificaTareaSimple(Tarea tarea) {
+    public void modificaTareaSimple(Tarea tarea, Usuario usuario) {
         System.out.println("\n¿Qué desea modificar? \n 1. Titulo. \n 2. Descripcion." +
                 "\n 3. Etiquetas.\n 4. Estado" + "\n 0. Salir.");
-        modifica(tarea);
+        modifica(tarea, usuario);
     }
 
-    public void modifica(Tarea tarea) {
+    public void modifica(Tarea tarea, Usuario usuario) {
         String parametro = scanner.nextLine().trim();
-        String parametroNuevo = "";
-        String parametroViejo = "";
-        String archivo = "tareas.txt";
-        String mensaje = "";
-        String paramTarea = "";
+        String parametroNuevo;
+        String parametroViejo;
+        String archivo = obtenerArchivoTareasUsuario(usuario); // Obtener el archivo de tareas del usuario
+        String mensaje;
+        String paramTarea;
         if (parametro.equals("1")) {
             parametroViejo = "Titulo: ";
             mensaje = "Ingrese el nuevo valor para el " + parametroViejo;
@@ -222,7 +231,7 @@ public class TareasControlador {
         } catch (IOException e) {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
-        TareasAlmacen.getTareas();
+        TareasAlmacen.getTareas(usuario);
     }
 
     public String modificarEstado(Tarea tarea) {
@@ -321,18 +330,18 @@ public class TareasControlador {
                 + minutosFormateados;
     }
 
-    public void eliminaTarea() {
-        VistaTareas.muestraTareas();
+    public void eliminaTarea(Usuario usuario) {
+        VistaTareas.muestraTareas(usuario);
         System.out.println("¿Qué tarea desea eliminar?");
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         Scanner sc = new Scanner(System.in);
         int tareaUsuario = sc.nextInt();
         if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
             System.out.println("Tarea no válida");
             return;
         }
-        Tarea tarea = TareasAlmacen.getTareas().get(tareaUsuario);
-        String archivo = "tareas.txt";
+        Tarea tarea = TareasAlmacen.getTareas(usuario).get(tareaUsuario);
+        String archivo = obtenerArchivoTareasUsuario(usuario);
         String eliminaTitulo = "Titulo: " + tarea.getTitulo();
 
         try {
@@ -386,6 +395,6 @@ public class TareasControlador {
         IOException e) {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
-        TareasAlmacen.getTareas();
+        TareasAlmacen.getTareas(usuario);
     }
 }

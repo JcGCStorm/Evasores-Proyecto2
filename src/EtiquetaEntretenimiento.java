@@ -38,7 +38,7 @@ public class EtiquetaEntretenimiento extends TareasDecorator {
     }
 
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'construyeTarea'");
     }

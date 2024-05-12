@@ -1,0 +1,17 @@
+Tipo: simple
+Titulo: Bañar a mi gato
+Descripcion: AAAAAAAA
+Etiquetas: #Estudio- #Trabajo-
+Fecha de creación: 11-05-2024
+Prioridad: 3
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: Sirve
+Descripcion: Si jajajj
+Etiquetas: #Comida- 
+Fecha de creación: 11-05-2024
+Fecha de Vencimiento: 05-05-2030 Hora: 05:06
+Prioridad: 5
+Estado: Tarea En Progreso
+

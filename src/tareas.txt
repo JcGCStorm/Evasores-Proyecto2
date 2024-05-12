@@ -1,8 +1,0 @@
-Tipo: simple
-Titulo: Ian Gallager
-Descripcion: Mandy
-Etiquetas: #Estudio- #Trabajo-#Personal- #Deportes- #Comida- 
-Fecha de creación: 11-05-2024
-Prioridad: 7
-Estado: Tarea Pendiente
-

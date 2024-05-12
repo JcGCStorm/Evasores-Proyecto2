@@ -38,7 +38,7 @@ public class TareaSimpleCopia implements Tarea {
      * de la misma, ademas que la guarda en un archivo de texto.
      */
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
         System.out.print("Titulo: ");

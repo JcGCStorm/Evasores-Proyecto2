@@ -61,7 +61,7 @@ public class TareaSimple implements Tarea {
     }
 
     @Override
-    public void construyeTarea() {
+    public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese detalles de la tarea simple:");
         System.out.print("Titulo: ");
@@ -90,9 +90,9 @@ public class TareaSimple implements Tarea {
 
         // Guardar la tarea en un archivo de texto
         try {
-            FileWriter salida = new FileWriter("tareas.txt", true);
+            String nombreArchivo = usuario.getUsername() + "_tareas.txt";
+            FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
-
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
                     + "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaString + "\nPrioridad: "
                     + prioridadImput + "\nEstado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
@@ -102,7 +102,7 @@ public class TareaSimple implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al guardar la tarea: " + e.getMessage());
         }
-        List<Tarea> tareas = TareasAlmacen.getTareas();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
     /*
