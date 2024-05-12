@@ -327,44 +327,13 @@ public class TareasControlador {
         List<Tarea> tareas = TareasAlmacen.getTareas();
         Scanner sc = new Scanner(System.in);
         int tareaUsuario = sc.nextInt();
-        Tarea tarea = TareasAlmacen.getTareas().get(tareaUsuario);
         if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
             System.out.println("Tarea no válida");
+            return;
         }
+        Tarea tarea = TareasAlmacen.getTareas().get(tareaUsuario);
         String archivo = "tareas.txt";
-        // Texto que deseas eliminar
-        String eliminaTipo = "";
-        String eliminaTitulo = "";
-        String eliminaDescripcion = "";
-        String eliminaEtiquetas = "";
-        String eliminaEstado = "";
-        String eliminaFechaVencimiento = "";
-        String eliminaFechaCreacion = "";
-        String eliminaPrioridad = "";
-
-        if (tarea instanceof TareaConFecha) {
-            DateTimeFormatter formateadorVencimiento = DateTimeFormatter
-                    .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
-            LocalDateTime fechaHora = tarea.getFechaVencimiento();
-            String fechaHoraString = fechaHora.format(formateadorVencimiento);
-            eliminaTipo = "Tipo: " + tarea.getTipo();
-            eliminaTitulo = "Titulo: " + tarea.getTitulo();
-            eliminaDescripcion = "Descripcion: " + tarea.getDescripcion();
-            eliminaEtiquetas = "Etiquetas: " + tarea.getEtiquetas();
-            eliminaFechaVencimiento = "Fecha de Vencimiento: " + fechaHoraString;
-            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
-            eliminaFechaCreacion = "Fecha de Creacion: " + fechaCreacion;
-            eliminaEstado = "Estado: " + tarea.estadoToString(tarea.getEstado());
-        } else if (tarea instanceof TareaSimple) {
-            eliminaTipo = "Tipo: " + tarea.getTipo();
-            eliminaTitulo = "Titulo: " + tarea.getTitulo();
-            eliminaDescripcion = "Descripcion: " + tarea.getDescripcion();
-            eliminaEtiquetas = "Etiquetas: " + tarea.getEtiquetas();
-            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
-            eliminaFechaCreacion = "Fecha de Creacion: " + fechaCreacion;
-        }
+        String eliminaTitulo = "Titulo: " + tarea.getTitulo();
 
         try {
             // Lee el contenido del archivo
@@ -419,77 +388,4 @@ public class TareasControlador {
         }
         TareasAlmacen.getTareas();
     }
-
-    public void eliminaTareas() {
-        String nombreArchivo = "tareas.txt";
-        VistaTareas.muestraTareas();
-        System.out.println("¿Qué tarea desea eliminar?");
-        List<Tarea> tareas = TareasAlmacen.getTareas();
-        Scanner sc = new Scanner(System.in);
-        int tareaUsuario = sc.nextInt();
-        Tarea tarea = TareasAlmacen.getTareas().get(tareaUsuario);
-        String identificadorTarea = "";
-        // Texto del bloque a eliminar
-        if (tarea instanceof TareaConFecha) {
-            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
-            DateTimeFormatter formateadorVencimiento = DateTimeFormatter
-                    .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
-            LocalDateTime fechaHora = tarea.getFechaVencimiento();
-            String fechaHoraString = fechaHora.format(formateadorVencimiento);
-            identificadorTarea = "Tipo: " + tarea.getTipo() + "\nTitulo: " + tarea.getTitulo() +
-                    "\nDescripcion: " + tarea.getDescripcion() + "\nEtiquetas: " + tarea.getEtiquetas()
-                    + "\nFecha de Creacion: " + fechaCreacion + "\nFecha de Vencimiento: " +
-                    fechaHoraString + "\nPrioridad: " + tarea.getPrioridad() + "\nEstado: " +
-                    tarea.estadoToString(tarea.getEstado()) + "\n";
-        } else if (tarea instanceof TareaSimple) {
-            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
-            identificadorTarea = "Tipo: " + tarea.getTipo() + "\nTitulo: " + tarea.getTitulo() +
-                    "\nDescripcion: " + tarea.getDescripcion() + "\nEtiquetas: " + tarea.getEtiquetas()
-                    + "\nFecha de Creacion: " + fechaCreacion + "\n" + "Prioridad: " + tarea.getPrioridad() + "\n" +
-                    "Estado: " + tarea.estadoToString(tarea.getEstado()) + "\n";
-        }
-
-        // Crear un StringBuilder para almacenar el contenido del archivo
-        StringBuilder contenido = new StringBuilder();
-
-        // Bandera para indicar si estamos dentro del bloque a eliminar
-        boolean encontrada = false;
-
-        // Leer el contenido del archivo y eliminar el bloque deseado
-        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                // Si encontramos la tarea a eliminar, activamos la bandera
-                if (linea.equals(identificadorTarea)) {
-                    encontrada = true;
-                    continue;
-                }
-
-                // Si encontramos la tarea y ahora estamos en el siguiente bloque, desactivamos
-                // la bandera
-                if (encontrada && linea.startsWith("Tipo: ")) {
-                    encontrada = false;
-                }
-
-                // Si no encontramos la tarea, añadimos la línea al StringBuilder
-                if (!encontrada) {
-                    contenido.append(linea).append("\n");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Escribir el contenido actualizado de vuelta al archivo
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            bw.write(contenido.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Texto eliminado exitosamente del archivo.");
-    }
-
 }

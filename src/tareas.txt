@@ -6,20 +6,3 @@ Fecha de creación: 11-05-2024
 Prioridad: 7
 Estado: Tarea Pendiente
 
-Tipo: simple
-Titulo: sa
-Descripcion: gt
-Etiquetas: 
-Fecha de creación: 11-05-2024
-Prioridad: 5
-Estado: Tarea Pendiente
-
-Tipo: con fecha
-Titulo: uj
-Descripcion: es
-Etiquetas: #Estudio- 
-Fecha de creación: 11-05-2024
-Fecha de Vencimiento: 12-12-2030 Hora: 12:12
-Prioridad: 3
-Estado: Tarea Pendiente
-
