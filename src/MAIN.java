@@ -132,7 +132,7 @@ public class MAIN {
             System.out.println("1. Ver Tareas");
             System.out.println("2. Crear Tareas");
             System.out.println("3. Modificar Tareas");
-            System.out.println("4. Compartir Tareas");
+            System.out.println("4. Borrar Tareas");
 
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
@@ -146,6 +146,10 @@ public class MAIN {
                     break;
                 case "3":
                     proxy.modificarTarea(usuario); // Utilizando el proxy para modificar una tarea
+                    break;
+                case "4":
+                    TareasControlador control = new TareasControlador();
+                    control.eliminaTarea(usuario); // Utilizando el proxy para compartir una tarea
                     break;
 
                 case "0":
