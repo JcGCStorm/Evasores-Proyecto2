@@ -389,4 +389,71 @@ public class TareasControlador {
         return estadoString;
     }
 
+    public void eliminaTarea(Usuario usuario) {
+        VistaTareas.muestraTareas(usuario);
+        System.out.println("¿Qué tarea desea eliminar?");
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
+        Scanner sc = new Scanner(System.in);
+        int tareaUsuario = sc.nextInt();
+        if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
+            System.out.println("Tarea no válida");
+            return;
+        }
+        Tarea tarea = TareasAlmacen.getTareas(usuario).get(tareaUsuario);
+        String archivo = "tareas.txt";
+        String eliminaTitulo = "Titulo: " + tarea.getTitulo();
+
+        try {
+            // Lee el contenido del archivo
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            // Buscar y modificar la línea deseada
+            for (int i = 0; i < lineas.size(); i++) {
+                if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: con fecha")) {
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i - 1);
+                    lineas.remove(i - 1);
+                    tareas.remove(tarea);
+                    break;
+                } else if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: simple")) {
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i);
+                    lineas.remove(i - 1);
+                    lineas.remove(i - 1);
+                    lineas.remove(i - 1);
+                    tareas.remove(tarea);
+                    break;
+                }
+            }
+            // Escribir el contenido modificado de vuelta al archivo
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close();
+
+            System.out.println("Archivo modificado exitosamente.");
+
+        } catch (
+
+        IOException e) {
+            System.out.println("Error al manipular el archivo: " + e.getMessage());
+        }
+        TareasAlmacen.getTareas(usuario);
+    }
 }
