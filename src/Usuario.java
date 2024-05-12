@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario implements Serializable {
     private String username;
@@ -16,4 +18,6 @@ public class Usuario implements Serializable {
     public String getPassword() {
         return password;
     }
+
+
 }

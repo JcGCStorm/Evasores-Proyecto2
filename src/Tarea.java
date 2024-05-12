@@ -42,5 +42,5 @@ public interface Tarea {
     void volverPendiente();
 
     String estadoToString(TareaEstado estado);
-
+    public String toString();
 }

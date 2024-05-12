@@ -237,4 +237,20 @@ public class TareaConFecha implements Tarea {
         return estado.estadoToString(estado);
     }
 
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String fechaCreacionString = fechaCreacion.format(formatter);
+        String fechaVencimientoString = fechaVencimiento.format(formatter);
+        String estadoString = estado.estadoToString(estado);
+        return "Tipo: " + tipo + "\n" +
+               "Titulo: " + titulo + "\n" +
+               "Descripcion: " + descripcion + "\n" +
+               "Etiquetas: " + etiquetas + "\n" +
+               "Fecha de creación: " + fechaCreacionString + "\n" +
+               "Fecha de vencimiento: " + fechaVencimientoString + "\n" +
+               "Prioridad: " + prioridad + "\n" +
+               "Estado: " + estadoString + "\n";
+    }
+
 }

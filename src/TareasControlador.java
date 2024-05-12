@@ -16,7 +16,7 @@ public class TareasControlador {
     private static String obtenerArchivoTareasUsuario(Usuario usuario) {
         return usuario.getUsername() + "_tareas.txt";
     }
-    
+
     /**
      * Este metodo es el que se encarga de crear las tareas, primero pregunta si
      * se desea agregar una tarea, si la respuesta es no, se sale del ciclo, si
@@ -28,7 +28,7 @@ public class TareasControlador {
      * válida.
      */
 
-     public static void crearTarea(Usuario usuario) {
+    public static void crearTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in); // Cambio aquí
         String archivoTareasUsuario = obtenerArchivoTareasUsuario(usuario);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
@@ -83,9 +83,9 @@ public class TareasControlador {
                 System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
                 String tipoTarea = scanner.nextLine().trim();
                 if (tipoTarea.equalsIgnoreCase("con fecha")) {
-                    //tareaConFecha.crear();
+                    // tareaConFecha.crear();
                 } else if (tipoTarea.equalsIgnoreCase("simple")) {
-                    //tareaSimple.crear();
+                    // tareaSimple.crear();
                 } else {
                     System.out.println("Opción no válida");
                 }
@@ -121,13 +121,13 @@ public class TareasControlador {
                 "\n 3. Etiquetas.\n 4. Estado. \n 5. Fecha de Vencimiento" + "\n 0. Salir.");
         modifica(tarea, usuario); // Pasa también el usuario como un parámetro adicional
     }
-    
+
     public void modificaTareaSimple(Tarea tarea, Usuario usuario) {
         System.out.println("\n¿Qué desea modificar? \n 1. Titulo. \n 2. Descripcion." +
                 "\n 3. Etiquetas.\n 4. Estado" + "\n 0. Salir.");
         modifica(tarea, usuario); // Pasa también el usuario como un parámetro adicional
     }
-    
+
     public void modifica(Tarea tarea, Usuario usuario) {
         String parametro = scanner.nextLine().trim();
         String parametroNuevo = "";
@@ -186,7 +186,7 @@ public class TareasControlador {
         } else {
             System.out.println("No has modificado nada.");
             return;
-            }
+        }
 
         try {
             // Lee el contenido del archivo
@@ -242,7 +242,7 @@ public class TareasControlador {
         String archivo = obtenerArchivoTareasUsuario(usuario); // Obtener el archivo de tareas del usuario
         String mensaje = "";
         String paramTarea = "";
-        
+
         try {
             // Lee el contenido del archivo
             List<String> lineas = new ArrayList<>();
@@ -252,12 +252,14 @@ public class TareasControlador {
                 lineas.add(linea);
             }
             br.close();
-    
+
             // Buscar y modificar la línea deseada
             for (int i = 0; i < lineas.size(); i++) {
                 if (lineas.get(i).contains(tarea.getTitulo())) {
-                    // Aquí debes ajustar la lógica según cómo estén almacenadas las tareas en tu archivo de texto
-                    // Puedes usar un formato específico para cada tarea, por ejemplo, separando los campos por un carácter especial
+                    // Aquí debes ajustar la lógica según cómo estén almacenadas las tareas en tu
+                    // archivo de texto
+                    // Puedes usar un formato específico para cada tarea, por ejemplo, separando los
+                    // campos por un carácter especial
                     // Por ejemplo: "Titulo:Mi Tarea|Descripcion:Descripción de la tarea|..."
                     String[] campos = lineas.get(i).split("\\|"); // Dividir la línea en campos usando el carácter '|'
                     for (String campo : campos) {
@@ -275,16 +277,16 @@ public class TareasControlador {
                     break; // Terminamos de buscar una vez que encontramos la tarea
                 }
             }
-    
+
             // Escribir el contenido modificado de vuelta al archivo
             BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
             for (String line : lineas) {
                 bw.write(line + "\n");
             }
             bw.close();
-    
+
             System.out.println("Archivo modificado exitosamente.");
-    
+
         } catch (IOException e) {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
@@ -345,7 +347,6 @@ public class TareasControlador {
         return diaFormateado + "-" + mesFormateado + "-" + año + " Hora: " + horaFormateada + ":"
                 + minutosFormateados;
     }
-    
 
     public String modificarEstado(Tarea tarea) {
         if (tarea.getEstado() == null) {
@@ -387,4 +388,6 @@ public class TareasControlador {
         }
         return estadoString;
     }
+
+
 }

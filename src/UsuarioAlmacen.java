@@ -44,4 +44,6 @@ public class UsuarioAlmacen {
             System.err.println("Error al guardar usuarios: " + e.getMessage());
         }
     }
+
+
 }

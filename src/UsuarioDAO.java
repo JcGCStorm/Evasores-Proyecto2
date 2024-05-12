@@ -8,10 +8,8 @@ public class UsuarioDAO {
     private Connection conexion;
 
     public UsuarioDAO() {
-        // Establecer la conexión con la base de datos
         try {
             conexion = DriverManager.getConnection("jdbc:sqlite:usuarios.db");
-            // Crear la tabla si no existe
             String sql = "CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY, username TEXT, password TEXT)";
             conexion.createStatement().execute(sql);
         } catch (SQLException e) {

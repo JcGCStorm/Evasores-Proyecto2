@@ -177,4 +177,17 @@ public class TareaSimple implements Tarea {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaCreacionString = fechaCreacion.format(formatter);
+        String estadoString = estado.estadoToString(estado);
+        return "Tipo: " + tipo + "\n" +
+               "Titulo: " + titulo + "\n" +
+               "Descripcion: " + descripcion + "\n" +
+               "Etiquetas: " + etiquetas + "\n" +
+               "Fecha de creación: " + fechaCreacionString + "\n" +
+               "Prioridad: " + prioridad + "\n" +
+               "Estado: " + estadoString + "\n";
+    }
 }
