@@ -7,6 +7,9 @@ public abstract class FabricaTareas {
     * las clases hijas van a implementar el método construyeTarea según se
     * requiera.
     * y finalmente regresar la tarea creada.
+    * 
+    * @param usuario
+    * @return
     */
    public Tarea crear(Usuario usuario) {
       Tarea tarea = construyeTarea();

@@ -2,25 +2,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * Clase que representa el ingrediente Cebolla para "decorar" (agregarle a) una
- * baguette
- * Extiende de IngredientesDecorator
+ * Clase que representa la etiqueta EtiquetaHogar para "decorar" (agregarle a)
+ * una tarea
+ * Extiende de TareasDecorator
  */
 public class EtiquetaHogar extends TareasDecorator {
 
     /**
-     * Constructor de la clase Cebolla
+     * Constructor de la clase EtiquetaHogar
      * 
-     * @param pan La baguette a decorar con cebolla
+     * @param tarea La tarea a decorar con la etiqueta Hogar
      */
     public EtiquetaHogar(Tarea tarea) {
         super(tarea);
     }
 
     /**
-     * Obtiene la descripción de la baguette con cebolla
+     * Obtiene la descripción de la tarea con la etiqueta Hogar
      * 
-     * @return La descripción de la baguette con cebolla
+     * @return La descripción de la tarea con la etiqueta hogar
      */
     @Override
     public String getDescripcion() {
@@ -28,15 +28,19 @@ public class EtiquetaHogar extends TareasDecorator {
     }
 
     /**
-     * Obtiene el precio de la baguette con cebolla
+     * Obtiene las etiquetas de la tarea
      * 
-     * @return El precio de la baguette con cebolla
+     * @return las etiquetas de la tarea
      */
     @Override
     public String getEtiquetas() {
-        return tarea.getEtiquetas() + "#Hogar- ";
+        return tarea.getEtiquetas() + "#Hogar-";
     }
 
+    /*
+     * Este metodo solamente lo sobreescribimos para que no de error en la clase
+     * pero no hace nada, solo por que extiende a tareas decorador
+     */
     @Override
     public void construyeTarea(Usuario usuario) {
         // TODO Auto-generated method stub

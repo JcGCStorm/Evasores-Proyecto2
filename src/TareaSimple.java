@@ -64,10 +64,34 @@ public class TareaSimple implements Tarea {
     public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese detalles de la tarea simple:");
-        System.out.print("Titulo: ");
-        this.titulo = scanner.nextLine();
-        System.out.print("Descripcion: ");
-        this.descripcion = scanner.nextLine();
+        do {
+            System.out.print("Titulo: ");
+            this.titulo = scanner.nextLine();
+            if (this.titulo.trim().isEmpty()) {
+                System.out.println("No puedes dejar el título vacío.");
+            }
+        } while (this.titulo.trim().isEmpty());
+
+        System.out.print("¿Desea agregar una descripción? (S/N): ");
+        String respuesta;
+        do {
+            respuesta = scanner.nextLine();
+            if (!respuesta.equalsIgnoreCase("S") && !respuesta.equalsIgnoreCase("N")) {
+                System.out.println("Por favor, ingresa S para 'Sí' o N para 'No'.");
+            }
+        } while (!respuesta.equalsIgnoreCase("S") && !respuesta.equalsIgnoreCase("N"));
+
+        if (respuesta.equalsIgnoreCase("S")) {
+            do {
+                System.out.print("Descripcion: ");
+                this.descripcion = scanner.nextLine();
+                if (this.descripcion.trim().isEmpty()) {
+                    System.out.println("No puedes dejar la descripción vacía si has decidido agregarla.");
+                }
+            } while (this.descripcion.trim().isEmpty());
+        } else {
+            this.descripcion = "";
+        }
         System.out.print("Etiquetas: ");
         Etiqueta agregaEtiqueta = new Etiqueta();
 
@@ -140,7 +164,7 @@ public class TareaSimple implements Tarea {
 
     @Override
     public void setEtiquetas(String etiquetas) {
-        this.etiquetas = null;
+        this.etiquetas = etiquetas;
     }
 
     @Override

@@ -101,10 +101,14 @@ public class TareasControlador {
     public void modifica(Usuario usuario) {
         VistaTareas.muestraTareas(usuario);
         System.out.println("¿Qué tarea desea modificar?");
-        List<Tarea> tareas = TareasAlmacen.obtenArreglo();
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         Scanner sc = new Scanner(System.in);
         int tareaUsuario = sc.nextInt();
-        Tarea tarea = TareasAlmacen.obtenArreglo().get(tareaUsuario);
+        if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
+            System.out.println("Tarea no válida");
+            return;
+        }
+        Tarea tarea = TareasAlmacen.getTareas(usuario).get(tareaUsuario);
         if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
             System.out.println("Tarea no válida");
         } else {
@@ -203,12 +207,10 @@ public class TareasControlador {
                 if (parametroViejo == "Estado: ") {
                     if (tarea instanceof TareaConFecha && lineas.get(i).equals(paramTarea)
                             && lineas.get(i - 5).equals("Descripcion: " + tarea.getDescripcion())) {
-                        System.out.println(tarea.getDescripcion());
                         lineas.set(i, parametroViejo + parametroNuevo);
                         break; // Terminamos de buscar una vez que encontramos la tarea
                     } else if (tarea instanceof TareaSimple && lineas.get(i).equals(paramTarea)
                             && lineas.get(i - 4).equals("Descripcion: " + tarea.getDescripcion())) {
-                        System.out.println(tarea.getDescripcion());
                         lineas.set(i, parametroViejo + parametroNuevo);
                         break;
                     }
@@ -259,8 +261,8 @@ public class TareasControlador {
                     estadoString = "Completada";
                     tarea.setEstado(new TareaCompletada());
                 } else {
-                    estadoString = "Tarea En Progreso";
-                    tarea.setEstado(new TareaEnProgreso());
+                    estadoString = "Tarea Pendiente";
+                    tarea.setEstado(new TareaPendiente());
                 }
                 break;
             case 3:
@@ -396,5 +398,6 @@ public class TareasControlador {
             System.out.println("Error al manipular el archivo: " + e.getMessage());
         }
         TareasAlmacen.getTareas(usuario);
+        VistaTareas.muestraTareas(usuario);
     }
 }

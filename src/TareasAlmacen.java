@@ -13,22 +13,29 @@ public class TareasAlmacen {
      */
     static List<Tarea> tareas = new ArrayList<>();
 
-    public TareasAlmacen(Tarea tarea) {
-
-        tareas.add(tarea);
-    }
-
     /**
-     * Lo mismo que el anterior, creo que no lo uso
+     * Simplemente nos ayuda a guardar una tarea en el arreglo de tareas.
      */
     public static void guardaTarea(Tarea tarea) {
         tareas.add(tarea);
     }
 
+    /**
+     * Este metodo simplemente nos ayuda a obtener el arreglo de tareas.
+     * 
+     * @return el arreglo de tareas.
+     */
     public static List<Tarea> obtenArreglo() {
         return tareas;
     }
 
+    /**
+     * Este metodo nos ayuda a obtener el nombre del archivo de tareas de un usuario
+     * en específico.
+     * 
+     * @param usuario el usuario del que queremos obtener el archivo de tareas.
+     * @return el nombre del archivo de tareas del usuario.
+     */
     private static String obtenerArchivoTareasUsuario(Usuario usuario) {
         return usuario.getUsername() + "_tareas.txt";
     }

@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class VistaTareas {
@@ -16,7 +17,9 @@ public class VistaTareas {
      * linea por linea y las va imprimiendo, si no hay tareas, imprime un mensaje
      * diciendo que no hay tareas.
      */
+
     public static void verTareas(Usuario usuario) {
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         String nombreArchivo = obtenerArchivoTareasUsuario(usuario);
 
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
@@ -29,11 +32,63 @@ public class VistaTareas {
         } catch (IOException e) {
             System.err.println("Error de E/S al leer el archivo: " + e.getMessage());
         }
+
+        boolean tareaProximaVencer = false;
+        boolean tareaVencida = false;
+        LocalDateTime ahora = LocalDateTime.now();
+        for (Tarea tarea : tareas) {
+            if (tarea instanceof TareaConFecha) {
+                TareaConFecha tareaConFecha = (TareaConFecha) tarea;
+                LocalDateTime fechaVencimiento = tareaConFecha.getFechaVencimiento();
+                long horasHastaVencimiento = ChronoUnit.HOURS.between(ahora, fechaVencimiento);
+                if (horasHastaVencimiento <= 0) { // Si las horas son <= 0, la tarea está vencida
+                    tareaVencida = true;
+                } else if (horasHastaVencimiento <= 72) {
+                    tareaProximaVencer = true;
+                }
+            }
+        }
+
+        if (tareaProximaVencer) {
+            System.out
+                    .println("¡URGENTE, mi estimado procrastinador! Tienes tarea/s para los próximos 3 días o menos.");
+
+            System.out.println("Tareas próximas a vencer:");
+            for (Tarea tarea : tareas) {
+                if (tarea instanceof TareaConFecha) {
+                    TareaConFecha tareaConFecha = (TareaConFecha) tarea;
+                    LocalDateTime fechaVencimiento = tareaConFecha.getFechaVencimiento();
+                    long horasHastaVencimiento = ChronoUnit.HOURS.between(ahora, fechaVencimiento);
+
+                    if (horasHastaVencimiento <= 72) {
+                        System.out.println("- " + tareaConFecha.getTitulo());
+                    }
+                }
+            }
+        }
+
+        if (tareaVencida) {
+            System.out.println("¡OH NO! Tienes tareas vencidas ): irresponsable:");
+
+            for (Tarea tarea : tareas) {
+                if (tarea instanceof TareaConFecha) {
+                    TareaConFecha tareaConFecha = (TareaConFecha) tarea;
+                    LocalDateTime fechaVencimiento = tareaConFecha.getFechaVencimiento();
+                    long horasDesdeVencimiento = ChronoUnit.HOURS.between(fechaVencimiento, ahora);
+
+                    if (horasDesdeVencimiento > 0) {
+                        System.out.println("- " + tareaConFecha.getTitulo());
+                    }
+                }
+            }
+        }
     }
 
     /**
      * Del arrayList de tareas, simplemente lo recorre y va mostrando
      * los atributos de cada tarea.
+     * 
+     * @param usuario
      */
     public static void muestraTareas(Usuario usuario) {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);

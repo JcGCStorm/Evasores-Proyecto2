@@ -31,9 +31,14 @@ public class UsuarioAlmacen {
         List<Usuario> usuarios = new ArrayList<>();
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(archivoUsuarios))) {
             usuarios = (List<Usuario>) inputStream.readObject();
+        } catch (FileNotFoundException e) {
+            // El archivo aún no existe, se puede crear uno vacío si se desea
         } catch (IOException | ClassNotFoundException e) {
-            // El archivo aún no existe o está vacío, se maneja aquí
+            // Otros errores de lectura o deserialización, se manejan aquí
+            System.err.println("Error al leer usuarios: " + e.getMessage());
+            throw new RuntimeException("Error al leer usuarios", e);
         }
+
         return usuarios;
     }
 

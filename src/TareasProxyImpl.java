@@ -16,7 +16,11 @@ public class TareasProxyImpl implements TareasProxy {
 
     @Override
     public void modificarTarea(Usuario usuario) {
-        controlador.modifica(usuario);
+        try {
+            controlador.modifica(usuario);
+        } catch (Exception e) {
+            System.err.println("Tarea no valida.");
+        }
     }
 
 }

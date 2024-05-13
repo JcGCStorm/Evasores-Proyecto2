@@ -3,16 +3,36 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Etiqueta {
+    /**
+     * Solo son las etiquetas que se pueden agregar a una tarea. Las creo aquí por
+     * que
+     * después cada etiqueta actualiza su valor para que no se pueda agregar más de
+     * una
+     * y se pueda ver reflejado en el 'menu' de etiquetas.
+     */
     Scanner scanner = new Scanner(System.in);
+    String estudio = "1. Estudio.";
+    String trabajo = "2. Trabajo.";
+    String personal = "3. Personal.";
+    String deportes = "4. Deportes.";
+    String comida = "5. Comida.";
+    String salud = "6. Salud.";
+    String entretenimiento = "7. Entretenimiento.";
+    String hogar = "8. Hogar.";
+    String viaje = "9. Viaje.";
+    String compras = "10. Compras.";
+    String social = "11. Social.";
+    String asambleas = "12. Asambleas.";
+    String otro = "13. Otro.";
+    int[] etiquetasContador = new int[14];
 
     /**
-     * Realiza una compra de productos según la opción seleccionada por el usuario.
-     * Este es parte de nuestro decorator ya que imprime los objetos que compramos
-     * junto al catalogo.
+     * Agrega una etiqueta según la opción seleccionada por el usuario.
      * 
-     * @param opcionUsuario La opción seleccionada por el usuario.
-     * @return true si la compra se realizó con éxito, false si la compra fue
-     *         cancelada o no se pudo completar.
+     * @param titulo      el titulo de la tarea
+     * @param descripcion la descripcion de la tare
+     * @param tipo        el tipo de tarea
+     * @return Tarea, la tarea con la(s) etiqueta(s) agregada(s).
      */
     public Tarea etiquetaTarea(String titulo, String descripcion, String tipo) {
         System.out.println();
@@ -40,19 +60,19 @@ public class Etiqueta {
                         ponmeMas = false;
                     } else {
                         System.out.println("¿Qué etiqueta deseas agregar a tu tarea?");
-                        System.out.println("1. Estudio.");
-                        System.out.println("2. Trabajo.");
-                        System.out.println("3. Personal.");
-                        System.out.println("4. Deportes.");
-                        System.out.println("5. Comida.");
-                        System.out.println("6. Salud.");
-                        System.out.println("7. Entretenimiento.");
-                        System.out.println("8. Hogar.");
-                        System.out.println("9. Viaje.");
-                        System.err.println("10. Compras.");
-                        System.out.println("11. Social");
-                        System.out.println("12. Asambleas");
-                        System.out.println("13. Otro.");
+                        System.out.println(estudio);
+                        System.out.println(trabajo);
+                        System.out.println(personal);
+                        System.out.println(deportes);
+                        System.out.println(comida);
+                        System.out.println(salud);
+                        System.out.println(entretenimiento);
+                        System.out.println(hogar);
+                        System.out.println(viaje);
+                        System.out.println(compras);
+                        System.out.println(social);
+                        System.out.println(asambleas);
+                        System.out.println(otro);
                         System.out.println("0. No agregar más etiquetas");
                         int productoEleccion = scanner.nextInt();
                         if (productoEleccion == 0) {
@@ -60,56 +80,160 @@ public class Etiqueta {
                         } else {
                             switch (productoEleccion) {
                                 case 1:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta estudio a tu tarea.");
+                                    int etiquetaEstudio = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaEstudio == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta estudio a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        estudio = "1. Estudio. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de estudio en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 2:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta trabajo a tu tarea.");
+                                    int etiquetaTrabajo = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaTrabajo == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta trabajo a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        trabajo = "2. Trabajo. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de trabajo en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 3:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Personal a tu tarea.");
+                                    int etiquetaPersonal = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaPersonal == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta personal a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        personal = "3. Personal. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta personal en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 4:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Deportes a tu tarea.");
+                                    int etiquetaDeportes = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaDeportes == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta deportes a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        deportes = "4. Deportes. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de deportes en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 5:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Comida a tu tarea.");
+                                    int etiquetaComida = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaComida == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta comida a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        comida = "5. Comida. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de comida en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 6:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Salud a tu tarea.");
+                                    int etiquetaSalud = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaSalud == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta salud a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        salud = "6. Salud. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de salud en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 7:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Entretenimiento a tu tarea.");
+                                    int etiquetaEntretenimiento = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaEntretenimiento == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta entretenimiento a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        entretenimiento = "7. Entretenimiento. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de entretenimiento en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 8:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Hogar a tu tarea.");
+                                    int etiquetaHogar = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaHogar == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta hogar a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        hogar = "8. Hogar. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de hogar en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 9:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Viaje a tu tarea.");
+                                    int etiquetaViaje = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaViaje == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta viaje a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        viaje = "9. Viaje. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de viaje en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 10:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Compras a tu tarea.");
+                                    int etiquetaCompras = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaCompras == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta compras a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        compras = "10. Compras. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de compras en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 11:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Social a tu tarea.");
+                                    int etiquetaSocial = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaSocial == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta social a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        social = "11. Social. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta social en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 12:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Asambleas a tu tarea.");
+                                    int etiquetaAsambleas = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaAsambleas == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta asambleas a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        asambleas = "12. Asambleas. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de asambleas en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 13:
-                                    tarea = agregarEtiquetas(productoEleccion, tarea);
-                                    System.out.println("Se ha agregado la etiqueta Otro a tu tarea.");
+                                    int etiquetaOtro = etiquetasContador[productoEleccion] + 1;
+                                    if (etiquetaOtro == 1) {
+                                        tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        System.out.println("Se ha agregado la etiqueta otro a tu tarea.");
+                                        etiquetasContador[productoEleccion]++;
+                                        otro = "13. Otro. AGREGADA";
+                                    } else {
+                                        System.out.println(
+                                                "Ya tienes una etiqueta de otro en tu tarea, no puedes agregar más.");
+                                    }
                                     break;
                                 case 0:
                                     ponmeMas = false;
@@ -128,17 +252,17 @@ public class Etiqueta {
     }
 
     /**
-     * Metodo agregarProductos que nos ayuda en el Decorator para poder
-     * añadir elementos al carrito, recibe un int y un producto, y agrega
-     * un producto al carrito.
+     * Metodo agregarEtiquetas que nos ayuda en el Decorator para poder
+     * añadir etiquetas a una tarea, recibe un int y una etiqueta, y agrega
+     * una etiqueta a la tarea.
      * 
-     * @param tipoProducto un int que nos ayuda a controlar el numero de
+     * @param tipoEtiqueta un int que nos ayuda a controlar el numero de
      *                     productos.
-     * @param producto     el carrito que vamos a "envolver" con un producto.
-     * @return el producto con el elemento agregado.
+     * @param tarea        la tarea que vamos a "envolver" con una etiqueta.
+     * @return la tarea con la etiqueta agregada.
      */
-    private Tarea agregarEtiquetas(int tipoProducto, Tarea tarea) {
-        switch (tipoProducto) {
+    private Tarea agregarEtiquetas(int tipoEtiqueta, Tarea tarea) {
+        switch (tipoEtiqueta) {
             case 1:
                 return new EtiquetaEstudio(tarea);
             case 2:
@@ -170,6 +294,9 @@ public class Etiqueta {
         }
     }
 
+    /*
+     * Este metodo nos ayuda a obtener las etiquetas de una tarea.
+     */
     public String etiquetasString(Tarea tarea) {
         return tarea.getEtiquetas();
     }

@@ -1,8 +1,10 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
@@ -61,19 +63,165 @@ public class TareaConFecha implements Tarea {
         return estado;
     }
 
+    @Override
+    public void construyeTarea(Usuario usuario) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese los detalles de la tarea:");
+        String titulo;
+        do {
+            System.out.print("Titulo: ");
+            titulo = scanner.nextLine();
+            if (titulo.trim().isEmpty()) {
+                System.out.println("No puedes dejar el título vacío.");
+            }
+        } while (titulo.trim().isEmpty());
+
+        System.out.print("¿Desea agregar una descripción? (S/N): ");
+        String respuesta = scanner.nextLine();
+        String descripcion = "";
+        if (respuesta.equalsIgnoreCase("S")) {
+            do {
+                System.out.print("Descripcion: ");
+                descripcion = scanner.nextLine();
+                if (descripcion.trim().isEmpty()) {
+                    System.out.println("No puedes dejar la descripción vacía si has decidido agregarla.");
+                }
+            } while (descripcion.trim().isEmpty());
+        }
+
+        System.out.print("Etiquetas: ");
+        Etiqueta agregaEtiqueta = new Etiqueta();
+        Tarea tareaTemp;
+        tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+        etiquetas = tareaTemp.getEtiquetas();
+        LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
+        tareaTemp.setFechaCreacion(fechaCreacion);
+        DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaCreacionString = fechaCreacion.format(formateador);
+
+        int dia, mes, año, hora, minutos;
+
+        boolean fechaValida = false;
+        do {
+            System.out.println("Ingrese la fecha de vencimiento.");
+
+            System.out.println("Escoge el día (con numeros): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido para el día.");
+                scanner.next();
+            }
+            dia = scanner.nextInt();
+
+            System.out.println("Escoge el mes (con numeros): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido para el mes.");
+                scanner.next();
+            }
+            mes = scanner.nextInt();
+
+            System.out.println("Escoge el año (con numeros): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido para el año.");
+                scanner.next();
+            }
+            año = scanner.nextInt();
+
+            System.out.println("Escoge la hora (con numeros): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido para la hora.");
+                scanner.next();
+            }
+            hora = scanner.nextInt();
+
+            System.out.println("Escoge los minutos (con numeros): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido para los minutos.");
+                scanner.next();
+            }
+            minutos = scanner.nextInt();
+
+            try {
+                LocalDate.of(año, mes, dia);
+                LocalTime.of(hora, minutos);
+                fechaValida = true;
+            } catch (DateTimeException e) {
+                System.out.println("Fecha no válida. Inténtalo de nuevo.");
+            }
+
+            if (fechaCreacion.isAfter(LocalDate.of(año, mes, dia))) {
+                System.out.println(
+                        "La fecha de vencimiento no puede ser antes de la fecha de creación. Inténtalo de nuevo.");
+            } else {
+                fechaValida = true;
+            }
+        } while (!fechaValida);
+
+        String mesFormateado = String.format("%02d", mes);
+        String diaFormateado = String.format("%02d", dia);
+        String horaFormateada = String.format("%02d", hora);
+        String minutosFormateados = String.format("%02d", minutos);
+
+        String fechaString = diaFormateado + "-" + mesFormateado + "-" + año +
+                " Hora: " + horaFormateada + ":" + minutosFormateados;
+        System.out.print("Ingresa el nivel de prioridad (0-10): ");
+        int prioridadImput = scanner.nextInt();
+        if (prioridadImput < 0 || prioridadImput > 10) {
+            System.out.println("Prioridad invalida, se asignara prioridad 0");
+            prioridadImput = 0;
+        }
+        this.prioridad = prioridadImput;
+
+        System.out.println("\nTarea creada:");
+        String tarea = "Tipo: " + "con fecha" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion +
+                "\nEtiquetas: " + etiquetas + "\nFecha de creación: " + fechaCreacionString +
+                "\nFecha de Vencimiento: " + fechaString + "\nPrioridad: " + prioridadImput + "\n" +
+                "Estado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
+        System.out.println(tarea);
+
+        try {
+            String nombreArchivo = usuario.getUsername() + "_tareas.txt";
+            FileWriter salida = new FileWriter(nombreArchivo, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(salida);
+            bufferedWriter.write(tarea);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo");
+        }
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
+    }
+
     /**
      * Método que se encarga de construir una tarea con fecha, pidiendo al usuario
      * los detalles
      * de la misma, ademas que la guarda en un archivo de texto.
      */
-    @Override
-    public void construyeTarea(Usuario usuario) {
+
+    public void construyeTarea2(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
-        System.out.print("Titulo: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Descripcion: ");
-        String descripcion = scanner.nextLine();
+        String titulo;
+        do {
+            System.out.print("Titulo: ");
+            titulo = scanner.nextLine();
+            if (titulo.trim().isEmpty()) {
+                System.out.println("No puedes dejar el título vacío.");
+            }
+        } while (titulo.trim().isEmpty());
+
+        System.out.print("¿Desea agregar una descripción? (S/N): ");
+        String respuesta = scanner.nextLine();
+        String descripcion = "";
+        if (respuesta.equalsIgnoreCase("S")) {
+            do {
+                System.out.print("Descripcion: ");
+                descripcion = scanner.nextLine();
+                if (descripcion.trim().isEmpty()) {
+                    System.out.println("No puedes dejar la descripción vacía si has decidido agregarla.");
+                }
+            } while (descripcion.trim().isEmpty());
+        }
+
         System.out.print("Etiquetas: ");
         Etiqueta agregaEtiqueta = new Etiqueta();
         Tarea tareaTemp;
