@@ -21,7 +21,10 @@ public class MAIN {
                 case "2":
                     Usuario usuario = iniciarSesion(proxy, scanner);
                     if (usuario != null) {
+                        VistaTareas.verTareasVencidas(usuario);
                         menuTareas(proxy, usuario, scanner);
+
+                        
                     } else {
                         System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
                     }
@@ -170,6 +173,7 @@ public class MAIN {
             System.out.println("4. Borrar Tareas");
             System.out.println("5. Ver tareas por Fecha");
             System.out.println("6. Ver tareas por Prioridad");
+             System.out.println("7. Ver calendario del Mes Actual");
 
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
@@ -187,6 +191,9 @@ public class MAIN {
                 case "4":
                     TareasControlador control = new TareasControlador();
                     control.eliminaTarea(usuario); // Utilizando el proxy para compartir una tarea
+                    break;
+                case "7":
+                    VistaTareas.verCalendario(usuario); 
                     break;
                 // case "5":
                 // AcomodaTareaPorFecha.acomodaTarea(usuario);

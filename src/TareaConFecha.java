@@ -142,7 +142,7 @@ public class TareaConFecha implements Tarea {
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fechaCreacionString = fechaCreacion.format(formateador);
 
-        int dia, mes, año, hora, minutos;
+        int dia, mes, ano, hora, minutos;
 
         boolean fechaValida = false;
         do {
@@ -167,7 +167,7 @@ public class TareaConFecha implements Tarea {
                 System.out.println("Por favor, ingresa un número válido para el año.");
                 scanner.next();
             }
-            año = scanner.nextInt();
+            ano = scanner.nextInt();
 
             System.out.println("Escoge la hora (con numeros): ");
             while (!scanner.hasNextInt()) {
@@ -184,27 +184,25 @@ public class TareaConFecha implements Tarea {
             minutos = scanner.nextInt();
 
             try {
-                LocalDate.of(año, mes, dia);
+                LocalDate fechaVencimiento = LocalDate.of(ano, mes, dia);
                 LocalTime.of(hora, minutos);
-                fechaValida = true;
+                if (fechaVencimiento.isBefore(fechaCreacion)) {
+                    System.out.println(
+                            "La fecha de vencimiento no puede ser antes de la fecha de creación. Inténtalo de nuevo.");
+                } else {
+                    fechaValida = true;
+                }
             } catch (DateTimeException e) {
                 System.out.println("Fecha no válida. Inténtalo de nuevo.");
             }
-
-            if (fechaCreacion.isAfter(LocalDate.of(año, mes, dia))) {
-                System.out.println(
-                        "La fecha de vencimiento no puede ser antes de la fecha de creación. Inténtalo de nuevo.");
-            } else {
-                fechaValida = true;
-            }
         } while (!fechaValida);
-        // Damos el formato correcto a la fecha y la hora
+
         String mesFormateado = String.format("%02d", mes);
         String diaFormateado = String.format("%02d", dia);
         String horaFormateada = String.format("%02d", hora);
         String minutosFormateados = String.format("%02d", minutos);
 
-        String fechaString = diaFormateado + "-" + mesFormateado + "-" + año +
+        String fechaString = diaFormateado + "-" + mesFormateado + "-" + ano +
                 " Hora: " + horaFormateada + ":" + minutosFormateados;
         System.out.print("Ingresa el nivel de prioridad (0-10): ");
         int prioridadImput = scanner.nextInt();

@@ -389,9 +389,6 @@ public class TareasControlador {
                 bw.write(line + "\n");
             }
             bw.close();
-
-            System.out.println("Archivo modificado exitosamente.");
-
         } catch (
 
         IOException e) {
