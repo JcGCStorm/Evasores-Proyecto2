@@ -9,8 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase que representa una tarea con fecha, que implementa la interfaz Tarea
+ */
 public class TareaConFecha implements Tarea {
 
+    // Atributos de la clase TareaConFecha
     private TareaEstado estado; // Estado actual de la tarea
     private String tipo = "con fecha";
     private String titulo;
@@ -23,7 +27,16 @@ public class TareaConFecha implements Tarea {
     /**
      * Constructor de la clase TareaConFecha, con los atributos que una tarea con
      * fecha debería tener,
-     * es decir, todos los atributos posibles A MENOS QUE LO CAMBIEMOS EN UN FUTURO.
+     * es decir, todos los atributos posibles.
+     * 
+     * @param titulo
+     * @param descripcion
+     * @param etiquetas
+     * @param fechaCreacion
+     * @param fechaVencimiento
+     * @param prioridad
+     * @param estado
+     * @param tipo
      */
     public TareaConFecha(String tipo, String titulo, String descripcion, String etiquetas,
             LocalDate fechaCreacion, LocalDateTime fechaVencimiento, int prioridad, TareaEstado estado) {
@@ -38,31 +51,59 @@ public class TareaConFecha implements Tarea {
 
     }
 
+    /**
+     * Método que se encarga de iniciar una tarea, cambiando su estado a "En
+     * progreso".
+     */
     @Override
     public void iniciar() {
         estado.iniciar(this);
     }
 
+    /**
+     * Método que se encarga de completar una tarea, cambiando su estado a
+     * "Completada", solo si la tarea está en progreso, en caso de ser una
+     * tarea pendiente no cambia el estado.
+     */
     @Override
     public void completar() {
         estado.completar(this);
     }
 
+    /**
+     * Método que se encarga de posponer una tarea, cambiando su estado a
+     * "Pendiente", solo si la tarea está en progreso, en caso de ser una
+     * tarea completada no cambia el estado.
+     */
     @Override
     public void volverPendiente() {
         estado.volverPendiente(this);
     }
 
+    /**
+     * Método que se encarga de poner un estado a una tarea.
+     * 
+     * @param estado el estado nuevo de la tarea.
+     */
     @Override
     public void setEstado(TareaEstado estado) {
         this.estado = estado;
     }
 
+    /**
+     * Método que se encarga de obtener el estado de una tarea.
+     * 
+     * @return el estado de la tarea.
+     */
     @Override
     public TareaEstado getEstado() {
         return estado;
     }
 
+    /**
+     * Método que se encarga de contruir una tarea. Pide el usuario para saber
+     * donde guardará la tarea creada.
+     */
     @Override
     public void construyeTarea(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
@@ -72,6 +113,7 @@ public class TareaConFecha implements Tarea {
             System.out.print("Titulo: ");
             titulo = scanner.nextLine();
             if (titulo.trim().isEmpty()) {
+                // verificamos que la tarea tenga titulo
                 System.out.println("No puedes dejar el título vacío.");
             }
         } while (titulo.trim().isEmpty());
@@ -96,6 +138,7 @@ public class TareaConFecha implements Tarea {
         etiquetas = tareaTemp.getEtiquetas();
         LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
         tareaTemp.setFechaCreacion(fechaCreacion);
+        // damos formato a la fecha de creacion para mostrarla en el archivo
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String fechaCreacionString = fechaCreacion.format(formateador);
 
@@ -155,7 +198,7 @@ public class TareaConFecha implements Tarea {
                 fechaValida = true;
             }
         } while (!fechaValida);
-
+        // Damos el formato correcto a la fecha y la hora
         String mesFormateado = String.format("%02d", mes);
         String diaFormateado = String.format("%02d", dia);
         String horaFormateada = String.format("%02d", hora);
@@ -177,8 +220,9 @@ public class TareaConFecha implements Tarea {
                 "\nFecha de Vencimiento: " + fechaString + "\nPrioridad: " + prioridadImput + "\n" +
                 "Estado: " + tareaTemp.estadoToString(tareaTemp.getEstado()) + "\n";
         System.out.println(tarea);
-
+        // escribimos la tarea creada en el archivo
         try {
+            // obtenemos el archivo txt dependiendo del usuario que creó la tarea.
             String nombreArchivo = usuario.getUsername() + "_tareas.txt";
             FileWriter salida = new FileWriter(nombreArchivo, true);
             BufferedWriter bufferedWriter = new BufferedWriter(salida);
@@ -188,6 +232,7 @@ public class TareaConFecha implements Tarea {
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo");
         }
+        // Esto lo hacemos para verificar que la tarea se haya guardado correctamente.
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
@@ -195,8 +240,9 @@ public class TareaConFecha implements Tarea {
      * Método que se encarga de construir una tarea con fecha, pidiendo al usuario
      * los detalles
      * de la misma, ademas que la guarda en un archivo de texto.
+     * 
+     * @param usuario el usuario que crea la tarea.
      */
-
     public void construyeTarea2(Usuario usuario) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los detalles de la tarea:");
@@ -310,72 +356,114 @@ public class TareaConFecha implements Tarea {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
     }
 
-    // Getters de los atributos de las tareas con fecha.
+    /**
+     * Este metodo regresa el titulo de la tarea.
+     */
     @Override
     public String getTitulo() {
         return titulo;
     }
 
+    /**
+     * Este metodo asigna un titulo a la tarea.
+     */
     @Override
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
+    /**
+     * Este metodo regresa la descripcion de la tarea.
+     */
     @Override
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * Este metodo asigna una descripcion a la tarea.
+     */
     @Override
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    /**
+     * Este metodo regresa la fecha de creacion de la tarea.
+     */
     @Override
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
+    /**
+     * Este metodo asigna una fecha de creacion a la tarea.
+     */
     @Override
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
+    /**
+     * Este metodo regresa la fecha de vencimiento de la tarea.
+     */
     @Override
     public LocalDateTime getFechaVencimiento() {
         return fechaVencimiento;
     }
 
+    /**
+     * Este metodo regresa la prioridad de la tarea.
+     */
     @Override
     public int getPrioridad() {
         return prioridad;
     }
 
+    /**
+     * Este metodo asigna una prioridad a la tarea.
+     */
     @Override
     public void setPrioridad(int prioridad) {
         this.prioridad = prioridad;
     }
 
+    /*
+     * Este metodo regresa las etiquetas de la tarea
+     */
     @Override
     public String getEtiquetas() {
         return etiquetas;
     }
 
+    /**
+     * Este metodo regresa el tipo de la tarea.
+     */
     @Override
     public String getTipo() {
         return tipo;
     }
 
+    /**
+     * Este metodo asigna una fecha de vencimiento a la tarea.
+     */
     @Override
     public void setFechaVencimiento(LocalDateTime fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 
+    /**
+     * Este metodo asigna etiquetas a la tarea. Solo lo ocupamos para recuperar
+     * las etiquetas del txts
+     */
     @Override
     public void setEtiquetas(String etiquetas) {
         this.etiquetas = etiquetas;
     }
 
+    /**
+     * Este metodo regresa el estado de la tarea en forma de string.
+     */
     @Override
     public String estadoToString(TareaEstado estado) {
         return estado.estadoToString(estado);

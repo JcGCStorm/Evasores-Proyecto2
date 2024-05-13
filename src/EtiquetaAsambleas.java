@@ -48,7 +48,7 @@ public class EtiquetaAsambleas extends TareasDecorator {
     }
 
     /*
-     * Este metodo regresa el titulo de la tarea a la que agregamos tareas
+     * Este metodo regresa el titulo de la tarea a la que agregamos etiquetas
      */
     @Override
     public String getTitulo() {
@@ -56,15 +56,20 @@ public class EtiquetaAsambleas extends TareasDecorator {
     }
 
     /*
-     * Este metodo regresa la fecha de creacion de la tarea
+     * Este metodo regresa la fecha de creacion de la tarea a la que le agregamos
+     * etiquetas
+     * 
+     * @return La fecha de creacion de la tarea
      */
     @Override
     public LocalDate getFechaCreacion() {
         return LocalDate.now();
     }
 
-    /*
-     * Este metodo regresa la fecha de vencimiento de la tarea
+    /**
+     * Obtiene la fecha de vencimiento de la tarea
+     * 
+     * @return La fecha de vencimiento de la tarea
      */
     @Override
     public LocalDateTime getFechaVencimiento() {

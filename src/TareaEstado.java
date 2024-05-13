@@ -1,3 +1,7 @@
+/**
+ * Interfaz que define los métodos que deben implementar
+ * las clases que representan los estados de una tarea
+ */
 public interface TareaEstado {
     void iniciar(Tarea tarea); // transicion a en progreso
 

@@ -1,0 +1,16 @@
+Tipo: simple
+Titulo: Hola
+Descripcion: Soy quancha
+Etiquetas: #Estudio-#Trabajo-#Personal-#Deportes-#Comida-
+Fecha de creación: 13-05-2024
+Prioridad: 6
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: AAAAAAaaaa
+Descripcion: naiof
+Etiquetas: 
+Fecha de creación: 13-05-2024
+Prioridad: 6
+Estado: Completada
+

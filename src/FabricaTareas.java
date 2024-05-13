@@ -9,7 +9,7 @@ public abstract class FabricaTareas {
     * y finalmente regresar la tarea creada.
     * 
     * @param usuario
-    * @return
+    * @return la tarea creada
     */
    public Tarea crear(Usuario usuario) {
       Tarea tarea = construyeTarea();

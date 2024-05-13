@@ -8,6 +8,13 @@ import java.util.List;
 
 public class VistaTareas {
 
+    /**
+     * Este metodo nos ayuda a obtener el nombre del archivo de tareas de un usuario
+     * en específico.
+     * 
+     * @param usuario el usuario del que queremos obtener el archivo de tareas.
+     * @return el nombre del archivo de tareas del usuario.
+     */
     private static String obtenerArchivoTareasUsuario(Usuario usuario) {
         return usuario.getUsername() + "_tareas.txt";
     }
@@ -16,6 +23,8 @@ public class VistaTareas {
      * Este metodo imprime las tareas del archivo txt, primero lee el archivo
      * linea por linea y las va imprimiendo, si no hay tareas, imprime un mensaje
      * diciendo que no hay tareas.
+     * 
+     * @param usuario el usuario del que queremos ver las tareas.
      */
 
     public static void verTareas(Usuario usuario) {

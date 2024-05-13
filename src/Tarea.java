@@ -1,7 +1,12 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Interfaz Tarea que define los métodos que deben implementar las tareas
+ */
 public interface Tarea {
+
+    // Estos son todo lo que debe de tener una tarea
     void construyeTarea(Usuario usuario);
 
     String getTipo();

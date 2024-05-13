@@ -4,9 +4,10 @@ import java.util.Scanner;
 
 public class Etiqueta {
     /**
-     * Solo son las etiquetas que se pueden agregar a una tarea. Las creo aquí por
+     * Solo son las opciones de etiquetas que se pueden agregar a una tarea. Las
+     * creo aquí por
      * que
-     * después cada etiqueta actualiza su valor para que no se pueda agregar más de
+     * después cada una actualiza su valor para que no se pueda agregar más de
      * una
      * y se pueda ver reflejado en el 'menu' de etiquetas.
      */
