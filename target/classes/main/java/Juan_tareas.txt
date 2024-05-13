@@ -1,0 +1,48 @@
+Tipo: simple
+Titulo: Bañar a mi gato
+Descripcion: AAAAAAAA
+Etiquetas: #Deportes- #Salud- 
+Fecha de creación: 11-05-2024
+Prioridad: 3
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: Etiqueta Prueba
+Descripcion: Espero funcione
+Etiquetas: #Estudio- 
+Fecha de creación: 12-05-2024
+Prioridad: 3
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: no funcionó el anterior
+Descripcion: espero que este si
+Etiquetas: #Estudio- 
+Fecha de creación: 12-05-2024
+Prioridad: 3
+Estado: Tarea En Progreso
+
+Tipo: simple
+Titulo: Tampoco funcionó la anterior
+Descripcion: Espero que este si funcione
+Etiquetas: #Estudio- 
+Fecha de creación: 12-05-2024
+Prioridad: 5
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: Creo que ya funciona
+Descripcion: Al menos la etiqueta estudio funciona
+Etiquetas: #Estudio- #Trabajo-
+Fecha de creación: 12-05-2024
+Prioridad: 3
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: A ver si se desactualiza esi
+Descripcion: espero que si
+Etiquetas: #Estudio- #Trabajo-#Personal- #Deportes- #Comida- #Salud- #Entretenimiento- #Hogar- #Viaje- #Compras- #Social- #Asambleas- #Otro- 
+Fecha de creación: 12-05-2024
+Prioridad: 8
+Estado: Completada
+

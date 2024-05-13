@@ -138,7 +138,7 @@ public class MAIN {
             System.out.println("1. Ver Tareas");
             System.out.println("2. Crear Tareas");
             System.out.println("3. Modificar Tareas");
-            System.out.println("4.  Compartir Tareas");
+            System.out.println("4. Compartir Tareas");
             System.out.println("0. Salir");
             System.out.print("Ingrese su opción: ");
             String opcion = scanner.nextLine().trim();
