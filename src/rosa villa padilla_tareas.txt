@@ -66,3 +66,20 @@ Fecha de Vencimiento: 05-06-2024 Hora: 02:05
 Prioridad: 7
 Estado: Tarea Pendiente
 
+Tipo: simple
+Titulo: ofesjknhoaj
+Descripcion: hola
+Etiquetas: #Salud-#Hogar-#Comida-#Entretenimiento-
+Fecha de creación: 14-05-2024
+Prioridad: 6
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: fklsjkl
+Descripcion: kladjlkaf
+Etiquetas: 
+Fecha de creación: 14-05-2024
+Fecha de Vencimiento: 05-04-2300 Hora: 06:03
+Prioridad: 8
+Estado: Tarea Pendiente
+
