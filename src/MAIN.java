@@ -1,78 +1,116 @@
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 
 public class MAIN {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        TareasProxy proxy = new TareasProxyImpl();
-
-        boolean salir = false;
-        while (!salir) {
-            System.out.println("\n¿Qué desea hacer?");
-            System.out.println("1. Crear Usuario");
-            System.out.println("2. Iniciar Sesión");
-            System.out.println("3. Salir");
-            System.out.print("Ingrese su opción: ");
-            String opcion = scanner.nextLine().trim();
-
-            switch (opcion) {
-                case "1":
-                    crearUsuario();
-                    break;
-                case "2":
-                    Usuario usuario = iniciarSesion(proxy, scanner);
-                    if (usuario != null) {
-                        menuTareas(proxy, usuario, scanner);
-                    } else {
-                        System.out.println("Inicio de sesión fallido. Verifique sus credenciales.");
-                    }
-                    break;
-
-                case "3":
-                    salir = true;
-                    break;
-                default:
-                    System.out.println("Opción no válida. Inténtelo de nuevo.");
-                    break;
+        // solo se muestra la interfaz gráfica para el registro o inicio de sesión
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MarcoInicioSesion();
             }
-        }
-
-        scanner.close();
+        });
     }
 
-    private static void crearUsuario() {
-        Scanner scanner = new Scanner(System.in);
+    // clase para la interfaz gráfica no se si esta bn q se quede aqui pero jala
+    static class MarcoInicioSesion extends JFrame {
+        private JTextField campoNombreUsuario;
+        private JPasswordField campoContrasena;
+        private JButton botonIniciarSesion;
+        private JButton botonRegistrarse;
 
-        System.out.println("Creación de nuevo usuario...");
-        String username;
-        do {
-            System.out.print("Ingrese un nombre de usuario (debe tener más de 4 caracteres): ");
-            username = scanner.nextLine().trim();
+        public MarcoInicioSesion() {
+            setTitle("Gestor de Tareas - Iniciar Sesión/Registrarse");
+            setSize(400, 300);
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            setLocationRelativeTo(null);
+            setLayout(new GridLayout(4, 2));
 
-            if (username.length() <= 4) {
-                System.out.println("El nombre de usuario debe tener más de 4 caracteres.");
-            }
-        } while (username.length() <= 4);
+            // componentes
+            JLabel etiquetaNombreUsuario = new JLabel("Nombre de usuario:");
+            campoNombreUsuario = new JTextField();
+            JLabel etiquetaContrasena = new JLabel("Contraseña:");
+            campoContrasena = new JPasswordField();
 
-        if (UsuarioAlmacen.obtenerUsuario(username) != null) {
-            System.out.println("El nombre de usuario ya está en uso. Por favor, elija otro.");
-            return;
+            botonIniciarSesion = new JButton("Iniciar Sesión");
+            botonRegistrarse = new JButton("Registrarse");
+
+            // añade componentes almarco
+            add(etiquetaNombreUsuario);
+            add(campoNombreUsuario);
+            add(etiquetaContrasena);
+            add(campoContrasena);
+            add(botonIniciarSesion);
+            add(botonRegistrarse);
+
+            // acciones del botón de iniciar sesión
+            botonIniciarSesion.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String nombreUsuario = campoNombreUsuario.getText();
+                    String contrasena = new String(campoContrasena.getPassword());
+
+                    TareasProxy proxy = new TareasProxyImpl();
+                    Usuario usuario = proxy.iniciarSesion(nombreUsuario, contrasena);
+
+                    if (usuario != null) {
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
+                        setVisible(false);
+                        ejecutarEnConsola(proxy, usuario);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            // accioness para el botón de registro
+            botonRegistrarse.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String nombreUsuario = campoNombreUsuario.getText();
+                    String contrasena = new String(campoContrasena.getPassword());
+
+                    if (nombreUsuario.length() <= 4) {
+                        JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener más de 4 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (UsuarioAlmacen.obtenerUsuario(nombreUsuario) != null) {
+                        JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Por favor, elige otro.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (!esContrasenaValida(contrasena)) {
+                        JOptionPane.showMessageDialog(null, "La contraseña debe tener entre 5 y 16 caracteres, al menos una mayúscula y un caracter especial.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    Usuario nuevoUsuario = new Usuario(nombreUsuario, contrasena);
+                    UsuarioAlmacen.agregarUsuario(nuevoUsuario);
+                    JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
+                }
+            });
+
+            // ventana de cierre de la terminal
+            addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas salir del programa?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        e.getWindow().dispose();
+                        System.exit(0);
+                    }
+                }
+            });
+
+            setVisible(true);
         }
-        String password;
-        boolean passwordValida = false;
-        do {
-            System.out
-                    .print("Ingrese una contraseña (5-16 caracteres, al menos una mayúscula y un caracter especial): ");
-            password = scanner.nextLine().trim();
 
-            // longitud
-            if (password.length() < 5 || password.length() > 16) {
-                System.out.println("La contraseña debe tener entre 5 y 16 caracteres.");
-                continue;
+        private boolean esContrasenaValida(String contrasena) {
+            if (contrasena.length() < 5 || contrasena.length() > 16) {
+                return false;
             }
-            // mayuscula y un caracter especial
             boolean contieneMayuscula = false;
             boolean contieneEspecial = false;
-            for (char c : password.toCharArray()) {
+            for (char c : contrasena.toCharArray()) {
                 if (Character.isUpperCase(c)) {
                     contieneMayuscula = true;
                 }
@@ -80,128 +118,94 @@ public class MAIN {
                     contieneEspecial = true;
                 }
             }
-            if (!contieneMayuscula) {
-                System.out.println("La contraseña debe contener al menos una mayúscula.");
-                continue;
-            }
-            if (!contieneEspecial) {
-                System.out.println("La contraseña debe contener al menos un caracter especial.");
-                continue;
-            }
-            passwordValida = true;
-        } while (!passwordValida);
-
-        // Crear y almacenar el nuevo usuario
-        Usuario nuevoUsuario = new Usuario(username, password);
-        UsuarioAlmacen.agregarUsuario(nuevoUsuario);
-        System.out.println("Usuario creado correctamente.");
-    }
-
-    private static Usuario iniciarSesion() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Inicio de sesión:");
-        System.out.print("Nombre de usuario: ");
-        String username = scanner.nextLine().trim();
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine().trim();
-
-        // Verificar las credenciales
-        if (UsuarioAlmacen.verificarCredenciales(username, password)) {
-            System.out.println("Inicio de sesión exitoso.");
-            return UsuarioAlmacen.obtenerUsuario(username);
-        } else {
-            System.out.println("Credenciales incorrectas.");
-            return null;
+            return contieneMayuscula && contieneEspecial;
         }
     }
 
-    private static Usuario iniciarSesion(TareasProxy proxy, Scanner scanner) {
-        System.out.println("Inicio de sesión:");
-        System.out.print("Nombre de usuario: ");
-        String username = scanner.nextLine().trim();
-        System.out.print("Contraseña: ");
-        String password = scanner.nextLine().trim();
-
-        // Verificar las credenciales utilizando el proxy
-        return proxy.iniciarSesion(username, password);
-    }
-
-    private static void menuTareas(Usuario usuario, Scanner scanner) {
-        boolean opcionesBool = true;
-        while (opcionesBool) {
-            System.out.println("\n¿Qué desea hacer?");
-            System.out.println("1. Ver Tareas");
-            System.out.println("2. Crear Tareas");
-            System.out.println("3. Modificar Tareas");
-            System.out.println("4.  Compartir Tareas");
-            System.out.println("0. Salir");
-            System.out.print("Ingrese su opción: ");
-            String opcion = scanner.nextLine().trim();
+    // lo q sigue despues de elegir
+    private static void ejecutarEnConsola(TareasProxy proxy, Usuario usuario) {
+        boolean salir = false;
+        while (!salir) {
+            mostrarMenuPrincipal();
+            String opcion = JOptionPane.showInputDialog(null, "Ingrese su opción:");
+try {
             switch (opcion) {
                 case "1":
-                    VistaTareas.verTareas(usuario);
+                    String subOpcion = JOptionPane.showInputDialog(null, "¿Cómo deseas ver las tareas?\n 1. Por fecha de creación \n 2. Por Prioridad \n 3. Por fecha de vencimiento (solo tareas con fecha)");
+                    switch (subOpcion) {
+                        case "1":
+                            VistaTareas.verTareas(usuario);
+                            break;
+                        case "2":
+                            VistaTareas.mostrarTareasXPrioridad(usuario);
+                            break;
+                        case "3":
+                            VistaTareas.mostrarTareasXFechaVencimiento(usuario);
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, "Opción no válida. Inténtelo de nuevo.");
+                            break;
+                    }
                     break;
                 case "2":
                     TareasControlador.crearTarea(usuario);
                     break;
                 case "3":
-                    TareasControlador modificaTarea = new TareasControlador();
-                    modificaTarea.modifica(usuario);
-                    break;
-
-                case "0":
-                    opcionesBool = false;
-                    break;
-                default:
-                    System.out.println("Opción no válida");
-                    break;
-            }
-        }
-    }
-
-    private static void menuTareas(TareasProxy proxy, Usuario usuario, Scanner scanner) {
-        TareasControlador controlador = new TareasControlador();
-        boolean opcionesBool = true;
-        while (opcionesBool) {
-            System.out.println("\n¿Qué desea hacer?");
-            System.out.println("1. Ver Tareas");
-            System.out.println("2. Crear Tareas");
-            System.out.println("3. Modificar Tareas");
-            System.out.println("4. Borrar Tareas");
-            System.out.println("5. Ver tareas por Fecha");
-            System.out.println("6. Ver tareas por Prioridad");
-
-            System.out.println("0. Salir");
-            System.out.print("Ingrese su opción: ");
-            String opcion = scanner.nextLine().trim();
-            switch (opcion) {
-                case "1":
-                    VistaTareas.verTareas(usuario);//
-                    break;
-                case "2":
-                    TareasControlador.crearTarea(usuario); // Utilizando el proxy para crear una tarea
-                    break;
-                case "3":
-                    proxy.modificarTarea(usuario); // Utilizando el proxy para modificar una tarea
+                    proxy.modificarTarea(usuario);
                     break;
                 case "4":
                     TareasControlador control = new TareasControlador();
-                    control.eliminaTarea(usuario); // Utilizando el proxy para compartir una tarea
+                    control.eliminaTarea(usuario);
                     break;
-                // case "5":
-                // AcomodaTareaPorFecha.acomodaTarea(usuario);
-
-                // case "6":
-                // AcomodaTareaPorPrioridad.acomodaTarea(usuario);
-
+                case "5":
+                    VistaTareas.mostrarTareasXFechaVencimiento(usuario);
+                    break;
+                case "6":
+                    VistaTareas.mostrarTareasXPrioridad(usuario);
+                    break;
+                case "7":
+                    VistaTareas.verCalendario(usuario);
+                    break;
                 case "0":
-                    opcionesBool = false;
+                    salir = true;
                     break;
                 default:
-                    System.out.println("Opción no válida");
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Inténtelo de nuevo.");
                     break;
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error. Inténtelo de nuevo.");
+                        System.exit(0);
         }
+      }
+      System.exit(0);
     }
+    
+    // menu principal
+    private static void mostrarMenuPrincipal() {
+        StringBuilder menu = new StringBuilder();
+        menu.append("=========================================\n");
+        menu.append("             GESTOR DE TAREAS :D \n");
+        menu.append("=========================================\n");
+        menu.append("1. Ver Tareas \n");
+        menu.append("2. Crear Tareas \n");
+        menu.append("3. Modificar Tareas \n");
+        menu.append("4. Borrar Tareas \n");
+        menu.append("5. Ver tareas por Fecha \n");
+        menu.append("6. Ver tareas por Prioridad \n");
+        menu.append("7. Ver Calendario \n");
+        menu.append("0. Salir \n");
+        menu.append("=========================================\n");
+        JOptionPane.showMessageDialog(null, menu.toString());
 
+        
+
+        
+    }
 }
+                     
+                    
+                    
+                    
+                    
+                    
