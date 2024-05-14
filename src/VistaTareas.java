@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 
 public class VistaTareas {
@@ -217,38 +221,31 @@ public class VistaTareas {
     public static void muestraTareas(Usuario usuario) {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         if (tareas == null || tareas.isEmpty()) {
-            System.out.println("No hay tareas para mostrar");
+            JOptionPane.showMessageDialog(null, "No hay tareas para mostrar");
             return;
         }
 
-        // Usar un índice explícito
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tareas.size(); i++) {
             Tarea tarea = tareas.get(i);
-
-            System.out.println("Índice: " + i); // Imprimir el índice del elemento actual
-            System.out.println("Titulo: " + tarea.getTitulo());
-            System.out.println("Descripcion: " + tarea.getDescripcion());
-            System.out.println("Etiquetas: " + tarea.getEtiquetas());
-            DateTimeFormatter formateadorCreacion = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaCreacion = tarea.getFechaCreacion().format(formateadorCreacion);
-            System.out.println("Fecha de Creacion: " + fechaCreacion);
-
+            sb.append("Índice: ").append(i).append("\n");
+            sb.append("Título: ").append(tarea.getTitulo()).append("\n");
+            sb.append("Descripción: ").append(tarea.getDescripcion()).append("\n");
+            sb.append("Etiquetas: ").append(tarea.getEtiquetas()).append("\n");
+            sb.append("Fecha de Creación: ").append(tarea.getFechaCreacion().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\n");
             if (tarea instanceof TareaConFecha) {
-                DateTimeFormatter formateadorVencimiento = DateTimeFormatter
-                        .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
                 LocalDateTime fechaHora = tarea.getFechaVencimiento();
-                String fechaHoraString = fechaHora.format(formateadorVencimiento);
-                System.out.println("Fecha de Vencimiento: " + fechaHoraString);
+                sb.append("Fecha de Vencimiento: ").append(fechaHora.format(DateTimeFormatter.ofPattern("dd-MM-yyyy 'Hora:' HH:mm"))).append("\n");
             }
-
-            System.out.println("Prioridad: " + tarea.getPrioridad());
-
-            // Imprimir el nombre del estado3 actual
-            TareaEstado estado = tarea.getEstado();
-            System.out.println("Estado: " + tarea.estadoToString(estado));
-
-            System.out.println("\n");
+            sb.append("Prioridad: ").append(tarea.getPrioridad()).append("\n");
+            sb.append("Estado: ").append(tarea.estadoToString(tarea.getEstado())).append("\n\n");
         }
+
+        JTextArea textArea = new JTextArea(sb.toString());
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setEditable(false);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        JOptionPane.showMessageDialog(null, scrollPane, "Tareas de " + usuario.getUsername(), JOptionPane.INFORMATION_MESSAGE);
     }
 
     private static final Color COLOR_TAREAS = Color.RED;
@@ -350,8 +347,14 @@ public class VistaTareas {
         for (int i = 1; i < 7 - ultimoDiaDelMes.getDayOfWeek().getValue() + 1; i++) {
             panelCentral.add(new JLabel());
         }
+        JScrollPane scrollPane2 = new JScrollPane(panelCentral);
 
-        frame.setVisible(true);
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(500, 400));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
+        //frame.setVisible(true);
     }
 
     private static void mostrarTareasDelDia(Usuario usuario, LocalDate fecha, List<TareaConFecha> tareas) {
@@ -374,5 +377,148 @@ public class VistaTareas {
         frame.add(panel);
         frame.setVisible(true);
     }
+    
+    public static boolean deseaAgregarTarea() {
+        int response = JOptionPane.showConfirmDialog(null, "¿Desea agregar una tarea nueva?", "Agregar Tarea",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return response == JOptionPane.YES_OPTION;
+    }
 
+    public static String obtenerTipoTarea() {
+        String[] options = { "Simple", "Con fecha" };
+        return (String) JOptionPane.showInputDialog(null, "¿Qué tipo de tarea desea agregar?", "Tipo de Tarea",
+                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+    }
+
+    public static void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    //
+
+    /**
+     * Método para obtener una entrada de texto del usuario.
+     * 
+     * @param mensaje el mensaje a mostrar al usuario.
+     * @return la entrada del usuario.
+     */
+    public static String obtenerEntrada(String mensaje) {
+        String entrada;
+        do {
+            entrada = JOptionPane.showInputDialog(null, mensaje);
+            if (entrada == null || entrada.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No puedes dejar el campo vacío.");
+            }
+        } while (entrada == null || entrada.trim().isEmpty());
+        return entrada;
+    }
+
+    public String obtenerTitulo() {
+        return obtenerEntrada("Ingrese el título de la tarea:");
+    }
+
+    public String obtenerDescripcion() {
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar una descripción?", "Descripción",
+                JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            return obtenerEntrada("Ingrese la descripción de la tarea:");
+        }
+        return "";
+    }
+
+    public String obtenerEtiquetas() {
+        return obtenerEntrada("Ingrese las etiquetas de la tarea:");
+    }
+
+    public int obtenerPrioridad() {
+        int prioridad;
+        do {
+            String input = obtenerEntrada("Ingresa el nivel de prioridad (0-10):");
+            try {
+                prioridad = Integer.parseInt(input);
+                if (prioridad < 0 || prioridad > 10) {
+                    JOptionPane.showMessageDialog(null, "Prioridad inválida, ingrese un número entre 0 y 10.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Entrada inválida, ingrese un número.");
+            }
+        } while (true);
+        return prioridad;
+    }
+
+    public LocalDateTime obtenerFechaVencimiento() {
+        while (true) {
+            JTextField diaField = new JTextField();
+            JTextField mesField = new JTextField();
+            JTextField añoField = new JTextField();
+            JTextField horaField = new JTextField();
+            JTextField minutosField = new JTextField();
+
+            Object[] fields = {
+                    "Día de vencimiento (1-31):", diaField,
+                    "Mes de vencimiento (1-12):", mesField,
+                    "Año de vencimiento:", añoField,
+                    "Hora de vencimiento (0-23):", horaField,
+                    "Minutos de vencimiento (0-59):", minutosField
+            };
+
+            int option = JOptionPane.showConfirmDialog(null, fields, "Fecha de Vencimiento",
+                    JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    int dia = Integer.parseInt(diaField.getText().trim());
+                    int mes = Integer.parseInt(mesField.getText().trim());
+                    int año = Integer.parseInt(añoField.getText().trim());
+                    int hora = Integer.parseInt(horaField.getText().trim());
+                    int minutos = Integer.parseInt(minutosField.getText().trim());
+
+                    // Validaciones de rango
+                    if (dia < 1 || dia > 31) {
+                        throw new IllegalArgumentException("Día fuera de rango");
+                    }
+                    if (mes < 1 || mes > 12) {
+                        throw new IllegalArgumentException("Mes fuera de rango");
+                    }
+                    if (año < 0) {
+                        throw new IllegalArgumentException("Año fuera de rango");
+                    }
+                    if (hora < 0 || hora > 23) {
+                        throw new IllegalArgumentException("Hora fuera de rango");
+                    }
+                    if (minutos < 0 || minutos > 59) {
+                        throw new IllegalArgumentException("Minutos fuera de rango");
+                    }
+
+                    // Construir la fecha
+                    LocalDate fecha = LocalDate.of(año, mes, dia);
+
+                    // Construir la hora
+                    LocalTime hora1 = LocalTime.of(hora, minutos);
+
+                    // Combinar fecha y hora en LocalDateTime
+                    LocalDateTime fechaVencimiento = LocalDateTime.of(fecha, hora1);
+
+                    if (fechaVencimiento.isBefore(LocalDateTime.now())) {
+                        JOptionPane.showMessageDialog(null,
+                                "La fecha de vencimiento no puede ser antes de la fecha actual. Inténtelo de nuevo.");
+                        continue;
+                    }
+
+                    return fechaVencimiento;
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Entrada no válida. Asegúrese de ingresar números válidos.");
+                } catch (DateTimeException e) {
+                    JOptionPane.showMessageDialog(null, "Fecha o hora no válidas. Inténtelo de nuevo.");
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage() + ". Inténtelo de nuevo.");
+                }
+            } else {
+                return null; // Si se cancela, retorna null.
+            }
+        }
+    }
 }
