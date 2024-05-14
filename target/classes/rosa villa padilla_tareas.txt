@@ -39,7 +39,7 @@ Etiquetas: #Entretenimiento-
 Fecha de creación: 13-05-2024
 Fecha de Vencimiento: 06-08-2024 Hora: 06:56
 Prioridad: 8
-Estado: Tarea Pendiente
+Estado: Tarea En Progreso
 
 Tipo: simple
 Titulo: aifjlkea
@@ -47,5 +47,22 @@ Descripcion:
 Etiquetas: 
 Fecha de creación: 13-05-2024
 Prioridad: 4
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: ijijij
+Descripcion: lfjnlan
+Etiquetas: 
+Fecha de creación: 14-05-2024
+Prioridad: 7
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: iowj
+Descripcion: lejs
+Etiquetas: #Entretenimiento-#Comida-#Personal-
+Fecha de creación: 14-05-2024
+Fecha de Vencimiento: 05-06-2024 Hora: 02:05
+Prioridad: 7
 Estado: Tarea Pendiente
 
