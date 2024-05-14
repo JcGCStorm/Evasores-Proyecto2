@@ -40,15 +40,27 @@ public class VistaTareas {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         String nombreArchivo = obtenerArchivoTareasUsuario(usuario);
 
+        // Cframe para mostrar las tareas
+        JFrame frame = new JFrame("Tareas de " + usuario.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // leer el archivo de tareas y mostrarlas en el JTextArea
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                System.out.println(linea);
+                textArea.append(linea + "\n");
             }
         } catch (java.io.FileNotFoundException e) {
-            System.err.println("Aún no tienes tareas.");
+            textArea.append("Aún no tienes tareas.\n");
         } catch (IOException e) {
-            System.err.println("Error de E/S al leer el archivo: " + e.getMessage());
+            textArea.append("Error de E/S al leer el archivo: " + e.getMessage() + "\n");
         }
 
         boolean tareaProximaVencer = false;
@@ -68,10 +80,9 @@ public class VistaTareas {
         }
 
         if (tareaProximaVencer) {
-            System.out
-                    .println("¡URGENTE, mi estimado procrastinador! Tienes tarea/s para los próximos 3 días o menos.");
+            textArea.append("¡URGENTE, mi estimado procrastinador! Tienes tarea/s para los próximos 3 días o menos.\n");
 
-            System.out.println("Tareas próximas a vencer:");
+            textArea.append("Tareas próximas a vencer:\n");
             for (Tarea tarea : tareas) {
                 if (tarea instanceof TareaConFecha) {
                     TareaConFecha tareaConFecha = (TareaConFecha) tarea;
@@ -79,14 +90,14 @@ public class VistaTareas {
                     long horasHastaVencimiento = ChronoUnit.HOURS.between(ahora, fechaVencimiento);
 
                     if (horasHastaVencimiento <= 72) {
-                        System.out.println("- " + tareaConFecha.getTitulo());
+                        textArea.append("- " + tareaConFecha.getTitulo() + "\n");
                     }
                 }
             }
         }
 
         if (tareaVencida) {
-            System.out.println("¡OH NO! Tienes tareas vencidas ): irresponsable:");
+            textArea.append("¡OH NO! Tienes tareas vencidas ): irresponsable:\n");
 
             for (Tarea tarea : tareas) {
                 if (tarea instanceof TareaConFecha) {
@@ -95,46 +106,106 @@ public class VistaTareas {
                     long horasDesdeVencimiento = ChronoUnit.HOURS.between(fechaVencimiento, ahora);
 
                     if (horasDesdeVencimiento > 0) {
-                        System.out.println("- " + tareaConFecha.getTitulo());
+                        textArea.append("- " + tareaConFecha.getTitulo() + "\n");
                     }
                 }
             }
         }
+        JScrollPane scrollPane2 = new JScrollPane(textArea);
+
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(600, 500));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
+        // mostrar el frame
+      //  frame.setVisible(true);
     }
 
+    /**
+     * Muestra las tareas ordenadas por prioridad.
+     * 
+     * @param usuario el usuario del que queremos ver las tareas.
+     */
     public static void mostrarTareasXPrioridad(Usuario usuario) {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         if (tareas.isEmpty()) {
-            System.out.println("No hay tareas para mostrar");
+            JOptionPane.showMessageDialog(null, "No hay tareas para mostrar");
             return;
         }
-
         Collections.sort(tareas, Comparator.comparingInt(Tarea::getPrioridad));
 
-        System.out.println("Tareas ordenadas por prioridad:");
+        JFrame frame = new JFrame("Tareas ordenadas por prioridad de " + usuario.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        textArea.append("Tareas ordenadas por prioridad:\n");
         for (Tarea tarea : tareas) {
-            System.out.println("- " + tarea.getTitulo() + " (Prioridad: " + tarea.getPrioridad() + ")");
+            textArea.append("- " + tarea.getTitulo() + " (Prioridad: " + tarea.getPrioridad() + ")\n");
         }
+        JScrollPane scrollPane2 = new JScrollPane(textArea);
+
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(400, 300));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
+
+     //   frame.setVisible(true);
+     //   frame.toFront();
     }
 
+  /**
+     * Muestra las tareas ordenadas por fecha de vencimiento.
+     * 
+     * @param usuario el usuario del que queremos ver las tareas.
+     */
     public static void mostrarTareasXFechaVencimiento(Usuario usuario) {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         if (tareas.isEmpty()) {
-            System.out.println("No hay tareas para mostrar");
+            JOptionPane.showMessageDialog(null, "No hay tareas para mostrar");
             return;
         }
+        
         List<TareaConFecha> tareasConFecha = new ArrayList<>();
         for (Tarea tarea : tareas) {
             if (tarea instanceof TareaConFecha) {
                 tareasConFecha.add((TareaConFecha) tarea);
             }
         }
-        
+
         Collections.sort(tareasConFecha, Comparator.comparing(TareaConFecha::getFechaVencimiento));
-        System.out.println("Tareas ordenadas por fecha de vencimiento:");
+
+        JFrame frame = new JFrame("Tareas ordenadas por fecha de vencimiento de " + usuario.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        textArea.append("Tareas ordenadas por fecha de vencimiento:\n");
         for (TareaConFecha tarea : tareasConFecha) {
-            System.out.println("- " + tarea.getTitulo() + " (Fecha de vencimiento: " + tarea.getFechaVencimiento() + ")");
+            textArea.append(
+                    "- " + tarea.getTitulo() + " (Fecha de vencimiento: " + tarea.getFechaVencimiento() + ")\n");
         }
+        JScrollPane scrollPane2 = new JScrollPane(textArea);
+
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(500, 400));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
+      //  frame.setVisible(true);
+      //  frame.toFront();
     }
 
     /**
@@ -179,6 +250,7 @@ public class VistaTareas {
             System.out.println("\n");
         }
     }
+
     private static final Color COLOR_TAREAS = Color.RED;
     private static final Color COLOR_HOY = Color.YELLOW;
 

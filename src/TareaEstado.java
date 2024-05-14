@@ -9,6 +9,7 @@ public interface TareaEstado {
 
     void volverPendiente(Tarea tarea); // transicion a pendiente
 
+    // Metodos auxiliares para recuperar tareas del txt
     TareaEstado getEstado(String estado);
 
     String estadoToString(TareaEstado estado);

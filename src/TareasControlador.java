@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+
 public class TareasControlador {
     Scanner scanner = new Scanner(System.in);
 
@@ -96,6 +102,102 @@ public class TareasControlador {
                 System.out.println("Opción no válida");
             }
         }
+    }
+
+    /**
+     * Método para eliminar una tarea de un usuario específico.
+     * 
+     * @param usuario El usuario del que se desea eliminar una tarea.
+     */
+    public void eliminaTarea(Usuario usuario) {
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
+        if (tareas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay tareas para mostrar");
+            return;
+        }
+
+        JFrame frame = new JFrame("Eliminar Tarea de " + usuario.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+
+        StringBuilder tareasTexto = new StringBuilder("Tareas:\n");
+        for (int i = 0; i < tareas.size(); i++) {
+            Tarea tarea = tareas.get(i);
+            tareasTexto.append(i).append(". ")
+                       .append("Titulo: ").append(tarea.getTitulo()).append("\n")
+                       .append("Descripción: ").append(tarea.getDescripcion()).append("\n")
+                       .append("Prioridad: ").append(tarea.getPrioridad()).append("\n\n");
+                       
+        }
+        textArea.setText(tareasTexto.toString());
+
+        frame.add(scrollPane);
+        frame.setVisible(true);
+
+        String input = JOptionPane.showInputDialog(frame, "¿Qué tarea desea eliminar?");
+        if (input == null) {
+            frame.dispose();
+            return;
+        }
+
+        int tareaUsuario;
+        try {
+            tareaUsuario = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Entrada no válida");
+            frame.dispose();
+            return;
+        }
+
+        if (tareaUsuario >= tareas.size() || tareaUsuario < 0) {
+            JOptionPane.showMessageDialog(frame, "Tarea no válida");
+            frame.dispose();
+            return;
+        }
+
+        Tarea tarea = tareas.get(tareaUsuario);
+        String archivo = obtenerArchivoTareasUsuario(usuario);
+        String eliminaTitulo = "Titulo: " + tarea.getTitulo();
+
+        try {
+            // Lee el contenido del archivo
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            for (int i = 0; i < lineas.size(); i++) {
+                if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: con fecha")) {
+                    for (int j = 0; j < 8; j++) lineas.remove(i - 1);
+                    tareas.remove(tarea);
+                    break;
+                } else if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: simple")) {
+                    for (int j = 0; j < 7; j++) lineas.remove(i - 1);
+                    tareas.remove(tarea);
+                    break;
+                }
+            }
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close();
+
+            JOptionPane.showMessageDialog(frame, "Archivo modificado exitosamente.");
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Error al manipular el archivo: " + e.getMessage());
+        }
+        frame.dispose();
     }
 
     public void modifica(Usuario usuario) {
@@ -332,7 +434,7 @@ public class TareasControlador {
                 + minutosFormateados;
     }
 
-    public void eliminaTarea(Usuario usuario) {
+    public void eliminaTarea2(Usuario usuario) {
         VistaTareas.muestraTareas(usuario);
         System.out.println("¿Qué tarea desea eliminar?");
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);

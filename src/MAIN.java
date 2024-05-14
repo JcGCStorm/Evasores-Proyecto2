@@ -131,21 +131,8 @@ public class MAIN {
 try {
             switch (opcion) {
                 case "1":
-                    String subOpcion = JOptionPane.showInputDialog(null, "¿Cómo deseas ver las tareas?\n 1. Por fecha de creación \n 2. Por Prioridad \n 3. Por fecha de vencimiento (solo tareas con fecha)");
-                    switch (subOpcion) {
-                        case "1":
-                            VistaTareas.verTareas(usuario);
-                            break;
-                        case "2":
-                            VistaTareas.mostrarTareasXPrioridad(usuario);
-                            break;
-                        case "3":
-                            VistaTareas.mostrarTareasXFechaVencimiento(usuario);
-                            break;
-                        default:
-                            JOptionPane.showMessageDialog(null, "Opción no válida. Inténtelo de nuevo.");
-                            break;
-                    }
+                    System.out.println("¿Cómo deseas ver las tareas?\n 1. Por fecha de creación \n 2. Por Prioridad \n 3. Por fecha de vencimiento (solo tareas con fecha)");
+                    VistaTareas.verTareas(usuario);
                     break;
                 case "2":
                     TareasControlador.crearTarea(usuario);
@@ -197,15 +184,6 @@ try {
         menu.append("0. Salir \n");
         menu.append("=========================================\n");
         JOptionPane.showMessageDialog(null, menu.toString());
-
-        
-
-        
     }
 }
-                     
-                    
-                    
-                    
-                    
                     
