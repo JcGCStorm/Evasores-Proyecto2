@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-
 public class TareasControlador {
     Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +34,6 @@ public class TareasControlador {
      */
 
     public static void crearTarea(Usuario usuario) {
-        Scanner scanner = new Scanner(System.in);
         String archivoTareasUsuario = obtenerArchivoTareasUsuario(usuario);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
         FabricaTareas tareaConFecha = new FabricaTareasConFecha();
@@ -44,34 +42,29 @@ public class TareasControlador {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTareasUsuario, true))) {
             while (agregarTareas) {
-                System.out.println("¿Desea agregar una tarea nueva? (Si/No)");
-                String decision = scanner.nextLine().trim();
-
-                if (decision.equalsIgnoreCase("no")) {
+                if (!VistaTareas.deseaAgregarTarea()) {
                     agregarTareas = false;
-                } else if (decision.equalsIgnoreCase("si")) {
-                    System.out.println("¿Qué tipo de tarea desea agregar? (Simple/Con fecha)");
-                    String tipoTarea = scanner.nextLine().trim();
+                    continue;
+                }
 
-                    Tarea nuevaTarea = null; // Crear una variable para almacenar la nueva tarea
+                String tipoTarea = VistaTareas.obtenerTipoTarea();
 
-                    if (tipoTarea.equalsIgnoreCase("con fecha")) {
-                        nuevaTarea = tareaConFecha.crear(usuario); // Crear tarea con fecha
-                    } else if (tipoTarea.equalsIgnoreCase("simple")) {
-                        nuevaTarea = tareaSimple.crear(usuario); // Crear tarea simple
-                    } else {
-                        System.out.println("Opción no válida");
-                    }
+                Tarea nuevaTarea = null; 
 
-                    if (nuevaTarea != null) {
-                        TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
-                    }
+                if (tipoTarea.equalsIgnoreCase("con fecha")) {
+                    nuevaTarea = tareaConFecha.crear(usuario); 
+                } else if (tipoTarea.equalsIgnoreCase("simple")) {
+                    nuevaTarea = tareaSimple.crear(usuario); 
                 } else {
-                    System.out.println("Opción no válida");
+                    VistaTareas.mostrarMensaje("Opción no válida");
+                }
+
+                if (nuevaTarea != null) {
+                    TareasAlmacen.guardaTarea(nuevaTarea); // Agregar la tarea al almacén
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error al escribir en el archivo de tareas: " + e.getMessage());
+            VistaTareas.mostrarMensaje("Error al escribir en el archivo de tareas: " + e.getMessage());
         }
     }
 
@@ -124,15 +117,14 @@ public class TareasControlador {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
 
-
         StringBuilder tareasTexto = new StringBuilder("Tareas:\n");
         for (int i = 0; i < tareas.size(); i++) {
             Tarea tarea = tareas.get(i);
             tareasTexto.append(i).append(". ")
-                       .append("Titulo: ").append(tarea.getTitulo()).append("\n")
-                       .append("Descripción: ").append(tarea.getDescripcion()).append("\n")
-                       .append("Prioridad: ").append(tarea.getPrioridad()).append("\n\n");
-                       
+                    .append("Titulo: ").append(tarea.getTitulo()).append("\n")
+                    .append("Descripción: ").append(tarea.getDescripcion()).append("\n")
+                    .append("Prioridad: ").append(tarea.getPrioridad()).append("\n\n");
+
         }
         textArea.setText(tareasTexto.toString());
 
@@ -176,11 +168,13 @@ public class TareasControlador {
 
             for (int i = 0; i < lineas.size(); i++) {
                 if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: con fecha")) {
-                    for (int j = 0; j < 8; j++) lineas.remove(i - 1);
+                    for (int j = 0; j < 8; j++)
+                        lineas.remove(i - 1);
                     tareas.remove(tarea);
                     break;
                 } else if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: simple")) {
-                    for (int j = 0; j < 7; j++) lineas.remove(i - 1);
+                    for (int j = 0; j < 7; j++)
+                        lineas.remove(i - 1);
                     tareas.remove(tarea);
                     break;
                 }
@@ -201,101 +195,116 @@ public class TareasControlador {
     }
 
     public void modifica(Usuario usuario) {
-        VistaTareas.muestraTareas(usuario);
-        System.out.println("¿Qué tarea desea modificar?");
+        // Obtener la lista de tareas del usuario
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
-        Scanner sc = new Scanner(System.in);
-        int tareaUsuario = sc.nextInt();
-        if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
-            System.out.println("Tarea no válida");
+        if (tareas == null || tareas.isEmpty()) {
+            VistaTareas.mostrarMensaje("No hay tareas para mostrar");
             return;
         }
-        Tarea tarea = TareasAlmacen.getTareas(usuario).get(tareaUsuario);
-        if (tareaUsuario > tareas.size() || tareaUsuario < 0) {
-            System.out.println("Tarea no válida");
-        } else {
-            if (tarea.getTipo().equals("simple")) {
-                modificaTareaSimple(tarea, usuario);
-            } else if (tarea.getTipo().equals("con fecha")) {
-                modificaTareaConFecha(tarea, usuario);
+
+        // Mostrar las tareas al usuario
+        VistaTareas.muestraTareas(usuario);
+
+        // Solicitar al usuario el índice de la tarea que desea modificar
+        String input = VistaTareas.obtenerEntrada("¿Qué tarea desea modificar?");
+        if (input == null) {
+            VistaTareas.mostrarMensaje("No se ha seleccionado ninguna tarea.");
+            return;
+        }
+
+        // Validar la entrada del usuario para asegurar que sea un número válido
+        int tareaUsuario;
+        try {
+            tareaUsuario = Integer.parseInt(input);
+            if (tareaUsuario < 0 || tareaUsuario >= tareas.size()) {
+                VistaTareas.mostrarMensaje("Índice de tarea no válido.");
+                return;
             }
+        } catch (NumberFormatException e) {
+            VistaTareas.mostrarMensaje("Entrada no válida. Debe ingresar un número de tarea válido.");
+            return;
+        }
+
+        // Obtener la tarea seleccionada por el usuario
+        Tarea tarea = tareas.get(tareaUsuario);
+
+        // Mostrar información de depuración sobre la tarea seleccionada
+        System.out.println("Tarea seleccionada: " + tarea.getTitulo() + " - Tipo: " + tarea.getTipo());
+
+        // Modificar la tarea según su tipo
+        if (tarea instanceof TareaSimple) {
+            modificaTareaSimple((TareaSimple) tarea, usuario);
+        } else if (tarea instanceof TareaConFecha) {
+            modificaTareaConFecha((TareaConFecha) tarea, usuario);
+        } else {
+            VistaTareas.mostrarMensaje("Tipo de tarea no reconocido: " + tarea.getClass().getSimpleName());
         }
     }
 
+    // Métodos para modificar tareas simples y tareas con fecha...
+
     public void modificaTareaConFecha(Tarea tarea, Usuario usuario) {
-        System.out.println("\n¿Qué desea modificar? \n 1. Titulo. \n 2. Descripcion." +
-                "\n 3. Etiquetas.\n 4. Estado. \n 5. Fecha de Vencimiento" + "\n 0. Salir.");
-        modifica(tarea, usuario);
+        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Estado", "Fecha de Vencimiento", "Salir" };
+        String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
+                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+        if (opcion == null || opcion.equals("Salir")) {
+            return;
+        }
+
+        switch (opcion) {
+            case "Titulo":
+                modificarParametro(tarea, usuario, "Titulo", tarea.getTitulo());
+                break;
+            case "Descripcion":
+                modificarParametro(tarea, usuario, "Descripcion", tarea.getDescripcion());
+                break;
+            case "Etiquetas":
+                modificarEtiquetas(tarea, usuario);
+                break;
+            case "Estado":
+                modificarEstado(tarea, usuario);
+                break;
+            case "Fecha de Vencimiento":
+                modificarFecha(tarea, usuario);
+                break;
+        }
     }
 
     public void modificaTareaSimple(Tarea tarea, Usuario usuario) {
-        System.out.println("\n¿Qué desea modificar? \n 1. Titulo. \n 2. Descripcion." +
-                "\n 3. Etiquetas.\n 4. Estado" + "\n 0. Salir.");
-        modifica(tarea, usuario);
-    }
+        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Estado", "Salir" };
+        String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
+                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-    public void modifica(Tarea tarea, Usuario usuario) {
-        String parametro = scanner.nextLine().trim();
-        String parametroNuevo;
-        String parametroViejo;
-        String archivo = obtenerArchivoTareasUsuario(usuario); // Obtener el archivo de tareas del usuario
-        String mensaje;
-        String paramTarea;
-        if (parametro.equals("1")) {
-            parametroViejo = "Titulo: ";
-            mensaje = "Ingrese el nuevo valor para el " + parametroViejo;
-            paramTarea = "Titulo: " + tarea.getTitulo();
-            System.out.println(mensaje);
-            System.out.println(paramTarea);
-            parametroNuevo = scanner.nextLine().trim();
-            tarea.setTitulo(parametroNuevo);
-        } else if (parametro.equals("2")) {
-            parametroViejo = "Descripcion: ";
-            mensaje = "Ingrese el nuevo valor para la " + parametroViejo;
-            paramTarea = "Descripcion: " + tarea.getDescripcion();
-            System.out.println(mensaje);
-            System.out.println(paramTarea);
-            parametroNuevo = scanner.nextLine().trim();
-            tarea.setDescripcion(parametroNuevo);
-        } else if (parametro.equals("3")) {
-            parametroViejo = "Etiquetas: ";
-            mensaje = "Se reiniciarán las etiquetas antiguas.";
-            String etiquetasTemp = tarea.getEtiquetas();
-            paramTarea = "Etiquetas: " + etiquetasTemp;
-            System.out.println(paramTarea);
-            System.out.println(mensaje);
-            Etiqueta etiqueta = new Etiqueta();
-            Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
-            parametroNuevo = tareaTemp.getEtiquetas();
-            tarea.setEtiquetas(parametroNuevo);
-        } else if (parametro.equals("4")) {
-            parametroViejo = "Estado: ";
-            mensaje = "Ingrese el nuevo valor para el " + parametroViejo;
-            TareaEstado estado = tarea.getEstado();
-            String estadoString = tarea.estadoToString(estado);
-            paramTarea = "Estado: " + estadoString;
-            System.out.println(paramTarea);
-            parametroNuevo = modificarEstado(tarea);
-            System.out.println(parametroNuevo);
-
-        } else if (tarea.getTipo().equals("con fecha") && parametro.equals("5")) {
-            parametroViejo = "Fecha de Vencimiento: ";
-            mensaje = "Ingrese el nuevo valor para la " + parametroViejo;
-            DateTimeFormatter formateadorVencimiento = DateTimeFormatter
-                    .ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
-            LocalDateTime fechaHora = tarea.getFechaVencimiento();
-            String fechaHoraString = fechaHora.format(formateadorVencimiento);
-            paramTarea = "Fecha de Vencimiento: " + fechaHoraString;
-            parametroNuevo = modificaFecha(tarea);
-            System.out.println(parametroNuevo);
-
-        } else {
-            System.out.println("No has modificado nada.");
+        if (opcion == null || opcion.equals("Salir")) {
             return;
         }
 
+        switch (opcion) {
+            case "Titulo":
+                modificarParametro(tarea, usuario, "Titulo", tarea.getTitulo());
+                break;
+            case "Descripcion":
+                modificarParametro(tarea, usuario, "Descripcion", tarea.getDescripcion());
+                break;
+            case "Etiquetas":
+                modificarEtiquetas(tarea, usuario);
+                break;
+            case "Estado":
+                modificarEstado(tarea, usuario);
+                break;
+        }
+    }
+
+    private void modificarParametro(Tarea tarea, Usuario usuario, String parametro, String valorActual) {
+        String nuevoValor = VistaTareas
+                .obtenerEntrada("Ingrese el nuevo valor para " + parametro + " (Actual: " + valorActual + ")");
+        if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
+            return;
+        }
+
+        String archivo = obtenerArchivoTareasUsuario(usuario);
         try {
-            // Lee el contenido del archivo
             List<String> lineas = new ArrayList<>();
             BufferedReader br = new BufferedReader(new FileReader(archivo));
             String linea;
@@ -304,134 +313,161 @@ public class TareasControlador {
             }
             br.close();
 
-            // Buscar y modificar la línea deseada
             for (int i = 0; i < lineas.size(); i++) {
-                if (parametroViejo == "Estado: ") {
-                    if (tarea instanceof TareaConFecha && lineas.get(i).equals(paramTarea)
-                            && lineas.get(i - 5).equals("Descripcion: " + tarea.getDescripcion())) {
-                        lineas.set(i, parametroViejo + parametroNuevo);
-                        break; // Terminamos de buscar una vez que encontramos la tarea
-                    } else if (tarea instanceof TareaSimple && lineas.get(i).equals(paramTarea)
-                            && lineas.get(i - 4).equals("Descripcion: " + tarea.getDescripcion())) {
-                        lineas.set(i, parametroViejo + parametroNuevo);
-                        break;
-                    }
-                } else {
-                    if (lineas.get(i).equals(paramTarea)) {
-                        lineas.set(i, parametroViejo + parametroNuevo);
-                        break;
-                    }
+                if (lineas.get(i).equals(parametro + ": " + valorActual)) {
+                    lineas.set(i, parametro + ": " + nuevoValor);
+                    break;
                 }
             }
-            // Escribir el contenido modificado de vuelta al archivo
+
             BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
             for (String line : lineas) {
                 bw.write(line + "\n");
             }
             bw.close();
 
-            System.out.println("Archivo modificado exitosamente.");
+            switch (parametro) {
+                case "Titulo":
+                    tarea.setTitulo(nuevoValor);
+                    break;
+                case "Descripcion":
+                    tarea.setDescripcion(nuevoValor);
+                    break;
+            }
 
+            VistaTareas.mostrarMensaje("Archivo modificado exitosamente.");
         } catch (IOException e) {
-            System.out.println("Error al manipular el archivo: " + e.getMessage());
+            VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
         }
-        TareasAlmacen.getTareas(usuario);
     }
 
-    public String modificarEstado(Tarea tarea) {
-        if (tarea.getEstado() == null) {
-            tarea.setEstado(new TareaPendiente());
+    private void modificarEtiquetas(Tarea tarea, Usuario usuario) {
+        VistaTareas.mostrarMensaje("Se reiniciarán las etiquetas antiguas.");
+        Etiqueta etiqueta = new Etiqueta();
+        Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
+        tarea.setEtiquetas(tareaTemp.getEtiquetas());
+        VistaTareas.mostrarMensaje("Etiquetas modificadas exitosamente.");
+    }
+
+    private void modificarEstado(Tarea tarea, Usuario usuario) {
+        String estadoViejo = "Estado: " + tarea.estadoToString(tarea.getEstado());
+        String[] opciones = { "Tarea En Progreso", "Tarea Completada", "Tarea Pendiente" };
+        String nuevoEstado = (String) JOptionPane.showInputDialog(null, "Seleccione el nuevo estado:",
+                "Modificar Estado",
+                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+        if (nuevoEstado == null) {
+            return;
         }
 
-        TareaEstado estado = tarea.getEstado();
-        String estadoString = tarea.estadoToString(estado);
-        System.out.println("Seleccione el nuevo estado:");
-        System.out.println("1. En Progreso");
-        System.out.println("2. Completada");
-        System.out.println("3. Pendiente");
-        Scanner sc = new Scanner(System.in);
-        int nuevaOpcion = sc.nextInt();
-        switch (nuevaOpcion) {
-            case 1:
+        System.out.println("Nuevo estado seleccionado: " + nuevoEstado);
+
+
+        switch (nuevoEstado) {
+            case "Tarea En Progreso":
                 tarea.iniciar();
-                estadoString = "Tarea En Progreso";
                 tarea.setEstado(new TareaEnProgreso());
                 break;
-            case 2:
+            case "Tarea Completada":
                 tarea.completar();
-                if (tarea.getEstado() instanceof TareaCompletada) {
-                    estadoString = "Completada";
-                    tarea.setEstado(new TareaCompletada());
-                } else {
-                    estadoString = "Tarea Pendiente";
-                    tarea.setEstado(new TareaPendiente());
-                }
+                tarea.setEstado(new TareaCompletada());
                 break;
-            case 3:
+            case "Tarea Pendiente":
                 tarea.volverPendiente();
-                estadoString = "Tarea Pendiente";
                 tarea.setEstado(new TareaPendiente());
                 break;
             default:
-                System.out.println("Opción no válida.");
-                break;
+                VistaTareas.mostrarMensaje("Opción no válida.");
+                return;
         }
-        return estadoString;
+
+        String archivo = obtenerArchivoTareasUsuario(usuario);
+        try {
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            String titulo = "Titulo: " + tarea.getTitulo();
+            String estadoNuevo = "Estado: " + tarea.estadoToString(tarea.getEstado());
+            String nuevaLinea = "Estado: " + nuevoEstado;
+            String tipo = "Tipo: " + tarea.getTipo();
+            System.out.println(tipo);
+            System.out.println(estadoViejo);
+            for (int i = 0; i < lineas.size(); i++) {
+                // Busca la línea que contiene el título y el estado actual de la tarea
+                    if (lineas.get(i).equals(estadoViejo) && lineas.get(i-5).equals(titulo) 
+                    && lineas.get(i-6).equals("Tipo: simple")) {
+                        System.out.println("hola");
+                        System.out.println(lineas.get(i) + " " + lineas.get(i - 5));
+                        lineas.set(i, nuevaLinea);
+                        break;
+                    }
+                    if (lineas.get(i).equals(estadoViejo) && lineas.get(i-6).equals(titulo) 
+                    && lineas.get(i-7).equals("Tipo: con fecha")) {
+                        System.out.println("hola");
+                        System.out.println(lineas.get(i) + " " + lineas.get(i - 5));
+                        lineas.set(i, nuevaLinea);
+                        break;
+                    }
+                System.out.println(lineas.get(i));
+            }
+            System.out.println(tarea.getEstado().toString());
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close();
+
+            VistaTareas.mostrarMensaje("Estado modificado exitosamente.");
+        } catch (IOException e) {
+            VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
+        }
     }
 
-    public String modificaFecha(Tarea tareaTemp) {
-        LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
-        tareaTemp.setFechaCreacion(fechaCreacion);
-        System.out.println("Ingrese la fecha de vencimiento. ");
-
-        System.out.println("Escoge el día (con numeros): ");
-        int dia = scanner.nextInt();
-        if (dia < 1 || dia > 31) {
-            System.out.println("Rango de dias no válidos.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
-        }
-        System.out.println("Escoge el mes (con numeros): ");
-        int mes = scanner.nextInt();
-        if (mes < 1 || mes > 12) {
-            System.out.println("Rango de meses no válidos.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
-        }
-        System.out.println("\nEscoge el año (con numeros): ");
-        int año = scanner.nextInt();
-        if (año < 0) {
-            System.out.println("Rango de años no válidos.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
-        }
-        System.out.println("Escoge la hora (con numeros): ");
-        int hora = scanner.nextInt();
-        if (hora < 0 || hora > 23) {
-            System.out.println("Rango de horas no válidas.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
-        }
-        System.out.println("Escoge los minutos (con numeros): ");
-        int minutos = scanner.nextInt();
-        if (minutos < 0 || minutos > 59) {
-            System.out.println("Rango de minutos no válidos.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
+    private void modificarFecha(Tarea tarea, Usuario usuario) {
+        String nuevoValor = VistaTareas.obtenerEntrada("Ingrese la nueva fecha de vencimiento (dd-MM-yyyy HH:mm):");
+        if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
+            return;
         }
 
-        if (fechaCreacion.isAfter(LocalDate.of(año, mes, dia))) {
-            System.out.println("La fecha de vencimiento no puede ser antes de la fecha de creación.");
-            System.out.println("Intentalo de nuevo.");
-            return "";
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        try {
+            LocalDateTime nuevaFecha = LocalDateTime.parse(nuevoValor, formatter);
+            tarea.setFechaVencimiento(nuevaFecha);
 
-        String mesFormateado = String.format("%02d", mes);
-        String diaFormateado = String.format("%02d", dia);
-        String horaFormateada = String.format("%02d", hora);
-        String minutosFormateados = String.format("%02d", minutos);
-        return diaFormateado + "-" + mesFormateado + "-" + año + " Hora: " + horaFormateada + ":"
-                + minutosFormateados;
+            String archivo = obtenerArchivoTareasUsuario(usuario);
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            for (int i = 0; i < lineas.size(); i++) {
+                if (lineas.get(i).startsWith("Fecha de Vencimiento: ")) {
+                    lineas.set(i, "Fecha de Vencimiento: " + nuevaFecha.format(formatter));
+                    break;
+                }
+            }
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close();
+
+            VistaTareas.mostrarMensaje("Fecha de vencimiento modificada exitosamente.");
+        } catch (IOException e) {
+            VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
+        } catch (Exception e) {
+            VistaTareas.mostrarMensaje("Formato de fecha no válido.");
+        }
     }
 
     public void eliminaTarea2(Usuario usuario) {
