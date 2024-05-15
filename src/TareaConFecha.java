@@ -118,11 +118,7 @@ public class TareaConFecha implements Tarea {
             }
 
             this.descripcion = vista.obtenerDescripcion();
-
-            this.etiquetas = vista.obtenerEtiquetas();
-            // falta interface para etiquetas
-            Etiqueta agregaEtiqueta = new Etiqueta();
-            Tarea tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+            Tarea tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tipo);
             etiquetas = tareaTemp.getEtiquetas();
             fechaCreacion = tareaTemp.getFechaCreacion();
             tareaTemp.setFechaCreacion(fechaCreacion);
@@ -209,10 +205,8 @@ public class TareaConFecha implements Tarea {
             } while (descripcion.trim().isEmpty());
         }
 
-        System.out.print("Etiquetas: ");
-        Etiqueta agregaEtiqueta = new Etiqueta();
         Tarea tareaTemp;
-        tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+        tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tipo);
         etiquetas = tareaTemp.getEtiquetas();
         LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
         tareaTemp.setFechaCreacion(fechaCreacion);

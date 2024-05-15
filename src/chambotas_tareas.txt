@@ -1,0 +1,8 @@
+Tipo: simple
+Titulo: Chambear
+Descripcion: chamba
+Etiquetas: #Trabajo-
+Fecha de creación: 14-05-2024
+Prioridad: 2
+Estado: Tarea Pendiente
+

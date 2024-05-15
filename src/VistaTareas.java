@@ -427,42 +427,21 @@ public class VistaTareas  {
         return "";
     }
 
-    public Tarea ventanaConfirmacionEtiquetas() {
+    public static Tarea ventanaConfirmacionEtiquetas(String tipo) {
+        Tarea tarea = null;
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar etiquetas?", "Etiquetas",
                 JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION) {
-            String[] options = { "Estudio", "Viaje" };
-            String etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
-                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-        
+            String etiqueta = "pña";
+            Etiqueta etiqueta2 = new Etiqueta();
+             tarea = etiqueta2.etiquetaTarea(tipo, etiqueta);
         }
-        TareaSimple tarea = new TareaSimple("titulo", "descripcion", "etiquetas", "tipo", null, 0, null);
-        return tarea;
-    }
-
-    public static Tarea obtenerEntradaEtiquetas(String mensaje) {
-        String entrada;
-        Tarea tareatemp = new TareaSimple(null, "", mensaje, "", null, 0, null);
-        do {
-            entrada = JOptionPane.showInputDialog(null, mensaje);
-            if (entrada == null || entrada.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No puedes dejar el campo vacío.");
+            if (respuesta == JOptionPane.NO_OPTION && tipo.equals("simple")){
+                tarea = new TareaSimple("simple", "", "", "", LocalDate.now(), 0, null);
+            } else if (respuesta == JOptionPane.NO_OPTION && tipo.equals("con fecha")){
+                tarea = new TareaConFecha("con fecha", "", "", "", LocalDate.now(), LocalDateTime.now(), 5, new TareaPendiente());
             }
-        } while (entrada == null || entrada.trim().isEmpty());
-        return tareatemp;
-    }
-
-    public String obtenerEtiquetas() {
-            String prioridad;
-            do {
-                String input = obtenerEntrada("¿Deseas agregar etiquetas?:");
-                try {
-                    System.out.println(input);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Entrada inválida, ingrese un número.");
-                }
-            } while (true);
-            
+        return tarea;
     }
 
     public int obtenerPrioridad() {

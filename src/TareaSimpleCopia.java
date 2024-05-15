@@ -48,7 +48,7 @@ public class TareaSimpleCopia implements Tarea {
         System.out.print("Etiquetas: ");
         Etiqueta agregaEtiqueta = new Etiqueta();
         Tarea tareaTemp;
-        tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+        tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tipo);
         etiquetas = tareaTemp.getEtiquetas();
         LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
         tareaTemp.setFechaCreacion(fechaCreacion);

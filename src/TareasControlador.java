@@ -244,7 +244,7 @@ public class TareasControlador {
     // Métodos para modificar tareas simples y tareas con fecha...
 
     public void modificaTareaConFecha(Tarea tarea, Usuario usuario) {
-        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Estado", "Fecha de Vencimiento", "Salir" };
+        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Fecha de Vencimiento", "Prioridad", "Estado", "Salir" };
         String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
                 JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
@@ -262,17 +262,20 @@ public class TareasControlador {
             case "Etiquetas":
                 modificarEtiquetas(tarea, usuario);
                 break;
-            case "Estado":
-                modificarEstado(tarea, usuario);
-                break;
             case "Fecha de Vencimiento":
                 modificarFecha(tarea, usuario);
+                break;
+            case "Prioridad":
+                modificarPrioridad(tarea, usuario, tarea.getPrioridad());
+                break;
+            case "Estado":
+                modificarEstado(tarea, usuario);
                 break;
         }
     }
 
     public void modificaTareaSimple(Tarea tarea, Usuario usuario) {
-        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Estado", "Salir" };
+        String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Prioridad", "Estado", "Salir" };
         String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
                 JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
@@ -289,6 +292,9 @@ public class TareasControlador {
                 break;
             case "Etiquetas":
                 modificarEtiquetas(tarea, usuario);
+                break;
+            case "Prioridad":
+                modificarPrioridad(tarea, usuario, tarea.getPrioridad());
                 break;
             case "Estado":
                 modificarEstado(tarea, usuario);
@@ -333,6 +339,14 @@ public class TareasControlador {
                 case "Descripcion":
                     tarea.setDescripcion(nuevoValor);
                     break;
+                case "Etiquetas":
+                    tarea.setEtiquetas(nuevoValor);
+                    break;
+                case "Fecha de Vencimiento":
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                    LocalDateTime nuevaFecha = LocalDateTime.parse(nuevoValor, formatter);
+                    tarea.setFechaVencimiento(nuevaFecha);
+                    break;
             }
 
             VistaTareas.mostrarMensaje("Archivo modificado exitosamente.");
@@ -343,10 +357,69 @@ public class TareasControlador {
 
     private void modificarEtiquetas(Tarea tarea, Usuario usuario) {
         VistaTareas.mostrarMensaje("Se reiniciarán las etiquetas antiguas.");
-        Etiqueta etiqueta = new Etiqueta();
-        Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
+        Tarea tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tarea.getTipo());
         tarea.setEtiquetas(tareaTemp.getEtiquetas());
-        VistaTareas.mostrarMensaje("Etiquetas modificadas exitosamente.");
+        String archivo = obtenerArchivoTareasUsuario(usuario);
+        try {
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            for (int i = 0; i < lineas.size(); i++) {
+                if (lineas.get(i).contains("Etiquetas: " ) && lineas.get(i-1).contains("Descripcion: " + tarea.getDescripcion())){
+                    lineas.set(i, "Etiquetas: " + tarea.getEtiquetas());
+                    break;
+                }
+            }
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close(); 
+         VistaTareas.mostrarMensaje("Archivo modificado exitosamente.");
+         } catch (IOException e) {
+       VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
+       }
+    }
+
+    private void modificarPrioridad(Tarea tarea, Usuario usuario, int prioridad){
+        String nuevoValor = VistaTareas
+                .obtenerEntrada("Ingrese el nuevo valor para la prioridad. (Actual: " + tarea.getPrioridad() + ")");
+        if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
+            return;
+        }
+        tarea.setPrioridad(Integer.parseInt(nuevoValor));
+        String archivo = obtenerArchivoTareasUsuario(usuario);
+        try {
+            List<String> lineas = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(archivo));
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+            br.close();
+
+            for (int i = 0; i < lineas.size(); i++) {
+                if (lineas.get(i).contains("Prioridad: " + tarea.getPrioridad())) {
+                    lineas.set(i, "Prioridad: " + nuevoValor);
+                    break;
+                }
+            }
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
+            for (String line : lineas) {
+                bw.write(line + "\n");
+            }
+            bw.close();
+            VistaTareas.mostrarMensaje("Archivo modificado exitosamente.");
+        } catch (IOException e) {
+            VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
+        }
     }
 
     private void modificarEstado(Tarea tarea, Usuario usuario) {

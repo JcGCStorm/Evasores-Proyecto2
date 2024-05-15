@@ -112,11 +112,10 @@ public class TareaSimple implements Tarea {
         
         this.titulo = vista.obtenerTitulo();
         this.descripcion = vista.obtenerDescripcion();
-        this.etiquetas = vista.obtenerEtiquetas();
         
         // falta gui de etiquetas
-        Etiqueta agregaEtiqueta = new Etiqueta();
-        Tarea tareaTemp = agregaEtiqueta.etiquetaTarea(titulo, descripcion, tipo);
+        Tarea tareaTemp;
+        tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas("simple");
         etiquetas = tareaTemp.getEtiquetas();
         LocalDate fechaCreacion = tareaTemp.getFechaCreacion();
         tareaTemp.setFechaCreacion(fechaCreacion);
