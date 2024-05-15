@@ -35,17 +35,17 @@ public class Etiqueta {
      * @param tipo        el tipo de tarea
      * @return Tarea, la tarea con la(s) etiqueta(s) agregada(s).
      */
-    public Tarea etiquetaTarea(String titulo, String descripcion, String tipo) {
+    public Tarea etiquetaTarea(String tipo, String etiqueta) {
         System.out.println();
         Tarea tarea;
         switch (tipo) {
             case "simple":
-                tarea = new TareaSimple("simple", titulo, descripcion, "", LocalDate.now(), 0,
+                tarea = new TareaSimple("simple", tipo, tipo, "", LocalDate.now(), 0,
                         new TareaPendiente());
                 break;
             case "con fecha":
 
-                tarea = new TareaConFecha("con fecha", titulo, descripcion, "", LocalDate.now(), LocalDateTime.now(),
+                tarea = new TareaConFecha("con fecha", tipo, tipo, "", LocalDate.now(), LocalDateTime.now(),
                         0, new TareaPendiente());
                 break;
             default:
@@ -53,13 +53,8 @@ public class Etiqueta {
                 tarea = null;
         }
         if (tarea != null) {
-            boolean ponmeMas = true;
-            while (ponmeMas) {
+            
                 try {
-                    System.out.println("¿Deseas agregar etiquetas a tu tarea?\nSi/No");
-                    if (scanner.nextLine().equalsIgnoreCase("no")) {
-                        ponmeMas = false;
-                    } else {
                         System.out.println("¿Qué etiqueta deseas agregar a tu tarea?");
                         System.out.println(estudio);
                         System.out.println(trabajo);
@@ -75,10 +70,50 @@ public class Etiqueta {
                         System.out.println(asambleas);
                         System.out.println(otro);
                         System.out.println("0. No agregar más etiquetas");
-                        int productoEleccion = scanner.nextInt();
-                        if (productoEleccion == 0) {
-                            ponmeMas = false;
-                        } else {
+                        int productoEleccion = 9;
+                        switch (etiqueta) {
+                            case "Estudio":
+                                productoEleccion = 1;
+                                break;
+                            case "Trabajo":
+                                productoEleccion = 2;
+                                break;
+                            case "Personal":
+                                productoEleccion = 3;
+                                break;
+                            case "Deportes":
+                                productoEleccion = 4;
+                                break;
+                            case "Comida":
+                                productoEleccion = 5;
+                                break;
+                            case "Salud":
+                                productoEleccion = 6;
+                                break;
+                            case "Entretenimiento":
+                                productoEleccion = 7;
+                                break;
+                            case "Hogar":
+                                productoEleccion = 8;
+                                break;
+                            case "Viaje":
+                                productoEleccion = 9;
+                                break;
+                            case "Compras":
+                                productoEleccion = 10;
+                                break;
+                            case "Social":
+                                productoEleccion = 11;
+                                break;
+                            case "Asambleas":
+                                productoEleccion = 12;
+                                break;
+                            case "Otro":
+                                productoEleccion = 13;
+                                break;
+                            default:
+                                break;
+                        }
                             switch (productoEleccion) {
                                 case 1:
                                     int etiquetaEstudio = etiquetasContador[productoEleccion] + 1;
@@ -236,19 +271,13 @@ public class Etiqueta {
                                                 "Ya tienes una etiqueta de otro en tu tarea, no puedes agregar más.");
                                     }
                                     break;
-                                case 0:
-                                    ponmeMas = false;
                                 default:
                                     System.out.println("No seleccionaste una opción válida ):");
                             }
-                        }
-                    }
                 } catch (Exception e) {
                     System.out.println("Debes ingresar el número, no debes ingresar letras.");
-                    ponmeMas = false;
                 }
             }
-        }
         return tarea;
     }
 

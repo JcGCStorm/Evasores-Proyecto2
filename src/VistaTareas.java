@@ -427,20 +427,28 @@ public class VistaTareas  {
         return "";
     }
 
-    public Tarea ventanaConfirmacionEtiquetas() {
+    public static Tarea ventanaConfirmacionEtiquetas(String tipo) {
+        Tarea tarea = null;
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar etiquetas?", "Etiquetas",
                 JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION) {
-            String[] options = { "Estudio", "Viaje" };
+            String[] options = { "Estudio", "Viaje", "Salir" };
             String etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
                     JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-        
+            while (!etiqueta.equals("Salir")){
+            Etiqueta etiqueta2 = new Etiqueta();
+             tarea = etiqueta2.etiquetaTarea(tipo, etiqueta);
+             etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
+                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            }
         }
-        TareaSimple tarea = new TareaSimple("titulo", "descripcion", "etiquetas", "tipo", null, 0, null);
+            if (respuesta == JOptionPane.NO_OPTION){
+                tarea = new TareaSimple(null, "", "", "", null, 0, null);
+            }
         return tarea;
     }
 
-    public static Tarea obtenerEntradaEtiquetas(String mensaje) {
+    public static String obtenerEntradaEtiquetas(String mensaje) {
         String entrada;
         Tarea tareatemp = new TareaSimple(null, "", mensaje, "", null, 0, null);
         do {
@@ -449,7 +457,7 @@ public class VistaTareas  {
                 JOptionPane.showMessageDialog(null, "No puedes dejar el campo vacío.");
             }
         } while (entrada == null || entrada.trim().isEmpty());
-        return tareatemp;
+        return entrada;
     }
 
     public String obtenerEtiquetas() {

@@ -344,7 +344,7 @@ public class TareasControlador {
     private void modificarEtiquetas(Tarea tarea, Usuario usuario) {
         VistaTareas.mostrarMensaje("Se reiniciarán las etiquetas antiguas.");
         Etiqueta etiqueta = new Etiqueta();
-        Tarea tareaTemp = etiqueta.etiquetaTarea(tarea.getTitulo(), tarea.getDescripcion(), tarea.getTipo());
+        Tarea tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tarea.getTipo());
         tarea.setEtiquetas(tareaTemp.getEtiquetas());
         VistaTareas.mostrarMensaje("Etiquetas modificadas exitosamente.");
     }

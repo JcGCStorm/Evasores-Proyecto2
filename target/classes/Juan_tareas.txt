@@ -46,3 +46,19 @@ Fecha de creación: 12-05-2024
 Prioridad: 8
 Estado: Completada
 
+Tipo: simple
+Titulo: Creo que ya funcion
+Descripcion: espero que si
+Etiquetas: #Estudio-
+Fecha de creación: 14-05-2024
+Prioridad: 7
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: Ya sirve
+Descripcion: afekjhaf
+Etiquetas: #Viaje-
+Fecha de creación: 14-05-2024
+Prioridad: 8
+Estado: Tarea Pendiente
+

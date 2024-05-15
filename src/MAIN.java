@@ -153,6 +153,9 @@ try {
                 case "7":
                     VistaTareas.verCalendario(usuario);
                     break;
+                case "8":
+                    VistaTareas.ventanaConfirmacionEtiquetas("simple");
+                    break;
                 case "0":
                     salir = true;
                     break;
