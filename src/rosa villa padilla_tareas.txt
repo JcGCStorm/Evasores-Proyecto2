@@ -1,15 +1,15 @@
 Tipo: simple
-Titulo: Ola
+Titulo: 1
 Descripcion: que pasa tio
-Etiquetas: #Estudio-#Trabajo-#Salud-
+Etiquetas: #Estudio-#Trabajo-#Hogar-
 Fecha de creación: 12-05-2024
 Prioridad: 6
 Estado: Completada
 
 Tipo: simple
 Titulo: hola
-Descripcion: 
-Etiquetas: 
+Descripcion: dddddd
+Etiquetas: #Estudio-#Personal-
 Fecha de creación: 12-05-2024
 Prioridad: 0
 Estado: Tarea En Progreso
@@ -44,7 +44,7 @@ Estado: Tarea En Progreso
 Tipo: simple
 Titulo: aifjlkea
 Descripcion: 
-Etiquetas: 
+Etiquetas: #Compras-#Deportes-#Salud-
 Fecha de creación: 13-05-2024
 Prioridad: 4
 Estado: Tarea Pendiente

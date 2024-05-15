@@ -54,12 +54,15 @@ public class Etiqueta {
                 tarea = null;
         }
         if (tarea != null) {
-            String[] options = { "Estudio", "Trabajo", "Personal", "Deportes", "Comida", "Salud", 
-            "Entretenimiento", "Hogar", "Viaje", "Compras", "Social", "Asambleas", "Otro", "Salir"};
+            while (!etiqueta.equals("0. Salir")){
+                try {
+                    String[] options = { estudio, trabajo, personal, deportes, comida, salud, 
+            entretenimiento, hogar, viaje, compras, social, asambleas, otro, "0. Salir"};
             etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
                     JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-            while (!etiqueta.equals("Salir")){
-                try {
+                if (etiqueta == null) {
+                    etiqueta = "0. Salir";
+                }
                         System.out.println("¿Qué etiqueta deseas agregar a tu tarea?");
                         System.out.println(estudio);
                         System.out.println(trabajo);
@@ -75,55 +78,42 @@ public class Etiqueta {
                         System.out.println(asambleas);
                         System.out.println(otro);
                         System.out.println("0. No agregar más etiquetas");
-                        int productoEleccion = 9;
-                        switch (etiqueta) {
-                            case "Estudio":
+                        int productoEleccion = 0;
+                            if (etiqueta.equals("1. Estudio.") || etiqueta.equals("1. Estudio. AGREGADA")) {
                                 productoEleccion = 1;
-                                break;
-                            case "Trabajo":
+                            } else if (etiqueta.equals("2. Trabajo.") || etiqueta.equals("2. Trabajo. AGREGADA")) {
                                 productoEleccion = 2;
-                                break;
-                            case "Personal":
+                            } else if (etiqueta.equals("3. Personal.") || etiqueta.equals("3. Personal. AGREGADA")) {
                                 productoEleccion = 3;
-                                break;
-                            case "Deportes":
+                            } else if (etiqueta.equals("4. Deportes.") || etiqueta.equals("4. Deportes. AGREGADA")) {
                                 productoEleccion = 4;
-                                break;
-                            case "Comida":
+                            } else if (etiqueta.equals("5. Comida.") || etiqueta.equals("5. Comida. AGREGADA")) {
                                 productoEleccion = 5;
-                                break;
-                            case "Salud":
+                            } else if (etiqueta.equals("6. Salud.") || etiqueta.equals("6. Salud. AGREGADA")) {
                                 productoEleccion = 6;
-                                break;
-                            case "Entretenimiento":
+                            } else if (etiqueta.equals("7. Entretenimiento.")
+                                    || etiqueta.equals("7. Entretenimiento. AGREGADA")) {
                                 productoEleccion = 7;
-                                break;
-                            case "Hogar":
+                            } else if (etiqueta.equals("8. Hogar.") || etiqueta.equals("8. Hogar. AGREGADA")) {
                                 productoEleccion = 8;
-                                break;
-                            case "Viaje":
+                            } else if (etiqueta.equals("9. Viaje.") || etiqueta.equals("9. Viaje. AGREGADA")) {
                                 productoEleccion = 9;
-                                break;
-                            case "Compras":
+                            } else if (etiqueta.equals("10. Compras.") || etiqueta.equals("10. Compras. AGREGADA")) {
                                 productoEleccion = 10;
-                                break;
-                            case "Social":
+                            } else if (etiqueta.equals("11. Social.") || etiqueta.equals("11. Social. AGREGADA")) {
                                 productoEleccion = 11;
-                                break;
-                            case "Asambleas":
+                            } else if (etiqueta.equals("12. Asambleas.") || etiqueta.equals("12. Asambleas. AGREGADA")) {
                                 productoEleccion = 12;
-                                break;
-                            case "Otro":
+                            } else if (etiqueta.equals("13. Otro.") || etiqueta.equals("13. Otro. AGREGADA")) {
                                 productoEleccion = 13;
-                                break;
-                            default:
-                                break;
-                        }
+                            }
+                             
                             switch (productoEleccion) {
                                 case 1:
                                     int etiquetaEstudio = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaEstudio == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta estudio a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta estudio a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         estudio = "1. Estudio. AGREGADA";
@@ -136,6 +126,7 @@ public class Etiqueta {
                                     int etiquetaTrabajo = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaTrabajo == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta trabajo a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta trabajo a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         trabajo = "2. Trabajo. AGREGADA";
@@ -148,6 +139,7 @@ public class Etiqueta {
                                     int etiquetaPersonal = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaPersonal == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta personal a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta personal a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         personal = "3. Personal. AGREGADA";
@@ -160,6 +152,7 @@ public class Etiqueta {
                                     int etiquetaDeportes = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaDeportes == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta deportes a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta deportes a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         deportes = "4. Deportes. AGREGADA";
@@ -172,6 +165,7 @@ public class Etiqueta {
                                     int etiquetaComida = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaComida == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta comida a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta comida a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         comida = "5. Comida. AGREGADA";
@@ -184,6 +178,7 @@ public class Etiqueta {
                                     int etiquetaSalud = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaSalud == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta salud a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta salud a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         salud = "6. Salud. AGREGADA";
@@ -196,6 +191,7 @@ public class Etiqueta {
                                     int etiquetaEntretenimiento = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaEntretenimiento == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta entretenimiento a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta entretenimiento a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         entretenimiento = "7. Entretenimiento. AGREGADA";
@@ -208,6 +204,7 @@ public class Etiqueta {
                                     int etiquetaHogar = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaHogar == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta hogar a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta hogar a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         hogar = "8. Hogar. AGREGADA";
@@ -220,6 +217,7 @@ public class Etiqueta {
                                     int etiquetaViaje = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaViaje == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta viaje a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta viaje a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         viaje = "9. Viaje. AGREGADA";
@@ -232,6 +230,7 @@ public class Etiqueta {
                                     int etiquetaCompras = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaCompras == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta compras a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta compras a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         compras = "10. Compras. AGREGADA";
@@ -244,6 +243,7 @@ public class Etiqueta {
                                     int etiquetaSocial = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaSocial == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta social a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta social a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         social = "11. Social. AGREGADA";
@@ -256,6 +256,7 @@ public class Etiqueta {
                                     int etiquetaAsambleas = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaAsambleas == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta asambleas a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta asambleas a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         asambleas = "12. Asambleas. AGREGADA";
@@ -268,6 +269,7 @@ public class Etiqueta {
                                     int etiquetaOtro = etiquetasContador[productoEleccion] + 1;
                                     if (etiquetaOtro == 1) {
                                         tarea = agregarEtiquetas(productoEleccion, tarea);
+                                        VistaTareas.mostrarMensaje("Se ha agregado la etiqueta otro a tu tarea.");
                                         System.out.println("Se ha agregado la etiqueta otro a tu tarea.");
                                         etiquetasContador[productoEleccion]++;
                                         otro = "13. Otro. AGREGADA";
@@ -279,11 +281,11 @@ public class Etiqueta {
                                 default:
                                     System.out.println("No seleccionaste una opción válida ):");
                             }
+                     //       etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
+                     //       JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                 } catch (Exception e) {
                     System.out.println("Debes ingresar el número, no debes ingresar letras.");
                 }
-                etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
-                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             }
         }
         return tarea;

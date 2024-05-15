@@ -251,94 +251,123 @@ public class VistaTareas  {
 
     private static final Color COLOR_TAREAS = Color.RED;
     private static final Color COLOR_HOY = Color.YELLOW;
+    private static LocalDate mesActual;
+    private static JDialog dialog;
 
-    // este metodo muestra un calendario (del mes) de tareas
     public static void verCalendario(Usuario usuario) {
-        JFrame frame = new JFrame("Calendario de Tareas");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLayout(new BorderLayout());
+        // inicializa el mes actual
+        mesActual = LocalDate.now().withDayOfMonth(1);
 
-        // panel superior para mostrar el mes y el año
+        // crea y muestra el calendario en un JOptionPane
+        mostrarCalendario(usuario);
+    }
+
+    private static void mostrarCalendario(Usuario usuario) {
+
+        // esta cosa del dialog ayuda a que solo se muestre una ventana x mes
+        if (dialog != null) {
+            dialog.dispose();
+        }
+
+        JPanel panelCalendario = crearPanelCalendario(usuario);
+        JScrollPane scrollPane = new JScrollPane(panelCalendario);
+        scrollPane.setPreferredSize(new Dimension(800, 600));
+
+        dialog = new JOptionPane(scrollPane, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION).createDialog("Calendario de Tareas");
+        dialog.setVisible(true);
+    }
+
+    private static JPanel crearPanelCalendario(Usuario usuario) {
+        JPanel panelCalendario = new JPanel(new BorderLayout());
+
+        // panel superior para mostrar el mes y el año con botones 
         JPanel panelSuperior = new JPanel(new FlowLayout());
+        JButton botonAnterior = new JButton("<");
+        JButton botonSiguiente = new JButton(">");
         JLabel labelMesAno = new JLabel();
+        panelSuperior.add(botonAnterior);
         panelSuperior.add(labelMesAno);
-        frame.add(panelSuperior, BorderLayout.NORTH);
+        panelSuperior.add(botonSiguiente);
+        panelCalendario.add(panelSuperior, BorderLayout.NORTH);
 
         // panel central para mostrar el calendario
         JPanel panelCentral = new JPanel(new GridLayout(0, 7));
-        frame.add(panelCentral, BorderLayout.CENTER);
+        panelCalendario.add(panelCentral, BorderLayout.CENTER);
 
-        // tareas del usuario
-        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
-        System.out.println("tareas recuperadas: " + tareas.size());
+        actualizarCalendario(usuario, labelMesAno, panelCentral);
 
-        // primer día del mes actual
-        LocalDate fechaActual = LocalDate.now();
-        LocalDate primerDiaDelMes = fechaActual.withDayOfMonth(1);
+        botonAnterior.addActionListener(e -> {
+            mesActual = mesActual.minusMonths(1);
+            mostrarCalendario(usuario);
+        });
 
-        // mes y el año actual
+        botonSiguiente.addActionListener(e -> {
+            mesActual = mesActual.plusMonths(1);
+            mostrarCalendario(usuario);
+        });
+
+        return panelCalendario;
+    }
+
+    private static void actualizarCalendario(Usuario usuario, JLabel labelMesAno, JPanel panelCentral) {
+        panelCentral.removeAll();
+
+        // mes y año actual
         DateTimeFormatter formatterMesAno = DateTimeFormatter.ofPattern("MMMM yyyy");
-        labelMesAno.setText(primerDiaDelMes.format(formatterMesAno));
+        labelMesAno.setText(mesActual.format(formatterMesAno));
 
-        // nombre de los días de la semana
-        String[] diasSemana = { "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom" };
-        // etiquetas para los nombres de los días de la semana
+        //  días de la semana
+        String[] diasSemana = {"Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"};
         for (String dia : diasSemana) {
             JLabel labelDiaSemana = new JLabel(dia, SwingConstants.CENTER);
             panelCentral.add(labelDiaSemana);
         }
 
-        // etiquetas en blanco para los días antes del primer día del mes
+        // primer día del mes 
+        LocalDate primerDiaDelMes = mesActual;
+
+        // etiquetas en blanco pa los días antes del primer día del mes
         for (int i = 1; i < primerDiaDelMes.getDayOfWeek().getValue(); i++) {
             panelCentral.add(new JLabel());
         }
 
-        // último día del mes actual
-        LocalDate ultimoDiaDelMes = fechaActual.withDayOfMonth(fechaActual.lengthOfMonth());
+        // ultimo día del mes actual
+        LocalDate ultimoDiaDelMes = mesActual.withDayOfMonth(mesActual.lengthOfMonth());
 
-        // mapa para almacenar los días con tareas
+        // Tareas del usuario
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         Map<LocalDate, List<TareaConFecha>> diasConTareas = new HashMap<>();
         for (Tarea tarea : tareas) {
             if (tarea instanceof TareaConFecha) {
                 TareaConFecha tareaConFecha = (TareaConFecha) tarea;
                 LocalDate fechaVencimiento = tareaConFecha.getFechaVencimiento().toLocalDate();
-                // lista de tareas asociadas con la fecha de vencimiento
                 List<TareaConFecha> tareasDia = diasConTareas.getOrDefault(fechaVencimiento, new ArrayList<>());
-                // agrega la tarea actual a la lista de tareas del día
                 tareasDia.add(tareaConFecha);
-                // actualiza el mapa con la lista de tareas del día
                 diasConTareas.put(fechaVencimiento, tareasDia);
             }
         }
 
-        // botones para cada día del mes
-        for (LocalDate fechaBoton = primerDiaDelMes; fechaBoton
-                .isBefore(ultimoDiaDelMes.plusDays(1)); fechaBoton = fechaBoton.plusDays(1)) {
+        // botones pa cada día del mes
+        for (LocalDate fechaBoton = primerDiaDelMes; !fechaBoton.isAfter(ultimoDiaDelMes); fechaBoton = fechaBoton.plusDays(1)) {
             JButton botonDia = new JButton(Integer.toString(fechaBoton.getDayOfMonth()));
             botonDia.setOpaque(true);
             botonDia.setBorderPainted(false);
             botonDia.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-            // lista de tareas para esta fecha
+            // Lista de tareas para esta fecha
             List<TareaConFecha> tareasDelDia = diasConTareas.getOrDefault(fechaBoton, new ArrayList<>());
 
-            // marca el día si tiene tareas asignadas
             if (!tareasDelDia.isEmpty()) {
-                // agrega un punto en el botón para indicar tareas
                 JLabel punto = new JLabel("\u2022");
-                punto.setFont(new Font("Arial", Font.BOLD, 20)); // tamaño del punto
-                punto.setForeground(COLOR_TAREAS); // color del punto
+                punto.setFont(new Font("Arial", Font.BOLD, 20));
+                punto.setForeground(COLOR_TAREAS);
                 botonDia.setLayout(new BorderLayout());
-                botonDia.add(punto, BorderLayout.NORTH); // punto encima del número del día
-            } else if (fechaBoton.isEqual(LocalDate.now())) { // si es hoy, cambiar el color de fondo
+                botonDia.add(punto, BorderLayout.NORTH);
+            } else if (fechaBoton.isEqual(LocalDate.now())) {
                 botonDia.setBackground(COLOR_HOY);
             }
 
-            // copia final de la fecha para usar dentro dellambda
             final LocalDate fechaFinal = fechaBoton;
-
-            // ActionListener al botón para mostrar las tareas del día
             botonDia.addActionListener(e -> mostrarTareasDelDia(usuario, fechaFinal, tareasDelDia));
 
             panelCentral.add(botonDia);
@@ -348,14 +377,9 @@ public class VistaTareas  {
         for (int i = 1; i < 7 - ultimoDiaDelMes.getDayOfWeek().getValue() + 1; i++) {
             panelCentral.add(new JLabel());
         }
-        JScrollPane scrollPane2 = new JScrollPane(panelCentral);
 
-        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
-        scrollPane2.setPreferredSize(new java.awt.Dimension(500, 400));
-
-        // Mostrar el JOptionPane con el JScrollPane como su contenido
-        JOptionPane.showMessageDialog(null, scrollPane2);
-        //frame.setVisible(true);
+        panelCentral.revalidate();
+        panelCentral.repaint();
     }
 
     private static void mostrarTareasDelDia(Usuario usuario, LocalDate fecha, List<TareaConFecha> tareas) {

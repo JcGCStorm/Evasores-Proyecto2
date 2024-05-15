@@ -370,7 +370,7 @@ public class TareasControlador {
             br.close();
 
             for (int i = 0; i < lineas.size(); i++) {
-                if (lineas.get(i).contains("Etiquetas: " ) && lineas.get(i-1).contains("Descripcion: " + tarea.getDescripcion())){
+                if (lineas.get(i).contains("Etiquetas: " ) && lineas.get(i-2).contains("Titulo: " + tarea.getTitulo())){
                     lineas.set(i, "Etiquetas: " + tarea.getEtiquetas());
                     break;
                 }

@@ -51,7 +51,7 @@ public class MAIN {
                     String contrasena = new String(campoContrasena.getPassword());
 
                     TareasProxy proxy = new TareasProxyImpl();
-                    Usuario usuario = proxy.iniciarSesion(nombreUsuario, contrasena);
+                    Usuario usuario = proxy.iniciarSesion(nombreUsuario.trim(), contrasena);
 
                     if (usuario != null) {
                         JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
@@ -152,9 +152,6 @@ try {
                     break;
                 case "7":
                     VistaTareas.verCalendario(usuario);
-                    break;
-                case "8":
-                    VistaTareas.ventanaConfirmacionEtiquetas("simple");
                     break;
                 case "0":
                     salir = true;
