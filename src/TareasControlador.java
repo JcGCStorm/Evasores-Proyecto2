@@ -351,7 +351,7 @@ public class TareasControlador {
 
     private void modificarEstado(Tarea tarea, Usuario usuario) {
         String estadoViejo = "Estado: " + tarea.estadoToString(tarea.getEstado());
-        String[] opciones = { "Tarea En Progreso", "Tarea Completada", "Tarea Pendiente" };
+        String[] opciones = { "Tarea En Progreso", "Completada", "Tarea Pendiente" };
         String nuevoEstado = (String) JOptionPane.showInputDialog(null, "Seleccione el nuevo estado:",
                 "Modificar Estado",
                 JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
@@ -361,20 +361,58 @@ public class TareasControlador {
         }
 
         System.out.println("Nuevo estado seleccionado: " + nuevoEstado);
-
+String mensajeModifica = "";
 
         switch (nuevoEstado) {
             case "Tarea En Progreso":
+             if (estadoViejo.equals("Estado: Tarea En Progreso")) {
+                VistaTareas.mostrarMensaje("La tarea ya estaba en progreso. \n" + //
+                                        "No se ha modificado el archivo");
+                return;
+            } else if (estadoViejo.equals("Estado: Completada")) {
+                VistaTareas.mostrarMensaje("La tarea ya habia sido completada. \n" + //
+                                        "No se ha modificado el archivo");
+                return;
+            } else {
                 tarea.iniciar();
                 tarea.setEstado(new TareaEnProgreso());
+                mensajeModifica = "La tarea ahora está en progreso. \n ¡Tú puedes! \n" + 
+                                "Recuerda que puedes completarla o volverla pendiente." + 
+                                "\n Archivo modificado exitosamente.";
+            }
                 break;
-            case "Tarea Completada":
+            case "Completada":
+            if (estadoViejo.equals("Estado: Completada")) {
+                VistaTareas.mostrarMensaje("La tarea ya estaba completada.\n" 
+                                        + "No se ha modificado el archivo");
+                return;
+            } else if (estadoViejo.equals("Estado: Tarea En Progreso")) {
                 tarea.completar();
                 tarea.setEstado(new TareaCompletada());
+                mensajeModifica = "¡Has completado la tarea! ¡¡Felicidades!!. \n" + 
+                                   "Archivo modificado exitosamente.";
+            } else if (estadoViejo.equals("Estado: Tarea Pendiente")) {
+                VistaTareas.mostrarMensaje("La tarea no puede pasar de pendiente a completada. \n" + 
+                                           "No se ha modificado el archivo");
+                return;
+            }
                 break;
             case "Tarea Pendiente":
+            if (estadoViejo.equals("Estado: Tarea Pendiente")) {
+                VistaTareas.mostrarMensaje("La tarea ya estaba pendiente. \n" + 
+                                        "No se ha modificado el archivo");
+                return;
+            } else if (estadoViejo.equals("Estado: Tarea En Progreso")) {
                 tarea.volverPendiente();
                 tarea.setEstado(new TareaPendiente());
+                mensajeModifica = "La tarea ahora está pendiente. \n" + 
+                                "Espero que no procrastines mucho" + 
+                                "\n Archivo modificado exitosamente.";
+            } else if (estadoViejo.equals("Estado: Completada")) {
+                VistaTareas.mostrarMensaje("La tarea no puede pasar de completada a pendiente. \n" + 
+                                        "No se ha modificado el archivo");
+                return;
+            }
                 break;
             default:
                 VistaTareas.mostrarMensaje("Opción no válida.");
@@ -397,23 +435,21 @@ public class TareasControlador {
             String tipo = "Tipo: " + tarea.getTipo();
             System.out.println(tipo);
             System.out.println(estadoViejo);
+            System.out.println(estadoNuevo);
             for (int i = 0; i < lineas.size(); i++) {
                 // Busca la línea que contiene el título y el estado actual de la tarea
                     if (lineas.get(i).equals(estadoViejo) && lineas.get(i-5).equals(titulo) 
                     && lineas.get(i-6).equals("Tipo: simple")) {
-                        System.out.println("hola");
                         System.out.println(lineas.get(i) + " " + lineas.get(i - 5));
                         lineas.set(i, nuevaLinea);
                         break;
                     }
                     if (lineas.get(i).equals(estadoViejo) && lineas.get(i-6).equals(titulo) 
                     && lineas.get(i-7).equals("Tipo: con fecha")) {
-                        System.out.println("hola");
                         System.out.println(lineas.get(i) + " " + lineas.get(i - 5));
-                        lineas.set(i, nuevaLinea);
+                        lineas.set(i, estadoNuevo);
                         break;
                     }
-                System.out.println(lineas.get(i));
             }
             System.out.println(tarea.getEstado().toString());
 
@@ -423,7 +459,7 @@ public class TareasControlador {
             }
             bw.close();
 
-            VistaTareas.mostrarMensaje("Estado modificado exitosamente.");
+            VistaTareas.mostrarMensaje(mensajeModifica);
         } catch (IOException e) {
             VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
         }

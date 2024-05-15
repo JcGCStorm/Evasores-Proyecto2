@@ -51,7 +51,7 @@ public class TareaCompletada implements TareaEstado {
         TareaEstado estadoTarea = null;
         if (estado.equalsIgnoreCase("Tarea Pendiente")) {
             estadoTarea = new TareaPendiente();
-        } else if (estado.equalsIgnoreCase("Tarea Completada")) {
+        } else if (estado.equalsIgnoreCase("Completada")) {
             estadoTarea = new TareaCompletada();
         } else if (estado.equalsIgnoreCase("Tarea En Progreso")) {
             estadoTarea = new TareaEnProgreso();
@@ -75,7 +75,7 @@ public class TareaCompletada implements TareaEstado {
         if (estado instanceof TareaPendiente) {
             estadoString = "Tarea Pendiente";
         } else if (estado instanceof TareaCompletada) {
-            estadoString = "Tarea Completada";
+            estadoString = "Completada";
         } else if (estado instanceof TareaEnProgreso) {
             estadoString = "Tarea En Progreso";
         }

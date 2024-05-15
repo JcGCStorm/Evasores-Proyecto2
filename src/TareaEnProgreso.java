@@ -51,7 +51,7 @@ public class TareaEnProgreso implements TareaEstado {
         TareaEstado estadoTarea = null;
         if (estado.equalsIgnoreCase("Tarea Pendiente")) {
             estadoTarea = new TareaPendiente();
-        } else if (estado.equalsIgnoreCase("Tarea Completada")) {
+        } else if (estado.equalsIgnoreCase("Completada")) {
             estadoTarea = new TareaCompletada();
         } else if (estado.equalsIgnoreCase("Tarea En Progreso")) {
             estadoTarea = new TareaEnProgreso();

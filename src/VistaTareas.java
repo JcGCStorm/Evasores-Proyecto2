@@ -18,8 +18,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-public class VistaTareas {
+public class VistaTareas  {
 
     /**
      * Este metodo nos ayuda a obtener el nombre del archivo de tareas de un usuario
@@ -377,7 +378,7 @@ public class VistaTareas {
         frame.add(panel);
         frame.setVisible(true);
     }
-    
+
     public static boolean deseaAgregarTarea() {
         int response = JOptionPane.showConfirmDialog(null, "¿Desea agregar una tarea nueva?", "Agregar Tarea",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -426,8 +427,42 @@ public class VistaTareas {
         return "";
     }
 
+    public Tarea ventanaConfirmacionEtiquetas() {
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar etiquetas?", "Etiquetas",
+                JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            String[] options = { "Estudio", "Viaje" };
+            String etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
+                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        
+        }
+        TareaSimple tarea = new TareaSimple("titulo", "descripcion", "etiquetas", "tipo", null, 0, null);
+        return tarea;
+    }
+
+    public static Tarea obtenerEntradaEtiquetas(String mensaje) {
+        String entrada;
+        Tarea tareatemp = new TareaSimple(null, "", mensaje, "", null, 0, null);
+        do {
+            entrada = JOptionPane.showInputDialog(null, mensaje);
+            if (entrada == null || entrada.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No puedes dejar el campo vacío.");
+            }
+        } while (entrada == null || entrada.trim().isEmpty());
+        return tareatemp;
+    }
+
     public String obtenerEtiquetas() {
-        return obtenerEntrada("Ingrese las etiquetas de la tarea:");
+            String prioridad;
+            do {
+                String input = obtenerEntrada("¿Deseas agregar etiquetas?:");
+                try {
+                    System.out.println(input);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Entrada inválida, ingrese un número.");
+                }
+            } while (true);
+            
     }
 
     public int obtenerPrioridad() {
@@ -520,5 +555,29 @@ public class VistaTareas {
                 return null; // Si se cancela, retorna null.
             }
         }
+    }
+
+    private JComboBox<String> etiquetasComboBox;
+    private JButton agregarButton;
+    private JTextArea tareaTextArea;
+
+    public void etiquetasGUI() {
+        JPanel etiquetasPanel = new JPanel();
+        etiquetasPanel.setLayout(new FlowLayout());
+        JLabel etiquetasLabel = new JLabel("¿Qué etiqueta deseas agregar a tu tarea?");
+        etiquetasComboBox = new JComboBox<>(new String[]{"Estudio", "Trabajo", "Personal", "Deportes", "Comida", "Salud", "Entretenimiento", "Hogar", "Viaje", "Compras", "Social", "Asambleas", "Otro"});
+        etiquetasPanel.add(etiquetasLabel);
+        etiquetasPanel.add(etiquetasComboBox);
+
+        agregarButton = new JButton("Agregar");
+        //agregarButton.addActionListener(this);
+
+        tareaTextArea = new JTextArea();
+        JScrollPane tareaScrollPane = new JScrollPane(tareaTextArea);
+        JOptionPane.showMessageDialog(null, tareaScrollPane);
+
+       // add(etiquetasPanel, BorderLayout.NORTH);
+       // add(agregarButton, BorderLayout.CENTER);
+       // add(tareaScrollPane, BorderLayout.SOUTH);
     }
 }
