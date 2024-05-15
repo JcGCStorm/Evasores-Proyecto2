@@ -2,6 +2,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Etiqueta {
     /**
      * Solo son las opciones de etiquetas que se pueden agregar a una tarea. Las
@@ -36,7 +38,6 @@ public class Etiqueta {
      * @return Tarea, la tarea con la(s) etiqueta(s) agregada(s).
      */
     public Tarea etiquetaTarea(String tipo, String etiqueta) {
-        System.out.println();
         Tarea tarea;
         switch (tipo) {
             case "simple":
@@ -53,7 +54,11 @@ public class Etiqueta {
                 tarea = null;
         }
         if (tarea != null) {
-            
+            String[] options = { "Estudio", "Trabajo", "Personal", "Deportes", "Comida", "Salud", 
+            "Entretenimiento", "Hogar", "Viaje", "Compras", "Social", "Asambleas", "Otro", "Salir"};
+            etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
+                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            while (!etiqueta.equals("Salir")){
                 try {
                         System.out.println("¿Qué etiqueta deseas agregar a tu tarea?");
                         System.out.println(estudio);
@@ -277,7 +282,10 @@ public class Etiqueta {
                 } catch (Exception e) {
                     System.out.println("Debes ingresar el número, no debes ingresar letras.");
                 }
+                etiqueta = (String) JOptionPane.showInputDialog(null, "¿Qué etiqueta desea agregar?", "Etiqueta.",
+                    JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             }
+        }
         return tarea;
     }
 
