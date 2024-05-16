@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -107,68 +108,42 @@ public class TareasControlador {
      * @param usuario El usuario del que se desea eliminar una tarea.
      */
     public void eliminaTarea(Usuario usuario) {
+        //  tareas del usuario
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
-        if (tareas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay tareas para mostrar");
+        if (tareas == null || tareas.isEmpty()) {
+            VistaTareas.mostrarMensaje("No hay tareas para mostrar");
             return;
         }
+        VistaTareas.muestraTareas(usuario);
 
-        JFrame frame = new JFrame("Eliminar Tarea de " + usuario.getUsername());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(500, 400);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-
-        StringBuilder tareasTexto = new StringBuilder("Tareas:\n");
-        for (int i = 0; i < tareas.size(); i++) {
-            Tarea tarea = tareas.get(i);
-            tareasTexto.append(i).append(". ")
-                    .append("Titulo: ").append(tarea.getTitulo()).append("\n")
-                    .append("Descripción: ").append(tarea.getDescripcion()).append("\n")
-                    .append("Prioridad: ").append(tarea.getPrioridad()).append("\n\n");
-
-        }
-        textArea.setText(tareasTexto.toString());
-
-       // frame.add(scrollPane);
-       // frame.setVisible(true);
-       JScrollPane scrollPane2 = new JScrollPane(textArea);
-
-        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
-        scrollPane2.setPreferredSize(new java.awt.Dimension(600, 500));
-
-        // Mostrar el JOptionPane con el JScrollPane como su contenido
-        JOptionPane.showMessageDialog(null, scrollPane2);
-
-        String input = JOptionPane.showInputDialog(frame, "¿Qué tarea desea eliminar?");
+        // tarea a eliminar
+        String input = VistaTareas.obtenerEntrada("¿Qué tarea desea eliminar?");
         if (input == null) {
-            frame.dispose();
+            VistaTareas.mostrarMensaje("No se ha seleccionado ninguna tarea.");
             return;
         }
-
         int tareaUsuario;
         try {
             tareaUsuario = Integer.parseInt(input);
+            if (tareaUsuario < 0 || tareaUsuario >= tareas.size()) {
+                VistaTareas.mostrarMensaje("Índice de tarea no válido.");
+                return;
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(frame, "Entrada no válida");
-            frame.dispose();
+            VistaTareas.mostrarMensaje("Entrada no válida. Debe ingresar un número de tarea válido.");
             return;
         }
 
-        if (tareaUsuario >= tareas.size() || tareaUsuario < 0) {
-            JOptionPane.showMessageDialog(frame, "Tarea no válida");
-            frame.dispose();
-            return;
-        }
 
         Tarea tarea = tareas.get(tareaUsuario);
+
+        //  elimina la tarea y mueve el txt
+        tareas.remove(tarea);
         String archivo = obtenerArchivoTareasUsuario(usuario);
         String eliminaTitulo = "Titulo: " + tarea.getTitulo();
 
         try {
-            // Lee el contenido del archivo
+        
             List<String> lineas = new ArrayList<>();
             BufferedReader br = new BufferedReader(new FileReader(archivo));
             String linea;
@@ -181,28 +156,26 @@ public class TareasControlador {
                 if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: con fecha")) {
                     for (int j = 0; j < 8; j++)
                         lineas.remove(i - 1);
-                    tareas.remove(tarea);
                     break;
                 } else if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: simple")) {
                     for (int j = 0; j < 7; j++)
                         lineas.remove(i - 1);
-                    tareas.remove(tarea);
                     break;
                 }
             }
 
+            //  líneas actualizadas en el archivo
             BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));
             for (String line : lineas) {
                 bw.write(line + "\n");
             }
             bw.close();
 
-            JOptionPane.showMessageDialog(frame, "Archivo modificado exitosamente.");
+            VistaTareas.mostrarMensaje("Tarea eliminada exitosamente.");
 
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error al manipular el archivo: " + e.getMessage());
+            VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
         }
-        frame.dispose();
     }
 
     public void modifica(Usuario usuario) {
@@ -661,5 +634,142 @@ String mensajeModifica = "";
         }
         TareasAlmacen.getTareas(usuario);
         VistaTareas.muestraTareas(usuario);
+    }
+
+    public void compartirTarea(Usuario usuario) {
+        List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
+        if (tareas == null || tareas.isEmpty()) {
+            VistaTareas.mostrarMensaje("No hay tareas para mostrar");
+            return;
+        }
+
+        VistaTareas.muestraTareas(usuario);
+
+        String input = VistaTareas.obtenerEntrada("¿Qué tarea deseas compartir?");
+        if (input == null) {
+            VistaTareas.mostrarMensaje("No se ha seleccionado ninguna tarea.");
+            return;
+        }
+
+        int tareaIndex;
+        try {
+            tareaIndex = Integer.parseInt(input);
+            if (tareaIndex < 0 || tareaIndex >= tareas.size()) {
+                VistaTareas.mostrarMensaje("Índice de tarea no válido.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            VistaTareas.mostrarMensaje("Entrada no válida. Debe ingresar un número de tarea válido.");
+            return;
+        }
+
+        Tarea tarea = tareas.get(tareaIndex);
+
+        String nombreUsuarioReceptor = VistaTareas.obtenerEntrada("Ingrese el username al que le llegará la tarea:");
+        if (nombreUsuarioReceptor == null || nombreUsuarioReceptor.trim().isEmpty()) {
+            VistaTareas.mostrarMensaje("Username no válido.");
+            return;
+        }
+        if (UsuarioAlmacen.obtenerUsuario(nombreUsuarioReceptor) == null) {
+            JOptionPane.showMessageDialog(null, "Ese username no existe. Por favor, elige otro.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }else{
+            String archivoReceptor = nombreUsuarioReceptor + "_compartidas.txt";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivoReceptor, true))) {
+            bw.write("Usuario Emisor: " + usuario.getUsername() + "\n");
+            bw.write("Tipo: " + tarea.getTipo() + "\n");
+            bw.write("Titulo: " + tarea.getTitulo() + "\n");
+            bw.write("Etiquetas: " + tarea.getEtiquetas() + "\n");
+            bw.write("Descripcion: " + tarea.getDescripcion() + "\n");
+            bw.write("Prioridad: " + tarea.getPrioridad() + "\n");
+            bw.write("Estado: " + tarea.estadoToString(tarea.getEstado()) + "\n");
+            if (tarea instanceof TareaConFecha) {
+                TareaConFecha tareaConFecha = (TareaConFecha) tarea;
+                bw.write("Fecha de Vencimiento: " + tareaConFecha.getFechaVencimiento().toString() + "\n");
+            }
+            bw.write("\n");
+            VistaTareas.mostrarMensaje("Tarea compartida exitosamente.");
+        } catch (IOException e) {
+            VistaTareas.mostrarMensaje("Error al compartir la tarea: " + e.getMessage());
+        }
+
+        }
+
+        
+    }
+
+    public void recibirTareas(Usuario usuario) {
+        //  archivo de tareas compartidas del usuario
+        String archivoCompartidas = usuario.getUsername() + "_compartidas.txt";
+        String archivoCompartidasGuardadas = usuario.getUsername() + "_compartidas_guardadas.txt";
+    
+        // si existen tareas compartidas
+        if (!existeArchivoCompartidas(usuario)) {
+            // muestra las tareas compartidas guardadas 
+            VistaTareas.mostrarTareasCompartidas(usuario, archivoCompartidasGuardadas);
+            return;
+        }
+    
+        VistaTareas.mostrarMensaje("¡Tienes nuevas tareas compartidas!! :0");
+    
+        boolean deseaVerTareas = VistaTareas.confirmar("¿Deseas ver y guardar las nuevas tareas compartidas?");
+    
+        if (deseaVerTareas) {
+            // muestra las tareas compartidas al usuario
+            VistaTareas.mostrarTareasCompartidas(usuario, archivoCompartidas);
+    
+            // guarda las tareas compartidas en el archivo de tareas compartidas guardadas
+            guardarTareasCompartidas(usuario, archivoCompartidas, archivoCompartidasGuardadas);
+    
+            // elimina el archivo de tareas compartidas
+            eliminarArchivoCompartidas(usuario, archivoCompartidas);
+        } else {
+            // eliminar las tareas compartidas 
+            eliminarArchivoCompartidas(usuario, archivoCompartidas);
+        }
+    }
+    
+
+    private boolean existeArchivoCompartidas(Usuario usuario) {
+        String archivoCompartidas = usuario.getUsername() + "_compartidas.txt";
+        File file = new File(archivoCompartidas);
+        return file.exists() && !file.isDirectory();
+    }
+    
+    private void guardarTareasCompartidas(Usuario usuario, String archivoCompartidas, String archivoCompartidasGuardadas) {
+        // Obtener el archivo de tareas compartidas guardadas
+        File fileCompartidasGuardadas = new File(archivoCompartidasGuardadas);
+    
+        // Verificar si el archivo de tareas compartidas guardadas ya existe
+        if (!fileCompartidasGuardadas.exists()) {
+            try {
+                fileCompartidasGuardadas.createNewFile();
+            } catch (IOException e) {
+                VistaTareas.mostrarMensaje("Error al crear el archivo de tareas compartidas guardadas: " + e.getMessage());
+                return;
+            }
+        }
+    
+        // guarda las tareas compartidas en el archivo de tareas compartidas guardadas
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoCompartidas));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(archivoCompartidasGuardadas, true))) {
+    
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                bw.write(linea + "\n");
+            }
+    
+            VistaTareas.mostrarMensaje("Tareas compartidas guardadas.");
+    
+        } catch (IOException e) {
+            VistaTareas.mostrarMensaje("Error al guardar las tareas compartidas: " + e.getMessage());
+        }
+    }
+    
+    private void eliminarArchivoCompartidas(Usuario usuario, String archivoCompartidas) {
+        // elimina el archivo de tareas compartidas
+        File fileCompartidas = new File(archivoCompartidas);
+        fileCompartidas.delete();
     }
 }

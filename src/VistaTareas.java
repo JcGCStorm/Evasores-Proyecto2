@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.DateTimeException;
@@ -582,5 +583,43 @@ public class VistaTareas  {
        // add(etiquetasPanel, BorderLayout.NORTH);
        // add(agregarButton, BorderLayout.CENTER);
        // add(tareaScrollPane, BorderLayout.SOUTH);
+    }
+
+    public static boolean confirmar(String mensaje) {
+        int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
+        return opcion == JOptionPane.YES_OPTION;
+    }
+
+    public static void mostrarTareasCompartidas(Usuario usuario, String archivoCompartidas) {
+        // JFrame para mostrar las tareas compartidas
+        JFrame frame = new JFrame("Tareas compartidas de " + usuario.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoCompartidas))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                textArea.append(linea + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            textArea.append("Aún no tienes tareas compartidas.\n");
+        } catch (IOException e) {
+            textArea.append("Error de E/S al leer el archivo de tareas compartidas: " + e.getMessage() + "\n");
+        }
+
+        JScrollPane scrollPane2 = new JScrollPane(textArea);
+
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(600, 500));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
+        // mostrar el frame
     }
 }

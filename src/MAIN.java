@@ -156,6 +156,14 @@ try {
                 case "7":
                     VistaTareas.verCalendario(usuario);
                     break;
+                case "8":
+                    TareasControlador control2 = new TareasControlador();
+                    control2.compartirTarea(usuario);
+                    break;
+                case "9":
+                TareasControlador control3 = new TareasControlador();
+                control3.recibirTareas(usuario);
+                    break;
                 case "0":
                     salir = true;
                     break;
@@ -184,6 +192,8 @@ try {
         menu.append("5. Ver tareas por Fecha \n");
         menu.append("6. Ver tareas por Prioridad \n");
         menu.append("7. Ver Calendario \n");
+        menu.append("8. Compartir Tareas\n");
+        menu.append("9. Ver Tareas Compartidas\n");
         menu.append("0. Salir \n");
         menu.append("=========================================\n");
         JOptionPane.showMessageDialog(null, menu.toString());

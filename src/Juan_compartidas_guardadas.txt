@@ -1,0 +1,8 @@
+Usuario Emisor: rosa villa padilla
+Tipo: simple
+Titulo: Sirve
+Etiquetas: #Estudio-
+Descripcion: que pasa tio
+Prioridad: 6
+Estado: Completada
+

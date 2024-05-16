@@ -1,0 +1,8 @@
+Tipo: simple
+Titulo: Comer cronquetas
+Descripcion: dormir y jugar
+Etiquetas: #Comida-#Viaje-
+Fecha de creación: 15-05-2024
+Prioridad: 1
+Estado: Tarea Pendiente
+
