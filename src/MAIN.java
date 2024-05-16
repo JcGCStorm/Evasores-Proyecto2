@@ -128,6 +128,9 @@ public class MAIN {
         while (!salir) {
             mostrarMenuPrincipal();
             String opcion = JOptionPane.showInputDialog(null, "Ingrese su opción:");
+            if (opcion == null) {
+                continue;
+            }
 try {
             switch (opcion) {
                 case "1":

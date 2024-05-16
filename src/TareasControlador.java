@@ -48,6 +48,10 @@ public class TareasControlador {
                 }
 
                 String tipoTarea = VistaTareas.obtenerTipoTarea();
+                if (tipoTarea == null) {
+                    VistaTareas.mostrarMensaje("¿No que deseabas agregar una tarea?");
+                    continue;
+                }
 
                 Tarea nuevaTarea = null; 
 
@@ -128,8 +132,15 @@ public class TareasControlador {
         }
         textArea.setText(tareasTexto.toString());
 
-        frame.add(scrollPane);
-        frame.setVisible(true);
+       // frame.add(scrollPane);
+       // frame.setVisible(true);
+       JScrollPane scrollPane2 = new JScrollPane(textArea);
+
+        // Establecer el tamaño preferido del JScrollPane (ancho, alto)
+        scrollPane2.setPreferredSize(new java.awt.Dimension(600, 500));
+
+        // Mostrar el JOptionPane con el JScrollPane como su contenido
+        JOptionPane.showMessageDialog(null, scrollPane2);
 
         String input = JOptionPane.showInputDialog(frame, "¿Qué tarea desea eliminar?");
         if (input == null) {
@@ -388,10 +399,11 @@ public class TareasControlador {
     }
 
     private void modificarPrioridad(Tarea tarea, Usuario usuario, int prioridad){
+        try {
         String nuevoValor = VistaTareas
                 .obtenerEntrada("Ingrese el nuevo valor para la prioridad. (Actual: " + tarea.getPrioridad() + ")");
         if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
-            return;
+            throw new IllegalArgumentException("La prioridad no puede estar vacía.");
         }
         tarea.setPrioridad(Integer.parseInt(nuevoValor));
         String archivo = obtenerArchivoTareasUsuario(usuario);
@@ -419,6 +431,9 @@ public class TareasControlador {
             VistaTareas.mostrarMensaje("Archivo modificado exitosamente.");
         } catch (IOException e) {
             VistaTareas.mostrarMensaje("Error al manipular el archivo: " + e.getMessage());
+        }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Debes ingresar un número.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

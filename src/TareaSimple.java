@@ -6,7 +6,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.io.IOException;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class TareaSimple implements Tarea {
 
@@ -110,8 +113,15 @@ public class TareaSimple implements Tarea {
     public void construyeTarea(Usuario usuario) {
         VistaTareas vista = new VistaTareas();
         
+        try {
         this.titulo = vista.obtenerTitulo();
+        if (this.titulo == null || this.titulo.trim().isEmpty()) {
+            throw new IllegalArgumentException("El título no puede estar vacío.");
+        }
         this.descripcion = vista.obtenerDescripcion();
+        if (this.descripcion == null || this.descripcion.trim().isEmpty()) {
+            throw new IllegalArgumentException("La descripción no puede estar vacía. \n ¿No deseabas agregar una descipcion?");
+        }
         
         // falta gui de etiquetas
         Tarea tareaTemp;
@@ -125,10 +135,10 @@ public class TareaSimple implements Tarea {
         this.fechaCreacion = LocalDate.now(); // O según lo que necesites
         
         
-        try {
             String nombreArchivo = usuario.getUsername() + "_tareas.txt";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(nombreArchivo, true))) {
             FileWriter salida = new FileWriter(nombreArchivo, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(salida);
+            
             DateTimeFormatter formateador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String fechaString = fechaCreacion.format(formateador);
             String tareaString = "Tipo: " + "simple" + "\nTitulo: " + titulo + "\nDescripcion: " + descripcion
@@ -137,10 +147,20 @@ public class TareaSimple implements Tarea {
             bufferedWriter.write(tareaString);
             bufferedWriter.newLine();
             bufferedWriter.close();
-        } catch (IOException e) {
-            System.out.println("Error al guardar la tarea: " + e.getMessage());
         }
+
+
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
+
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar la tarea: " + e.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + e.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /*

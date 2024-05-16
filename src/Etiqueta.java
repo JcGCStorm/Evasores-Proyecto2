@@ -120,6 +120,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de estudio en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de estudio en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 2:
@@ -133,6 +134,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de trabajo en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de trabajo en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 3:
@@ -146,6 +148,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta personal en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta personal en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 4:
@@ -159,6 +162,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de deportes en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de deportes en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 5:
@@ -172,6 +176,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de comida en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de comida en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 6:
@@ -185,6 +190,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de salud en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de salud en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 7:
@@ -198,6 +204,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de entretenimiento en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de entretenimiento en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 8:
@@ -211,6 +218,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de hogar en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de hogar en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 9:
@@ -224,6 +232,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de viaje en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de viaje en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 10:
@@ -237,6 +246,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de compras en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de compras en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 11:
@@ -250,6 +260,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta social en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta social en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 12:
@@ -263,6 +274,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de asambleas en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de asambleas en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 case 13:
@@ -276,6 +288,7 @@ public class Etiqueta {
                                     } else {
                                         System.out.println(
                                                 "Ya tienes una etiqueta de otro en tu tarea, no puedes agregar más.");
+                                        VistaTareas.mostrarMensaje("Ya tienes una etiqueta de otro en tu tarea, no puedes agregar más.");
                                     }
                                     break;
                                 default:

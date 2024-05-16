@@ -118,6 +118,9 @@ public class TareaConFecha implements Tarea {
             }
 
             this.descripcion = vista.obtenerDescripcion();
+            if (this.descripcion == null || this.descripcion.trim().isEmpty()) {
+                throw new IllegalArgumentException("La descripción no puede estar vacía.\n ¿No deseabas agregar una descipcion?.");
+            }
             Tarea tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tipo);
             etiquetas = tareaTemp.getEtiquetas();
             fechaCreacion = tareaTemp.getFechaCreacion();

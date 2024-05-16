@@ -432,7 +432,7 @@ public class VistaTareas  {
         do {
             entrada = JOptionPane.showInputDialog(null, mensaje);
             if (entrada == null || entrada.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No puedes dejar el campo vacío.");
+                return null;
             }
         } while (entrada == null || entrada.trim().isEmpty());
         return entrada;
@@ -550,7 +550,7 @@ public class VistaTareas  {
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Entrada no válida. Asegúrese de ingresar números válidos.");
                 } catch (DateTimeException e) {
-                    JOptionPane.showMessageDialog(null, "Fecha o hora no válidas. Inténtelo de nuevo.");
+                    JOptionPane.showMessageDialog(null, "Fecha u hora no válidas. Inténtelo de nuevo.");
                 } catch (IllegalArgumentException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage() + ". Inténtelo de nuevo.");
                 }
