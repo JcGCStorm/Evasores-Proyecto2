@@ -19,6 +19,12 @@ import javax.swing.JTextArea;
 public class TareasControlador {
     Scanner scanner = new Scanner(System.in);
 
+    /*
+     * Método para mostrar las tareas de un usuario específico. Recupera el txt con
+     * las tareas del usuario especifico.
+     * 
+     * @param usuario El usuario del que se desea mostrar las tareas.
+     */
     private static String obtenerArchivoTareasUsuario(Usuario usuario) {
         return usuario.getUsername() + "_tareas.txt";
     }
@@ -33,7 +39,6 @@ public class TareasControlador {
      * ninguna de las anteriores imprime un mensaje diciendo que la opción no es
      * válida.
      */
-
     public static void crearTarea(Usuario usuario) {
         String archivoTareasUsuario = obtenerArchivoTareasUsuario(usuario);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
@@ -73,6 +78,7 @@ public class TareasControlador {
         }
     }
 
+    // me parece que lo vamos a borrar
     public static void crearTarea2() {
         Scanner scanner = new Scanner(System.in);
         FabricaTareas tareaSimple = new FabricaTareaSimple();
@@ -178,6 +184,13 @@ public class TareasControlador {
         }
     }
 
+    /**
+     * Método para modificar una tarea de un usuario específico.
+     * Lo unico que hace es buscar la tarea que se desea modificar y la linea que desea modificar
+     * es decir el parametro, este se sobreescribe con el nuevo valor que se desea.
+     * 
+     * @param usuario El usuario del que se desea modificar una tarea.
+     */
     public void modifica(Usuario usuario) {
         // Obtener la lista de tareas del usuario
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
@@ -227,6 +240,14 @@ public class TareasControlador {
 
     // Métodos para modificar tareas simples y tareas con fecha...
 
+    /*
+     * Debido a que las tareas simples y las tareas con fecha tienen diferentes
+     * atributos, se deben implementar métodos específicos para mostrar en la interfaz que cosa 
+     * se desea modificar.
+     * 
+     * @param tarea La tarea simple que se desea modificar.
+     * @param usuario El usuario al que pertenece la tarea.
+     */
     public void modificaTareaConFecha(Tarea tarea, Usuario usuario) {
         String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Fecha de Vencimiento", "Prioridad", "Estado", "Salir" };
         String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
@@ -258,6 +279,14 @@ public class TareasControlador {
         }
     }
 
+    /*
+     * Debido a que las tareas simples y las tareas con fecha tienen diferentes
+     * atributos, se deben implementar métodos específicos para mostrar en la interfaz que cosa 
+     * se desea modificar.
+     * 
+     * @param tarea La tarea simple que se desea modificar.
+     * @param usuario El usuario al que pertenece la tarea.
+     */
     public void modificaTareaSimple(Tarea tarea, Usuario usuario) {
         String[] opciones = { "Titulo", "Descripcion", "Etiquetas", "Prioridad", "Estado", "Salir" };
         String opcion = (String) JOptionPane.showInputDialog(null, "¿Qué desea modificar?", "Modificar Tarea",
@@ -286,6 +315,19 @@ public class TareasControlador {
         }
     }
 
+    /*
+     * Este metodo encapsula la lógica para modificar un parámetro de una tarea.
+     * Ya que dependiendo el parametro a modificar se manda a llamar a un metodo
+     * u a otro.
+     * 
+     * @param tarea La tarea que se desea modificar.
+     * 
+     * @param usuario El usuario al que pertenece la tarea.
+     * 
+     * @param parametro El parámetro que se desea modificar.
+     * 
+     * @param valorActual El valor actual del parámetro.
+     */
     private void modificarParametro(Tarea tarea, Usuario usuario, String parametro, String valorActual) {
         String nuevoValor = VistaTareas
                 .obtenerEntrada("Ingrese el nuevo valor para " + parametro + " (Actual: " + valorActual + ")");
@@ -339,6 +381,15 @@ public class TareasControlador {
         }
     }
 
+    /*
+     * Este metodo se encarga de modificar las etiquetas de una tarea. Simplemente
+     * manda a llamar al metodo que agrega etiwuetas a una tarea y luego sobreescribe
+     * el archivo de texto con las nuevas etiquetas.
+     * 
+     * @param tarea La tarea que se desea modificar.
+     * 
+     * @param usuario El usuario al que pertenece la tarea.
+     */
     private void modificarEtiquetas(Tarea tarea, Usuario usuario) {
         VistaTareas.mostrarMensaje("Se reiniciarán las etiquetas antiguas.");
         Tarea tareaTemp = VistaTareas.ventanaConfirmacionEtiquetas(tarea.getTipo());
@@ -371,6 +422,17 @@ public class TareasControlador {
        }
     }
 
+    /*
+     * Este metodo se encarga de modificar la prioridad de una tarea. Simplemente
+     * manda a llamar al metodo que recupera una entrada en la interfaz y luego
+     * sobreescribe el archivo de texto con la nueva prioridad.
+     * 
+     * @param tarea La tarea que se desea modificar.
+     * 
+     * @param usuario El usuario al que pertenece la tarea.
+     * 
+     * @param prioridad La prioridad actual de la tarea.
+     */
     private void modificarPrioridad(Tarea tarea, Usuario usuario, int prioridad){
         try {
         String nuevoValor = VistaTareas
@@ -410,6 +472,15 @@ public class TareasControlador {
         }
     }
 
+    /*
+     * Este metodo se encarga de modificar el estado de una tarea. Simplemente
+     * recuperamos el nuevo estado de la eleccion que se haga en la interfaz y luego
+     * sobreescribe el archivo de texto con el nuevo estado.
+     * 
+     * @param tarea La tarea que se desea modificar.
+     * 
+     * @param usuario El usuario al que pertenece la tarea.
+     */
     private void modificarEstado(Tarea tarea, Usuario usuario) {
         String estadoViejo = "Estado: " + tarea.estadoToString(tarea.getEstado());
         String[] opciones = { "Tarea En Progreso", "Completada", "Tarea Pendiente" };
@@ -526,6 +597,15 @@ String mensajeModifica = "";
         }
     }
 
+    /*
+     * Este metodo se encarga de modificar la fecha de vencimiento de una tarea.
+     * Simplemente recuperamos la nueva fecha de la eleccion que se haga en la interfaz 
+     * y luego sobreescribe el archivo de texto con la nueva fecha.
+     * 
+     * @param tarea La tarea que se desea modificar.
+     * 
+     * @param usuario El usuario al que pertenece la tarea.
+     */
     private void modificarFecha(Tarea tarea, Usuario usuario) {
         String nuevoValor = VistaTareas.obtenerEntrada("Ingrese la nueva fecha de vencimiento (dd-MM-yyyy HH:mm):");
         if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
@@ -567,6 +647,7 @@ String mensajeModifica = "";
         }
     }
 
+    // creo qeu esto lo vamos a borrar
     public void eliminaTarea2(Usuario usuario) {
         VistaTareas.muestraTareas(usuario);
         System.out.println("¿Qué tarea desea eliminar?");
@@ -636,6 +717,14 @@ String mensajeModifica = "";
         VistaTareas.muestraTareas(usuario);
     }
 
+    /**
+     * Método para compartir una tarea con otro usuario. Se le pide al usuario que
+     * seleccione una tarea de su lista de tareas y luego se le pide el nombre de
+     * usuario al que se desea compartir la tarea. Se crea un archivo con el nombre
+     * del usuario receptor y se guarda la tarea compartida en ese archivo.
+     * 
+     * @param usuario
+     */
     public void compartirTarea(Usuario usuario) {
         List<Tarea> tareas = TareasAlmacen.getTareas(usuario);
         if (tareas == null || tareas.isEmpty()) {
@@ -699,6 +788,14 @@ String mensajeModifica = "";
         
     }
 
+    /**
+     * Método para recibir tareas compartidas. Se verifica si el usuario tiene
+     * tareas compartidas y se le pregunta si desea verlas. Si el usuario desea ver
+     * las tareas compartidas, se muestran las tareas y se guardan en un archivo de
+     * tareas compartidas guardadas. Si el usuario no desea ver las tareas se eliminan 
+     * del archivo de tareas compartidas.
+     * @param usuario
+     */
     public void recibirTareas(Usuario usuario) {
         //  archivo de tareas compartidas del usuario
         String archivoCompartidas = usuario.getUsername() + "_compartidas.txt";
@@ -731,12 +828,25 @@ String mensajeModifica = "";
     }
     
 
+    /**
+     * Método para verificar si el usuario tiene tareas compartidas.
+     * 
+     * @param usuario el usuario que se desea verificar si tiene tareas compartidas.
+     * @return
+     */
     private boolean existeArchivoCompartidas(Usuario usuario) {
         String archivoCompartidas = usuario.getUsername() + "_compartidas.txt";
         File file = new File(archivoCompartidas);
         return file.exists() && !file.isDirectory();
     }
     
+    /**
+     * Método para guardar las tareas compartidas en el archivo de tareas compartidas guardadas.
+     * 
+     * @param usuario el usuario al que pertenecen las tareas compartidas.
+     * @param archivoCompartidas el archivo de tareas compartidas.
+     * @param archivoCompartidasGuardadas el archivo de tareas compartidas guardadas.
+     */
     private void guardarTareasCompartidas(Usuario usuario, String archivoCompartidas, String archivoCompartidasGuardadas) {
         // Obtener el archivo de tareas compartidas guardadas
         File fileCompartidasGuardadas = new File(archivoCompartidasGuardadas);
@@ -767,6 +877,12 @@ String mensajeModifica = "";
         }
     }
     
+    /**
+     * Método para eliminar el archivo de tareas compartidas.
+     * 
+     * @param usuario el usuario al que pertenece el archivo de tareas compartidas.
+     * @param archivoCompartidas el archivo de tareas compartidas.
+     */
     private void eliminarArchivoCompartidas(Usuario usuario, String archivoCompartidas) {
         // elimina el archivo de tareas compartidas
         File fileCompartidas = new File(archivoCompartidas);

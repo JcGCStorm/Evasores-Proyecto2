@@ -255,6 +255,10 @@ public class VistaTareas  {
     private static LocalDate mesActual;
     private static JDialog dialog;
 
+    /**
+     * Muestra un calendario con los días del mes actual y las tareas de cada día.
+     * @param usuario el usuario del que queremos ver las tareas.
+     */
     public static void verCalendario(Usuario usuario) {
         // inicializa el mes actual
         mesActual = LocalDate.now().withDayOfMonth(1);
@@ -263,6 +267,10 @@ public class VistaTareas  {
         mostrarCalendario(usuario);
     }
 
+    /**
+     * Muestra un calendario con los días del mes actual y las tareas de cada día.
+     * @param usuario el usuario del que queremos ver las tareas.
+     */
     private static void mostrarCalendario(Usuario usuario) {
 
         // esta cosa del dialog ayuda a que solo se muestre una ventana x mes
@@ -278,6 +286,11 @@ public class VistaTareas  {
         dialog.setVisible(true);
     }
 
+    /**
+     * Crea un panel con un calendario para mostrar las tareas del mes actual.
+     * @param usuario el usuario del que queremos ver las tareas.
+     * @return el panel con el calendario.
+     */
     private static JPanel crearPanelCalendario(Usuario usuario) {
         JPanel panelCalendario = new JPanel(new BorderLayout());
 
@@ -310,6 +323,12 @@ public class VistaTareas  {
         return panelCalendario;
     }
 
+    /**
+     * Actualiza el calendario mostrado en la interfaz gráfica.
+     * @param usuario el usuario del que queremos ver las tareas.
+     * @param labelMesAno el JLabel donde se muestra el mes y el año.
+     * @param panelCentral el JPanel donde se muestran los días del mes.
+     */
     private static void actualizarCalendario(Usuario usuario, JLabel labelMesAno, JPanel panelCentral) {
         panelCentral.removeAll();
 
@@ -383,6 +402,12 @@ public class VistaTareas  {
         panelCentral.repaint();
     }
 
+    /**
+     * Muestra las tareas del día seleccionado en una interfaz gráfica.
+     * @param usuario el usuario del que queremos ver las tareas.
+     * @param fecha la fecha del día que queremos ver.
+     * @param tareas las tareas del día.
+     */
     private static void mostrarTareasDelDia(Usuario usuario, LocalDate fecha, List<TareaConFecha> tareas) {
         JFrame frame = new JFrame("Tareas del día " + fecha);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -404,23 +429,34 @@ public class VistaTareas  {
         frame.setVisible(true);
     }
 
+    /**
+     * Método para obtener una confirmacion sobre si se desea agregar una tarea nueva
+     * para mostrarlo en la interfaz grafica.
+     * @return
+     */
     public static boolean deseaAgregarTarea() {
         int response = JOptionPane.showConfirmDialog(null, "¿Desea agregar una tarea nueva?", "Agregar Tarea",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return response == JOptionPane.YES_OPTION;
     }
 
+    /**
+     * Método para obtener el tipo de tarea que se desea agregar desde la interfaz gráfica.
+     * @return
+     */
     public static String obtenerTipoTarea() {
         String[] options = { "Simple", "Con fecha" };
         return (String) JOptionPane.showInputDialog(null, "¿Qué tipo de tarea desea agregar?", "Tipo de Tarea",
                 JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
     }
 
+    /**
+     * Método para mostrar un mensaje en una interfaz gráfica.
+     * @param mensaje el mensaje a mostrar.
+     */
     public static void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
     }
-
-    //
 
     /**
      * Método para obtener una entrada de texto del usuario.
@@ -439,10 +475,19 @@ public class VistaTareas  {
         return entrada;
     }
 
+    /*
+     * Método para obtener el título de una tarea desde una interfaz grafica.
+     */
     public String obtenerTitulo() {
         return obtenerEntrada("Ingrese el título de la tarea:");
     }
 
+    /**
+     * Método para mostrar y obtener la descripcion de una tarea, se pregunta al usuario si 
+     * desea agregar una descripción.
+     * 
+     * @return
+     */
     public String obtenerDescripcion() {
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar una descripción?", "Descripción",
                 JOptionPane.YES_NO_OPTION);
@@ -452,6 +497,11 @@ public class VistaTareas  {
         return "";
     }
 
+    /**
+     * Método para verificar que se desean agregar etiquetas a una tarea.
+     * @param tipo el tipo de tarea
+     * @return la tarea creada
+     */
     public static Tarea ventanaConfirmacionEtiquetas(String tipo) {
         Tarea tarea = null;
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea agregar etiquetas?", "Etiquetas",
@@ -469,6 +519,9 @@ public class VistaTareas  {
         return tarea;
     }
 
+    /**
+     * Método para obtener la prioridad de una tarea y mostrarlo en la interfaz.
+     */
     public int obtenerPrioridad() {
         int prioridad;
         do {
@@ -487,6 +540,11 @@ public class VistaTareas  {
         return prioridad;
     }
 
+    /**
+     * Método para obtener la fecha de vencimiento de una tarea y mostrarlo 
+     * en la interfaz gráfica.
+     * 
+     */
     public LocalDateTime obtenerFechaVencimiento() {
         while (true) {
             JTextField diaField = new JTextField();
@@ -565,6 +623,10 @@ public class VistaTareas  {
     private JButton agregarButton;
     private JTextArea tareaTextArea;
 
+    /**
+     * Método para mostrar la eleccion de las etiquetas en una interfaz gráfica
+     * 
+     */
     public void etiquetasGUI() {
         JPanel etiquetasPanel = new JPanel();
         etiquetasPanel.setLayout(new FlowLayout());
@@ -585,11 +647,22 @@ public class VistaTareas  {
        // add(tareaScrollPane, BorderLayout.SOUTH);
     }
 
+    /**
+     * Muestra un mensaje de confirmación 
+     * @param mensaje el mensaje a mostrar
+     * @return
+     */
     public static boolean confirmar(String mensaje) {
         int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
         return opcion == JOptionPane.YES_OPTION;
     }
 
+    /**
+     * Muestra las tareas compartidas con el usuario en una interfaz grafica
+     * 
+     * @param usuario el usuario al que se le mostrarán las tareas compartidas.
+     * @param archivoCompartidas el archivo de tareas compartidas.
+     */
     public static void mostrarTareasCompartidas(Usuario usuario, String archivoCompartidas) {
         // JFrame para mostrar las tareas compartidas
         JFrame frame = new JFrame("Tareas compartidas de " + usuario.getUsername());
