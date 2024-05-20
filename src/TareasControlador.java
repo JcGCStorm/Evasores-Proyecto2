@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -607,15 +608,23 @@ String mensajeModifica = "";
      * @param usuario El usuario al que pertenece la tarea.
      */
     private void modificarFecha(Tarea tarea, Usuario usuario) {
-        String nuevoValor = VistaTareas.obtenerEntrada("Ingrese la nueva fecha de vencimiento (dd-MM-yyyy HH:mm):");
-        if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
+        LocalDateTime fechaVieja = tarea.getFechaVencimiento();
+        VistaTareas fechaVencimiento = new VistaTareas();
+        LocalDateTime fechaNueva = fechaVencimiento.obtenerFechaVencimiento();
+      //  String nuevoValor = VistaTareas.obtenerEntrada("Ingrese la nueva fecha de vencimiento (dd-MM-yyyy HH:mm):");
+       // if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
+       //     return;
+       // }
+        LocalDate fechaCreacion = tarea.getFechaCreacion();
+        LocalDateTime creacionADateTime = fechaCreacion.atStartOfDay();
+        if (creacionADateTime.isAfter(fechaVieja)) {
+            VistaTareas.mostrarMensaje("La fecha de vencimiento no puede ser anterior a la fecha de creación.");
             return;
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy 'Hora:' HH:mm");
         try {
-            LocalDateTime nuevaFecha = LocalDateTime.parse(nuevoValor, formatter);
-            tarea.setFechaVencimiento(nuevaFecha);
+            //LocalDateTime nuevaFecha = LocalDateTime.parse(fechaNueva, formatter);
+            tarea.setFechaVencimiento(fechaNueva);
 
             String archivo = obtenerArchivoTareasUsuario(usuario);
             List<String> lineas = new ArrayList<>();
@@ -628,7 +637,7 @@ String mensajeModifica = "";
 
             for (int i = 0; i < lineas.size(); i++) {
                 if (lineas.get(i).startsWith("Fecha de Vencimiento: ")) {
-                    lineas.set(i, "Fecha de Vencimiento: " + nuevaFecha.format(formatter));
+                    lineas.set(i, "Fecha de Vencimiento: " + fechaNueva.format(formatter));
                     break;
                 }
             }
@@ -887,5 +896,12 @@ String mensajeModifica = "";
         // elimina el archivo de tareas compartidas
         File fileCompartidas = new File(archivoCompartidas);
         fileCompartidas.delete();
+    }
+
+    public void cerrarSesion(Usuario usuario, JFrame labelUsuario) {
+        VistaTareas.mostrarMensaje("¡Hasta luego, " + usuario.getUsername() + "!");
+        VistaTareas inicio = new VistaTareas();
+        labelUsuario.dispose();
+        inicio.mostrarInicioSesion();
     }
 }

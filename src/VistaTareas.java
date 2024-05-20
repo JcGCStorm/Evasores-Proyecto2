@@ -14,12 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Comparator;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class VistaTareas  {
 
@@ -494,6 +491,8 @@ public class VistaTareas  {
         if (respuesta == JOptionPane.YES_OPTION) {
             return obtenerEntrada("Ingrese la descripción de la tarea:");
         }
+        if (respuesta == JOptionPane.NO_OPTION)
+            return "";
         return "";
     }
 
@@ -695,4 +694,238 @@ public class VistaTareas  {
         JOptionPane.showMessageDialog(null, scrollPane2);
         // mostrar el frame
     }
+
+private JFrame marcoInicioSesion;
+private JFrame marcoMenuPrincipal;
+
+public void mostrarInicioSesion() {
+    marcoInicioSesion = new JFrame("Gestor de Tareas - Iniciar Sesión/Registrarse");
+    marcoInicioSesion.setSize(400, 300);
+    marcoInicioSesion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    marcoInicioSesion.setLocationRelativeTo(null);
+    marcoInicioSesion.setLayout(new GridLayout(4, 2));
+
+    // Componentes
+    JLabel etiquetaNombreUsuario = new JLabel("Nombre de usuario:");
+    JTextField campoNombreUsuario = new JTextField();
+    JLabel etiquetaContrasena = new JLabel("Contraseña:");
+    JPasswordField campoContrasena = new JPasswordField();
+
+    JButton botonIniciarSesion = new JButton("Iniciar Sesión");
+    JButton botonRegistrarse = new JButton("Registrarse");
+
+    // Añadir componentes al marco
+    marcoInicioSesion.add(etiquetaNombreUsuario);
+    marcoInicioSesion.add(campoNombreUsuario);
+    marcoInicioSesion.add(etiquetaContrasena);
+    marcoInicioSesion.add(campoContrasena);
+    marcoInicioSesion.add(botonIniciarSesion);
+    marcoInicioSesion.add(botonRegistrarse);
+
+    // acciones del botón de iniciar sesión
+    botonIniciarSesion.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            String nombreUsuario = campoNombreUsuario.getText();
+            String contrasena = new String(campoContrasena.getPassword());
+
+            TareasProxy proxy = new TareasProxyImpl();
+            Usuario usuario = proxy.iniciarSesion(nombreUsuario.trim(), contrasena);
+
+            if (usuario != null) {
+                JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
+
+                // cargar las tareas del usuario
+                TareasAlmacen almacen = new TareasAlmacen();
+                TareasAlmacen.getTareas(usuario); 
+
+                // instancia de notificaciones como observador
+                Notificaciones notificaciones = new Notificaciones();
+                almacen.agregarObserver(notificaciones);
+
+                // notificar a los observadores 
+                almacen.notificarObservers();
+
+                marcoInicioSesion.setVisible(false);
+
+                // mostrar las notificaciones
+                notificaciones.setVisible(true);
+
+                // esperar un momento antes de mostrar el menú principal
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        mostrarMenuPrincipal(proxy, usuario);
+                    }
+                });
+                timer.setRepeats(false); // No se repite
+                timer.start();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    });
+
+    // acciones para el botón de registro
+    botonRegistrarse.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            String nombreUsuario = campoNombreUsuario.getText();
+            String contrasena = new String(campoContrasena.getPassword());
+
+            if (nombreUsuario.length() <= 4) {
+                JOptionPane.showMessageDialog(null, "El nombre de usuario debe tener más de 4 caracteres",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (UsuarioAlmacen.obtenerUsuario(nombreUsuario) != null) {
+                JOptionPane.showMessageDialog(null,
+                        "El nombre de usuario ya está en uso. Por favor, elige otro.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!esContrasenaValida(contrasena)) {
+                JOptionPane.showMessageDialog(null,
+                        "La contraseña debe tener entre 5 y 16 caracteres, al menos una mayúscula y un caracter especial.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Usuario nuevoUsuario = new Usuario(nombreUsuario, contrasena);
+            UsuarioAlmacen.agregarUsuario(nuevoUsuario);
+            JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
+        }
+    });
+
+    // ventana de cierre de la terminal
+    marcoInicioSesion.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas salir del programa?",
+                    "Confirmar salida", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                e.getWindow().dispose();
+                System.exit(0);
+            }
+        }
+    });
+
+    marcoInicioSesion.setVisible(true);
+}
+
+private boolean esContrasenaValida(String contrasena) {
+    if (contrasena.length() < 5 || contrasena.length() > 16) {
+        return false;
+    }
+    boolean contieneMayuscula = false;
+    boolean contieneEspecial = false;
+    for (char c : contrasena.toCharArray()) {
+        if (Character.isUpperCase(c)) {
+            contieneMayuscula = true;
+        }
+        if (!Character.isLetterOrDigit(c)) {
+            contieneEspecial = true;
+        }
+    }
+    return contieneMayuscula && contieneEspecial;
+}
+public void mostrarMenuPrincipal(TareasProxy proxy, Usuario usuario) {
+    marcoMenuPrincipal = new JFrame("Menú Principal");
+    marcoMenuPrincipal.setSize(600, 400);
+    marcoMenuPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    marcoMenuPrincipal.setLocationRelativeTo(null);
+    marcoMenuPrincipal.setLayout(new BorderLayout());
+
+    // panel para el mensaje de ingreso
+    JPanel panelMensaje = new JPanel();
+    JLabel labelMensaje = new JLabel("Seleccione una opción:");
+    labelMensaje.setFont(new Font("Arial", Font.BOLD, 18));
+    panelMensaje.add(labelMensaje);
+    panelMensaje.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    marcoMenuPrincipal.add(panelMensaje, BorderLayout.NORTH);
+
+    // panel para el menú
+    JPanel panelMenu = new JPanel(new GridLayout(11, 1, 10, 10));
+    panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    String[] opciones = {
+        "Ver Tareas",
+        "Crear Tareas",
+        "Modificar Tareas",
+        "Borrar Tareas",
+        "Ver tareas por Fecha",
+        "Ver tareas por Prioridad",
+        "Ver Calendario",
+        "Compartir Tareas",
+        "Ver Tareas Compartidas",
+        "Cerrar Sesión",
+        "Salir"
+    };
+
+    for (String opcion : opciones) {
+        JButton botonOpcion = new JButton(opcion);
+        botonOpcion.setBackground(new Color(173, 216, 230));
+        botonOpcion.setForeground(Color.BLACK); 
+        botonOpcion.setFocusPainted(false);
+        botonOpcion.setPreferredSize(new Dimension(200, 100)); 
+        botonOpcion.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        botonOpcion.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String opcionSeleccionada = ((JButton) e.getSource()).getText();
+                switch (opcionSeleccionada) {
+                    case "Ver Tareas":
+                        VistaTareas.verTareas(usuario);
+                        break;
+                    case "Crear Tareas":
+                        TareasControlador.crearTarea(usuario);
+                        break;
+                    case "Modificar Tareas":
+                        proxy.modificarTarea(usuario);
+                        break;
+                    case "Borrar Tareas":
+                        TareasControlador control = new TareasControlador();
+                        control.eliminaTarea(usuario);
+                        break;
+                    case "Ver tareas por Fecha":
+                        VistaTareas.mostrarTareasXFechaVencimiento(usuario);
+                        break;
+                    case "Ver tareas por Prioridad":
+                        VistaTareas.mostrarTareasXPrioridad(usuario);
+                        break;
+                    case "Ver Calendario":
+                        VistaTareas.verCalendario(usuario);
+                        break;
+                    case "Compartir Tareas":
+                        TareasControlador control2 = new TareasControlador();
+                        control2.compartirTarea(usuario);
+                        break;
+                    case "Ver Tareas Compartidas":
+                        TareasControlador control3 = new TareasControlador();
+                        control3.recibirTareas(usuario);
+                        break;
+                    case "Cerrar Sesión":
+                        TareasControlador control4 = new TareasControlador();
+                        control4.cerrarSesion(usuario, marcoMenuPrincipal);
+                        break;
+                    case "Salir":
+                        System.exit(0);
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Opción no válida. Inténtelo de nuevo.");
+                        break;
+                }
+            }
+        });
+        panelMenu.add(botonOpcion);
+    }
+    marcoMenuPrincipal.add(panelMenu, BorderLayout.CENTER);
+
+    marcoMenuPrincipal.setVisible(true);
+}
+
+
+
+
+
 }

@@ -7,7 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TareasAlmacen {
+public class TareasAlmacen implements Observable {
+
+    private static List<Observer> observers = new ArrayList<>();
+
     /*
      * Arreglo que guarda las tareas.
      */
@@ -184,4 +187,47 @@ public class TareasAlmacen {
         }
         return tareaEstado;
     }
+
+public List<Tarea> getTareasVencidas(Usuario usuario) {
+    List<Tarea> tareasVencidas = new ArrayList<>();
+    for (Tarea tarea : tareas) {
+        if (tarea.getFechaVencimiento() != null && tarea.getFechaVencimiento().isBefore(LocalDateTime.now())) {
+            tareasVencidas.add(tarea);
+        }
+    }
+    return tareasVencidas;
+}
+
+public List<Tarea> getTareasProximas(Usuario usuario) {
+    List<Tarea> tareasProximas = new ArrayList<>();
+    LocalDateTime ahora = LocalDateTime.now();
+    for (Tarea tarea : tareas) {
+        if (tarea.getFechaVencimiento() != null
+                && tarea.getFechaVencimiento().isAfter(ahora) 
+                && tarea.getFechaVencimiento().isBefore(ahora.plusDays(2))) { // está dentro de los próximos 2 días
+            tareasProximas.add(tarea);
+        }
+    }
+    return tareasProximas;
+}
+@Override
+public void agregarObserver(Observer observer) {
+    observers.add(observer);
+}
+
+@Override
+public void removerObserver(Observer observer) {
+    observers.remove(observer);
+}
+
+@Override
+public void notificarObservers() {
+    List<Tarea> tareasVencidas = getTareasVencidas(null);
+    List<Tarea> tareasProximas = getTareasProximas(null);
+
+    for (Observer observer : observers) {
+        observer.update(tareasVencidas, tareasProximas);
+    }
+}
+
 }

@@ -78,3 +78,37 @@ Fecha de creación: 14-05-2024
 Prioridad: 8
 Estado: Tarea Pendiente
 
+Tipo: con fecha
+Titulo: ola
+Descripcion: krgjs
+Etiquetas: #Estudio-#Deportes-
+Fecha de creación: 19-05-2024
+Fecha de Vencimiento: 29-05-2024 Hora: 03:04
+Prioridad: 8
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: f
+Descripcion: a
+Etiquetas: 
+Fecha de creación: 19-05-2024
+Prioridad: 9
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: e
+Descripcion: 
+Etiquetas: #Estudio-#Personal-
+Fecha de creación: 19-05-2024
+Fecha de Vencimiento: 06-07-2033 Hora: 05:06
+Prioridad: 4
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: rt
+Descripcion: 
+Etiquetas: 
+Fecha de creación: 19-05-2024
+Prioridad: 8
+Estado: Tarea Pendiente
+
