@@ -898,6 +898,12 @@ String mensajeModifica = "";
         fileCompartidas.delete();
     }
 
+    /**
+     * Método para cerrar la sesión de un usuario.
+     * 
+     * @param usuario el usuario que desea cerrar la sesión.
+     * @param labelUsuario el JFrame que se desea cerrar.
+     */
     public void cerrarSesion(Usuario usuario, JFrame labelUsuario) {
         VistaTareas.mostrarMensaje("¡Hasta luego, " + usuario.getUsername() + "!");
         VistaTareas inicio = new VistaTareas();

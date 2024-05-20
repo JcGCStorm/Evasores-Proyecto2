@@ -3,9 +3,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Clase que representa una ventana de notificaciones de tareas vencidas y próximas a vencer
+ * en nuestra interfaz gráfica. Implementa la interfaz Observer para ser notificada de los cambios
+ * en el estado de las tareas.
+ */
 public class Notificaciones extends JFrame implements Observer {
     private JTextArea textArea;
 
+    /**
+     * Constructor de la clase Notificaciones. El cual inicializa la ventana de notificaciones
+     * con una altura y anchura predeterminada, y se agrega un WindowListener para cerrar la ventana.
+     */
     public Notificaciones() {
         setTitle("Notificaciones de Tareas");
         setSize(400, 300);
@@ -26,6 +35,13 @@ public class Notificaciones extends JFrame implements Observer {
     }
 
 
+    /**
+     * Método que actualiza la ventana de notificaciones con las tareas vencidas y próximas a vencer.
+     * Muestra un mensaje con las tareas vencidas y próximas a vencer, o un mensaje indicando que no hay tareas
+     * vencidas o próximas a vencer.
+     * @param tareasVencidas Lista de tareas vencidas.
+     * @param tareasProximas Lista de tareas próximas a vencer.
+     */
     @Override
     public void update(List<Tarea> tareasVencidas, List<Tarea> tareasProximas) {
         StringBuilder mensaje = new StringBuilder();

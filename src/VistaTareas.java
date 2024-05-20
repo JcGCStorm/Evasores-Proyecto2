@@ -698,6 +698,9 @@ public class VistaTareas  {
 private JFrame marcoInicioSesion;
 private JFrame marcoMenuPrincipal;
 
+/**
+ * Método para mostrar la interfaz gráfica del inicio de sesión.
+ */
 public void mostrarInicioSesion() {
     marcoInicioSesion = new JFrame("Gestor de Tareas - Iniciar Sesión/Registrarse");
     marcoInicioSesion.setSize(400, 300);
@@ -814,6 +817,12 @@ public void mostrarInicioSesion() {
     marcoInicioSesion.setVisible(true);
 }
 
+/**
+ * Método para verificar si la contraseña es válida. Recibe una string que es la contraseña
+ * y verifica que tenga entre 5 y 16 caracteres, al menos una mayúscula y un caracter especial.
+ * @param contrasena la contraseña a verificar.
+ * @return true si la contraseña es válida, false en caso contrario.
+ */
 private boolean esContrasenaValida(String contrasena) {
     if (contrasena.length() < 5 || contrasena.length() > 16) {
         return false;
@@ -830,6 +839,13 @@ private boolean esContrasenaValida(String contrasena) {
     }
     return contieneMayuscula && contieneEspecial;
 }
+
+/**
+ * Método para mostrar el menú principal de la aplicación.
+ * Recibe un proxy y un usuario.
+ * @param proxy el proxy de tareas.
+ * @param usuario el usuario que ha iniciado sesión.
+ */
 public void mostrarMenuPrincipal(TareasProxy proxy, Usuario usuario) {
     marcoMenuPrincipal = new JFrame("Menú Principal");
     marcoMenuPrincipal.setSize(600, 400);

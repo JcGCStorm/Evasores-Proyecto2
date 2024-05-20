@@ -188,6 +188,14 @@ public class TareasAlmacen implements Observable {
         return tareaEstado;
     }
 
+    /**
+     * Este metodo nos ayuda a obtener las tareas que están vencidas, es decir, que
+     * la fecha de vencimiento de la tarea es menor a la fecha actual. Va recorriendo
+     * el arreglo de tareas y si la fecha de vencimiento de la tarea es menor a la
+     * fecha actual, la mete en un arreglo de tareas vencidas.
+     * @param usuario el usuario del que queremos obtener las tareas vencidas.
+     * @return el arreglo de tareas vencidas.
+     */
 public List<Tarea> getTareasVencidas(Usuario usuario) {
     List<Tarea> tareasVencidas = new ArrayList<>();
     for (Tarea tarea : tareas) {
@@ -198,6 +206,15 @@ public List<Tarea> getTareasVencidas(Usuario usuario) {
     return tareasVencidas;
 }
 
+/**
+ * Este metodo nos ayuda a obtener las tareas que están próximas a vencer, es decir,
+ * que la fecha de vencimiento de la tarea es mayor a la fecha actual y menor a la
+ * fecha actual más dos días. Va recorriendo el arreglo de tareas y si la fecha de
+ * vencimiento de la tarea es mayor a la fecha actual y menor a la fecha actual más
+ * dos días, la mete en un arreglo de tareas próximas.
+ * @param usuario el usuario del que queremos obtener las tareas próximas.
+ * @return el arreglo de tareas próximas.
+ */
 public List<Tarea> getTareasProximas(Usuario usuario) {
     List<Tarea> tareasProximas = new ArrayList<>();
     LocalDateTime ahora = LocalDateTime.now();
@@ -210,16 +227,28 @@ public List<Tarea> getTareasProximas(Usuario usuario) {
     }
     return tareasProximas;
 }
+
+/**
+ * Este metodo nos ayuda a agregar un observador a la lista de observadores.
+ * @param observer el observer que queremos agregar.
+ */
 @Override
 public void agregarObserver(Observer observer) {
     observers.add(observer);
 }
 
+/**
+ * Este metodo nos ayuda a remover un observador de la lista de observadores.
+ * @param observer el observer que queremos remover.
+ */
 @Override
 public void removerObserver(Observer observer) {
     observers.remove(observer);
 }
 
+/**
+ * Este metodo nos ayuda a notificar a los observadores de los cambios en las tareas.
+ */
 @Override
 public void notificarObservers() {
     List<Tarea> tareasVencidas = getTareasVencidas(null);
