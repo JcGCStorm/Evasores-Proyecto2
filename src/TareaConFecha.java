@@ -114,7 +114,7 @@ public class TareaConFecha implements Tarea {
             // título
             this.titulo = vista.obtenerTitulo();
             if (titulo == null || titulo.trim().isEmpty()) {
-                throw new IllegalArgumentException("El título no puede estar vacío.");
+                throw new IllegalArgumentException("El título no puede estar vacío. \n ¿No deseabas agregar un título?.");
             }
 
             this.descripcion = vista.obtenerDescripcion();

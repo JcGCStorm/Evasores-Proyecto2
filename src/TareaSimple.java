@@ -116,7 +116,7 @@ public class TareaSimple implements Tarea {
         try {
         this.titulo = vista.obtenerTitulo();
         if (this.titulo == null || this.titulo.trim().isEmpty()) {
-            throw new IllegalArgumentException("El título no puede estar vacío.");
+            throw new IllegalArgumentException("El título no puede estar vacío. \n ¿No deseabas agregar un título?");
         }
         this.descripcion = vista.obtenerDescripcion();
         if (this.descripcion == null) {

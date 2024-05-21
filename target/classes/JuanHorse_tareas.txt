@@ -1,0 +1,51 @@
+Tipo: con fecha
+Titulo: Tomate
+Descripcion: que psa chavales
+Etiquetas: #Estudio-#Trabajo-#Deportes-#Personal-#Comida-#Salud-#Entretenimiento-#Hogar-#Viaje-#Compras-#Social-#Asambleas-#Otro-
+Fecha de creación: 20-05-2024
+Fecha de Vencimiento: 21-05-2024 Hora: 05:07
+Prioridad: 4
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: fddsf
+Descripcion: 
+Etiquetas: #Estudio-#Social-
+Fecha de creación: 20-05-2024
+Prioridad: 0
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: dflj
+Descripcion: kjafn
+Etiquetas: 
+Fecha de creación: 20-05-2024
+Prioridad: 8
+Estado: Tarea Pendiente
+
+Tipo: simple
+Titulo: jlkñh
+Descripcion: 
+Etiquetas: #Estudio-
+Fecha de creación: 20-05-2024
+Prioridad: 5
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: Zanahoria
+Descripcion: kdjgsj
+Etiquetas: #Personal-
+Fecha de creación: 20-05-2024
+Fecha de Vencimiento: 12-06-2024 Hora: 07:03
+Prioridad: 8
+Estado: Tarea Pendiente
+
+Tipo: con fecha
+Titulo: PARO
+Descripcion: Paro hasta elaño  5783759 
+Etiquetas: #Asambleas-
+Fecha de creación: 20-05-2024
+Fecha de Vencimiento: 24-05-2024 Hora: 12:04
+Prioridad: 10
+Estado: Tarea Pendiente
+

@@ -196,9 +196,11 @@ public class VistaTareas  {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         textArea.append("Tareas ordenadas por fecha de vencimiento:\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy 'Hora:' HH:mm:ss");
         for (TareaConFecha tarea : tareasConFecha) {
+            String fechaFormateada = tarea.getFechaVencimiento().format(formatter);
             textArea.append(
-                    "- " + tarea.getTitulo() + " (Fecha de vencimiento: " + tarea.getFechaVencimiento() + ")\n");
+                    "- " + tarea.getTitulo() + " (Fecha de vencimiento: " + fechaFormateada + ")\n");
         }
         JScrollPane scrollPane2 = new JScrollPane(textArea);
 

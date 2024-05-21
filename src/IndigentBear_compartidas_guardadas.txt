@@ -1,0 +1,9 @@
+Usuario Emisor: JuanHorse
+Tipo: con fecha
+Titulo: PARO
+Etiquetas: #Asambleas-
+Descripcion: Paro hasta elaño  5783759 
+Prioridad: 10
+Estado: Tarea Pendiente
+Fecha de Vencimiento: 2024-05-24T12:04
+

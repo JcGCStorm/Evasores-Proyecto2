@@ -161,11 +161,11 @@ public class TareasControlador {
 
             for (int i = 0; i < lineas.size(); i++) {
                 if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: con fecha")) {
-                    for (int j = 0; j < 8; j++)
+                    for (int j = 0; j < 9; j++)
                         lineas.remove(i - 1);
                     break;
                 } else if (lineas.get(i).equals(eliminaTitulo) && lineas.get(i - 1).equals("Tipo: simple")) {
-                    for (int j = 0; j < 7; j++)
+                    for (int j = 0; j < 8; j++)
                         lineas.remove(i - 1);
                     break;
                 }
@@ -441,7 +441,6 @@ public class TareasControlador {
         if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
             throw new IllegalArgumentException("La prioridad no puede estar vacía.");
         }
-        tarea.setPrioridad(Integer.parseInt(nuevoValor));
         String archivo = obtenerArchivoTareasUsuario(usuario);
         try {
             List<String> lineas = new ArrayList<>();
@@ -453,7 +452,14 @@ public class TareasControlador {
             br.close();
 
             for (int i = 0; i < lineas.size(); i++) {
-                if (lineas.get(i).contains("Prioridad: " + tarea.getPrioridad())) {
+                if (lineas.get(i).contains("Prioridad: " + tarea.getPrioridad()) &&
+                    lineas.get(i-4).contains("Titulo: " + tarea.getTitulo())) {
+                    tarea.setPrioridad(Integer.parseInt(nuevoValor));
+                    lineas.set(i, "Prioridad: " + nuevoValor);
+                    break;
+                } else if (lineas.get(i).contains("Prioridad: " + tarea.getPrioridad()) &&
+                           lineas.get(i-5).contains("Titulo: " + tarea.getTitulo())) {
+                    tarea.setPrioridad(Integer.parseInt(nuevoValor));
                     lineas.set(i, "Prioridad: " + nuevoValor);
                     break;
                 }
@@ -485,7 +491,7 @@ public class TareasControlador {
     private void modificarEstado(Tarea tarea, Usuario usuario) {
         String estadoViejo = "Estado: " + tarea.estadoToString(tarea.getEstado());
         String[] opciones = { "Tarea En Progreso", "Completada", "Tarea Pendiente" };
-        String nuevoEstado = (String) JOptionPane.showInputDialog(null, "Seleccione el nuevo estado:",
+        String nuevoEstado = (String) JOptionPane.showInputDialog(null, "Seleccione el nuevo estado: \n Estado actual: " + tarea.estadoToString(tarea.getEstado()),
                 "Modificar Estado",
                 JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
@@ -611,13 +617,14 @@ String mensajeModifica = "";
         LocalDateTime fechaVieja = tarea.getFechaVencimiento();
         VistaTareas fechaVencimiento = new VistaTareas();
         LocalDateTime fechaNueva = fechaVencimiento.obtenerFechaVencimiento();
+        System.out.println(fechaNueva);
       //  String nuevoValor = VistaTareas.obtenerEntrada("Ingrese la nueva fecha de vencimiento (dd-MM-yyyy HH:mm):");
        // if (nuevoValor == null || nuevoValor.trim().isEmpty()) {
        //     return;
        // }
         LocalDate fechaCreacion = tarea.getFechaCreacion();
         LocalDateTime creacionADateTime = fechaCreacion.atStartOfDay();
-        if (creacionADateTime.isAfter(fechaVieja)) {
+        if (creacionADateTime.isAfter(fechaNueva)) {
             VistaTareas.mostrarMensaje("La fecha de vencimiento no puede ser anterior a la fecha de creación.");
             return;
         }
@@ -636,7 +643,7 @@ String mensajeModifica = "";
             br.close();
 
             for (int i = 0; i < lineas.size(); i++) {
-                if (lineas.get(i).startsWith("Fecha de Vencimiento: ")) {
+                if (lineas.get(i).startsWith("Fecha de Vencimiento: ") && lineas.get(i - 4).equals("Titulo: " + tarea.getTitulo())){
                     lineas.set(i, "Fecha de Vencimiento: " + fechaNueva.format(formatter));
                     break;
                 }
